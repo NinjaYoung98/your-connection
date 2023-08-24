@@ -9,13 +9,14 @@ import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -39,11 +40,16 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public String login(UserLoginRequest userLoginRequest) {
-        User user = userRepository.findByUsername(userLoginRequest.getUsername())
-            .map(User::fromEntity)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User user = loadUserByUsername(userLoginRequest.getUsername());
         validatePassword(userLoginRequest, user);
         return "accessToken";
+    }
+
+    @Override
+    public User loadUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+            .map(User::fromEntity)
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
     private void validatePassword(UserLoginRequest userLoginRequest, User user) {
