@@ -6,6 +6,7 @@ import com.sns.yourconnection.model.user.param.UserJoinRequest;
 import com.sns.yourconnection.model.user.param.UserLoginRequest;
 import com.sns.yourconnection.model.user.result.UserJoinResponse;
 import com.sns.yourconnection.model.user.result.UserLoginResponse;
+import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class UserPublicApiController {
     public ResponseSuccess<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
         log.info("User is attempting to login with username: {}", userLoginRequest.getUsername());
 
-        String accessToken = userService.login(userLoginRequest);
+        AccessToken accessToken = userService.login(userLoginRequest);
         log.info("your connection login is success and issued access token");
 
         return response(UserLoginResponse.of(accessToken));

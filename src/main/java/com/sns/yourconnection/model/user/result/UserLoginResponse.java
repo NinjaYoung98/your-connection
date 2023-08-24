@@ -1,5 +1,6 @@
 package com.sns.yourconnection.model.user.result;
 
+import com.sns.yourconnection.security.token.AccessToken;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +11,11 @@ import lombok.NoArgsConstructor;
 public class UserLoginResponse {
 
     private String accessToken;
+    private String grantType;
+    private Long expiresIn;
 
-
-    public static UserLoginResponse of(String accessToken) {
-        return new UserLoginResponse(accessToken);
+    public static UserLoginResponse of(AccessToken accessToken) {
+        return new UserLoginResponse(accessToken.getAccessToken(), accessToken.getGrantType(),
+            accessToken.getExpiresIn());
     }
 }

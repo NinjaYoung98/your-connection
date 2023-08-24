@@ -7,6 +7,8 @@ import com.sns.yourconnection.model.user.entity.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.UserRepository;
+import com.sns.yourconnection.security.token.AccessToken;
+import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final JwtTokenGenerator jwtTokenGenerator;
 
     @Transactional
     public User join(UserJoinRequest userJoinRequest) {
@@ -27,11 +30,10 @@ public class UserService implements UserDetailsService {
             -  username이 이미 존재할 경우 에러 반환
          */
         DuplicateUsername(userJoinRequest.getUsername());
-
         UserEntity userEntity = UserEntity.of(
             userJoinRequest.getUsername(), userJoinRequest.getPassword(),
             userJoinRequest.getNickname());
-        log.info("UserEntity has created for join with ID: {} username: nickname: {}",
+        log.info("UserEntity has created for join with ID: {} username: {} nickname: {}",
             userEntity.getId(), userEntity.getUsername(), userEntity.getNickname());
 
         userRepository.save(userEntity);
@@ -39,11 +41,18 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public String login(UserLoginRequest userLoginRequest) {
+    public AccessToken login(UserLoginRequest userLoginRequest) {
+        /*
+        로그인 기능
+            - username 등록되어 있지 않다면 에러 반환
+            - username 이 password 와 일치하지 않는다면 에러 반환
+            TODO: - access token 발급 이후 refresh token redis에 저장
+         */
         User user = loadUserByUsername(userLoginRequest.getUsername());
         validatePassword(userLoginRequest, user);
-        return "accessToken";
+        return jwtTokenGenerator.generateAccessToken(user.getUsername());
     }
+
 
     @Override
     public User loadUserByUsername(String username) {
