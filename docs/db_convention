@@ -1,0 +1,33 @@
+################ 공통
+
+# 1. 이름은 snake case를 따른다.
+
+# snake case란 모든 글자를 소문자로 하고, 언더스코어(_)로 단어를 구분해주는 방법이다.
+# ex) userLogin, Name (X) -->  user_login, name (O)
+
+
+# 2. prefix와 postfix는 사용하지 않는다.
+# ex) user_TB (X)
+
+################ 테이블 관련
+
+# 3.  테이블의 이름은 복수가 아닌 단수로 쓴다.
+# ex) members (X) -> member (O)
+
+
+# 4. 가능하면 단어를 줄여쓰지 않는다. (no abbreviation)
+# ex) mid_ma (X) --> middle_name (O)
+
+################ 속성 관련
+
+# 5. 테이블이 하나의 Primary Key를 가진다면 그 속성의 이름은 id로 한다.
+# ex) user_id (X) -> id
+
+# 6. Foreign Key는 테이블 이름과 속성 이름을 더해 정한다.
+# ex) user 테이블의 id -> user_id
+
+# 7. index와 constraint는 descriptive하게 작성한다.
+# ex) user_ix (X) -> user_ix_email_lower
+
+
+
