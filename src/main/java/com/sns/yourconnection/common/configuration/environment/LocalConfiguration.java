@@ -19,6 +19,7 @@ public class LocalConfiguration implements EnvConfiguration {
     @Override
     @Bean
     public void getMessage() {
-        log.info("[" + environment.getProperty("spring.config.activate.on-profile") + "] environment is running");
+        log.info("[" + environment.getProperty("spring.config.activate.on-profile")
+            + "] environment is running");
     }
 }
