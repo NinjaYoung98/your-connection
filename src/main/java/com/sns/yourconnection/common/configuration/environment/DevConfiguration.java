@@ -12,11 +12,13 @@ import org.springframework.core.env.Environment;
 @RequiredArgsConstructor
 @Slf4j
 public class DevConfiguration implements EnvConfiguration {
+
     private final Environment environment;
 
     @Override
     @Bean
     public void getMessage() {
-        log.info("[" + environment.getProperty("spring.config.activate.on-profile") + "] environment is running");
+        log.info("[" + environment.getProperty("spring.config.activate.on-profile")
+            + "] environment is running");
     }
 }
