@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: dev
   jpa:
     hibernate:
       ddl-auto: create
@@ -6,8 +8,26 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: ${LOCAL_DB_URL}
-    username:  ${LOCAL_DB_USERNAME}
-    password:  ${LOCAL_DB_PASSWORD}
+    username: ${LOCAL_DB_USERNAME}
+    password: ${LOCAL_DB_PASSWORD}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${DEVELOPMENT_DB_URL}
+    username: ${DEVELOPMENT_DB_USERNAME}
+    password: ${DEVELOPMENT_DB_PASSWORD}
+
