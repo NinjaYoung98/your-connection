@@ -22,20 +22,21 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseError> globalExceptionHandler(Exception e) {
         log.error("[InternalServerError Occurs] error: {}", e.getMessage());
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
-                .body(ResponseError.response(ErrorCode.INTERNAL_SERVER_ERROR));
+            .body(ResponseError.response(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ResponseError> runtimeExceptionHandler(RuntimeException e) {
         log.error("[RuntimeException Occurs] error: {}", e.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(ResponseError.response(HttpStatus.CONFLICT.toString(), e.getMessage()));
+            .body(ResponseError.response(HttpStatus.CONFLICT.toString(), e.getMessage()));
     }
 
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ResponseError> appExceptionHandler(AppException e) {
-        log.warn("[AppException Occurs] message: {} HttpStatus: {}", e.getErrorCode().getMessage(), e.getErrorCode().getHttpStatus());
+        log.warn("[AppException Occurs] message: {} HttpStatus: {}", e.getErrorCode().getMessage(),
+            e.getErrorCode().getHttpStatus());
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
-                .body(ResponseError.response(e.getErrorCode()));
+            .body(ResponseError.response(e.getErrorCode()));
     }
 }

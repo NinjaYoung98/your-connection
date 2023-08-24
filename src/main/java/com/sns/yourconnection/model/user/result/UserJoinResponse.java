@@ -11,14 +11,15 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class UserJoinResponse {
+
     private String userName;
     private String nickName;
     private LocalDateTime createdAt;
 
     public static UserJoinResponse fromUser(User user) {
         return new UserJoinResponse(
-                user.getUsername(),
-                user.getNickname(),
-                user.getCreatedAt());
+            user.getUsername(),
+            user.getNickname(),
+            user.getCreatedAt());
     }
 }
