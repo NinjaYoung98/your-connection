@@ -8,7 +8,11 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-
+jwt:
+  token:
+    key: ${JWT_TOKEN_KEY}
+  access-expired: 3600000 #1시간  #6000 5초?
+  refresh-expired: 86400000   # 1 day
 ---
 spring:
   config:
