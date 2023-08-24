@@ -9,6 +9,11 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "status code 500 is occurred"),
 
+    INVALID_TOKEN_FORMED(HttpStatus.UNAUTHORIZED, "not support to this token`s formed"),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "token is expired"),
+    INVALID_TOKEN_SIGNATURE(HttpStatus.UNAUTHORIZED, "token signature is invalid"),
+    NOT_BEARER_TOKEN(HttpStatus.UNAUTHORIZED, "token is not start with BEARER or null"),
+
     DUPLICATED_USERNAME(HttpStatus.CONFLICT, "username is duplicated"),
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "nickname is duplicated"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "invalid password"),

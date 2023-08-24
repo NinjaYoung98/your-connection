@@ -1,6 +1,8 @@
 package com.sns.yourconnection.common.filter;
 
 
+import com.sns.yourconnection.exception.ErrorCode;
+import com.sns.yourconnection.exception.MissingBearerTokenException;
 import com.sns.yourconnection.model.user.dto.User;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import com.sns.yourconnection.service.UserService;
@@ -38,8 +40,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             User user = parseUserSpecification(accessToken);
             configureAuthenticatedUser(request, user);
         } catch (Exception e) {
-            log.error(e.getMessage());
-            //TODO: 예외 처리 구현
+            request.setAttribute("exception", e);
         }
         filterChain.doFilter(request, response);
     }
@@ -53,7 +54,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return false;
     }
 
-    private String parseBearerToken(HttpServletRequest request) {
+    private String parseBearerToken(HttpServletRequest request) throws MissingBearerTokenException {
         String authorization = extractAuthorization(request);
         log.info("[JwtTokenFilter] Extract authorization for Jwt token: {}", authorization);
         return authorization.split(" ")[1];
@@ -73,10 +74,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }
 
-    private String extractAuthorization(HttpServletRequest request) {
+    private String extractAuthorization(HttpServletRequest request)
+        throws MissingBearerTokenException {
         String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authorization == null || !authorization.startsWith(BEARER)) {
-            throw new RuntimeException();
+            throw new MissingBearerTokenException(ErrorCode.NOT_BEARER_TOKEN);
         }
         return authorization;
     }
