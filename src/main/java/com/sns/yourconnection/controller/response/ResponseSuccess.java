@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ResponseSuccess<T> {
+
     private T data;
 
     // Success with data only

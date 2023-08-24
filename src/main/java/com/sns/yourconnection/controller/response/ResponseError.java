@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class ResponseError {
+
     private String id;
     private String message;
 
