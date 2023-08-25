@@ -52,13 +52,38 @@ public class PostService {
             -  post 존재하는지 확인
             -  post 에 대한 user 조회 기록 체크
          */
-        PostEntity postEntity = postRepository.findById(postId)
+        return postRepository.findById(postId)
+            .map(Post::fromEntity)
             .orElseThrow(() -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+    }
+
+    @Transactional
+    public Post updatePost(Long postId, PostRequest postUpdateRequest, User user) {
+        /*
+        post 를 수정한다(제목, 컨텐츠)
+            - post 존재하는지 확인한다.
+            - post 작성자만 해당 post 를 수정할 수 있다.
+            - post 수정한다.
+         */
+        PostEntity postEntity = getPostEntity(postId);
+        validateMatches(user, postEntity);
+        postEntity.update(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
         return Post.fromEntity(postEntity);
+    }
+
+    public PostEntity getPostEntity(Long postId) {
+        return postRepository.findById(postId).orElseThrow(() ->
+            new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
     public UserEntity getUserEntity(User user) {
         return userRepository.findById(user.getId())
             .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+    }
+
+    public void validateMatches(User user, PostEntity postEntity) {
+        if (postEntity.getUser().getId() != user.getId()) {
+            throw new AppException(ErrorCode.HAS_NOT_PERMISSION_TO_ACCESS);
+        }
     }
 }

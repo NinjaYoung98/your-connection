@@ -40,4 +40,9 @@ public class PostEntity extends AuditEntity {
     public static PostEntity of(String title, String content, UserEntity user) {
         return new PostEntity(title, content, user);
     }
+
+    public void update(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 }

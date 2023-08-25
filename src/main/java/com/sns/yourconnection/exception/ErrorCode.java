@@ -19,7 +19,8 @@ public enum ErrorCode {
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "invalid password"),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not found"),
     POST_DOES_NOT_EXIST(HttpStatus.NOT_FOUND, "post does not exist"),
-    PAGE_SIZE_NOT_APPLICABLE(HttpStatus.BAD_REQUEST, "page size is too large"),;
+    PAGE_SIZE_NOT_APPLICABLE(HttpStatus.BAD_REQUEST, "page size is too large"),
+    HAS_NOT_PERMISSION_TO_ACCESS(HttpStatus.UNAUTHORIZED, "has not permission to access");
 
 
     private final HttpStatus httpStatus;

@@ -44,4 +44,15 @@ public class PostApiController {
 
         return response(PostResponse.fromPost(post));
     }
+
+    @PutMapping("{postId}")
+    public ResponseSuccess<PostResponse> updatePost(@PathVariable Long postId, @RequestBody PostRequest postUpdateRequest, @AuthUser User user) {
+        log.info("Updating post with ID: {} for user: {} Request details: postUpdateRequest: {}", postId, user.getId(), postUpdateRequest);
+
+        Post post = postService.updatePost(postId, postUpdateRequest, user);
+        PostResponse postResponse = PostResponse.fromPost(post);
+        log.info("Post with ID: {} updated successfully. Updated post details: {}", post.getId(), postResponse);
+
+        return response(PostResponse.fromPost(post));
+    }
 }
