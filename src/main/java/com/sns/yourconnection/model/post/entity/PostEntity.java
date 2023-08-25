@@ -2,9 +2,12 @@ package com.sns.yourconnection.model.post.entity;
 
 import com.sns.yourconnection.model.audit.AuditEntity;
 import com.sns.yourconnection.model.user.entity.UserEntity;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -30,6 +33,9 @@ public class PostEntity extends AuditEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private List<PostCountEntity> postCounts = new ArrayList<>();
 
     private PostEntity(String title, String content, UserEntity user) {
         this.title = title;

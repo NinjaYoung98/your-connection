@@ -2,6 +2,7 @@ package com.sns.yourconnection.service;
 
 
 import com.sns.yourconnection.model.post.dto.Post;
+import com.sns.yourconnection.model.post.entity.PostCountEntity;
 import com.sns.yourconnection.model.user.dto.User;
 import com.sns.yourconnection.repository.*;
 import com.sns.yourconnection.model.post.param.PostRequest;
@@ -25,6 +26,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final PostCountRepository postCountRepository;
 
     @Transactional
     public Post createPost(PostRequest postCreateRequest, User user) {
@@ -47,14 +49,18 @@ public class PostService {
 
     @Transactional
     public Post getPost(Long postId, User user) {
-        /*
+         /*
         특정 post 조회 기능
             -  post 존재하는지 확인
             -  post 에 대한 user 조회 기록 체크
+            -  조회 기록이 있다면 조회수 오르지 x
+            -  조회 기록이 없다면 조회수 1 증가
          */
-        return postRepository.findById(postId)
-            .map(Post::fromEntity)
-            .orElseThrow(() -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+        PostEntity postEntity = postRepository.findById(postId).orElseThrow(() ->
+            new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+        UserEntity userEntity = getUserEntity(user);
+        setPostCount(postEntity, userEntity);
+        return Post.fromEntity(postEntity);
     }
 
     @Transactional(readOnly = true)
@@ -76,6 +82,7 @@ public class PostService {
         postEntity.update(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
         return Post.fromEntity(postEntity);
     }
+
     @Transactional
     public void deletePost(Long postId, User user) {
         /*
@@ -87,6 +94,25 @@ public class PostService {
         PostEntity postEntity = getPostEntity(postId);
         validateMatches(user, postEntity);
         postRepository.delete(postEntity);
+    }
+
+    @Transactional
+    public void setPostCount(PostEntity postEntity, UserEntity userEntity) {
+        if (postCountRepository.findByPostAndUser(postEntity, userEntity).isEmpty()) {
+            postCountRepository.save(PostCountEntity.of(userEntity, postEntity));
+            log.info("Increase post count for post: {} by user: {}", postEntity.getId(),
+                userEntity.getId());
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Integer getPostCount(Long postId) {
+        // findByIdWithPostCount -> jpa n+1 문제 방지를 위한 fetch join
+        return postRepository.findByIdWithPostCount(postId)
+            .map(PostEntity::getPostCounts)
+            .map(postCount -> postCount.size())
+            .orElseThrow(() ->
+                new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
     public PostEntity getPostEntity(Long postId) {
