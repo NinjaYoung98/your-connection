@@ -1,6 +1,7 @@
 package com.sns.yourconnection.common.configuration;
 
 import com.sns.yourconnection.common.resolver.AuthenticateUserResolver;
+import com.sns.yourconnection.common.resolver.ValidatedPageRequestResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
@@ -17,7 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         Stream.of(
-            new AuthenticateUserResolver()
+            new AuthenticateUserResolver(),
+            new ValidatedPageRequestResolver()
         ).forEach(resolvers::add);
     }
 }

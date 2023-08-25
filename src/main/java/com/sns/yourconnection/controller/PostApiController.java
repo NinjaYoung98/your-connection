@@ -34,4 +34,14 @@ public class PostApiController {
 
         return response(postResponse);
     }
+
+    @GetMapping("{postId}")
+    public ResponseSuccess<PostResponse> getPost(@PathVariable Long postId, @AuthUser User user) {
+        log.info("getting post with ID: {} for user: {}", postId, user.getId());
+
+        Post post = postService.getPost(postId, user);
+        log.info("Retrieved post ID: {}", post.getId());
+
+        return response(PostResponse.fromPost(post));
+    }
 }
