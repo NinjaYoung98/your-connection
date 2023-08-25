@@ -106,6 +106,18 @@ public class PostApiController {
         return response(commentPage.getContent(), PageResponseWrapper.fromPage(commentPage));
     }
 
+    @GetMapping("/search/{keyword}")
+    public ResponseSuccess<List<PostResponse>> searchPostPage(@PathVariable String keyword,
+        @ValidatedPageRequest Pageable pageable) {
+        log.info("Searching post with keyword: '{}' and pageable: {}", keyword, pageable);
+
+        Page<PostResponse> postPage = postService.searchPostPage(keyword, pageable)
+            .map(PostResponse::fromPost);
+        log.info("Found {} post(s) with keyword: {}", postPage.getSize(), keyword);
+
+        return response(postPage.getContent(), PageResponseWrapper.fromPage(postPage));
+    }
+
     @PutMapping("/{postId}/comment/{commentId}")
     public ResponseSuccess<CommentResponse> updateComment(@PathVariable Long postId,
         @PathVariable Long commentId,
