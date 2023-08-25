@@ -6,6 +6,7 @@ import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
 import com.sns.yourconnection.model.post.result.PostResponse;
 import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.service.LikeCountService;
 import com.sns.yourconnection.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ import static com.sns.yourconnection.controller.response.ResponseSuccess.respons
 public class PostPublicApiController {
 
     private final PostService postService;
+    private final LikeCountService likeCountService;
 
     @GetMapping("")
     public ResponseSuccess<List<PostResponse>> getPostPage(
@@ -44,5 +46,15 @@ public class PostPublicApiController {
         log.info(" post: {} count is {}", postId, postCount);
 
         return response(postCount);
+    }
+
+    @GetMapping("{postId}/like")
+    public ResponseSuccess<Integer> getLikeCount(@PathVariable Long postId) {
+        log.info("Getting like count for post: {}", postId);
+
+        Integer likeCount = likeCountService.getLikeCount(postId);
+        log.info("Like count get successfully and count: {}", likeCount);
+
+        return response(likeCount);
     }
 }
