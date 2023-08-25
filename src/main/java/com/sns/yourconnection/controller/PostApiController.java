@@ -4,10 +4,14 @@ import static com.sns.yourconnection.controller.response.ResponseSuccess.respons
 
 import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
+import com.sns.yourconnection.model.comment.dto.Comment;
+import com.sns.yourconnection.model.comment.param.CommentRequest;
+import com.sns.yourconnection.model.comment.result.CommentResponse;
 import com.sns.yourconnection.model.post.dto.Post;
 import com.sns.yourconnection.model.post.param.PostRequest;
 import com.sns.yourconnection.model.post.result.PostResponse;
 import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.service.CommentService;
 import com.sns.yourconnection.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostApiController {
 
     private final PostService postService;
+    private final CommentService commentService;
 
     @PostMapping("")
     public ResponseSuccess<PostResponse> createPost(@RequestBody PostRequest postCreateRequest,
@@ -67,5 +72,18 @@ public class PostApiController {
         log.info("Post with ID: {} deleted successfully.", postId);
 
         return response();
+    }
+
+    @PostMapping("{postId}/comment")
+    public ResponseSuccess<CommentResponse> createComment(@PathVariable Long postId,
+        @RequestBody CommentRequest commentRequest, @AuthUser User user) {
+        log.info("Creat a new comment for post: {} by user: {} Request detail: {}", postId,
+            user.getId(), commentRequest);
+
+        Comment comment = commentService.createComment(postId, commentRequest, user);
+        CommentResponse commentResponse = CommentResponse.fromComment(comment);
+        log.info("Comment created successfully. comment details: {}", commentResponse);
+
+        return response(CommentResponse.fromComment(comment));
     }
 }
