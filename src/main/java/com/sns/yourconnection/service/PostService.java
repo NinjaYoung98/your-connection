@@ -57,6 +57,12 @@ public class PostService {
             .orElseThrow(() -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
+    @Transactional(readOnly = true)
+    public Page<Post> searchPostPage(String keyword, Pageable pageable) {
+        // title에 키워드를 포함한 postEntity를 반환한다
+        return postRepository.searchByKeyword(keyword, pageable).map(Post::fromEntity);
+    }
+
     @Transactional
     public Post updatePost(Long postId, PostRequest postUpdateRequest, User user) {
         /*
@@ -70,7 +76,6 @@ public class PostService {
         postEntity.update(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
         return Post.fromEntity(postEntity);
     }
-
     @Transactional
     public void deletePost(Long postId, User user) {
         /*
