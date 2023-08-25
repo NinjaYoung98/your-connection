@@ -71,6 +71,19 @@ public class PostService {
         return Post.fromEntity(postEntity);
     }
 
+    @Transactional
+    public void deletePost(Long postId, User user) {
+        /*
+        post 를 삭제한다.
+            - post 존재하는지 확인한다.
+            - post 작성자만 해당 post 를 삭제할 수 있다.
+            - post 삭제한다.
+         */
+        PostEntity postEntity = getPostEntity(postId);
+        validateMatches(user, postEntity);
+        postRepository.delete(postEntity);
+    }
+
     public PostEntity getPostEntity(Long postId) {
         return postRepository.findById(postId).orElseThrow(() ->
             new AppException(ErrorCode.POST_DOES_NOT_EXIST));
