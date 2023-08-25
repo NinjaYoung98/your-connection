@@ -1,5 +1,6 @@
 package com.sns.yourconnection.model.post.entity;
 
+import com.sns.yourconnection.model.audit.AuditEntity;
 import com.sns.yourconnection.model.user.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,7 +16,7 @@ import javax.persistence.*;
 @SQLDelete(sql = "UPDATE post SET deleted_at = NOW() WHERE id=?")
 @Where(clause = "deleted_at is NULL")
 @Table(name = "\"post\"")
-public class PostEntity {
+public class PostEntity extends AuditEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

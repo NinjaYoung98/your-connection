@@ -17,12 +17,20 @@ public class PostResponse {
     private Long postId;
     private String title;
     private String content;
+    private LocalDateTime createdAt;
+    private String createdBy;
+    private LocalDateTime updatedAt;
+    private String updatedBy;
 
     public static PostResponse fromPost(Post post) {
         return new PostResponse(
             post.getId(),
             post.getTitle(),
-            post.getContent()
+            post.getContent(),
+            post.getCreatedAt(),
+            post.getCreatedBy(),
+            post.getUpdatedAt(),
+            post.getUpdatedBy()
         );
     }
 }
