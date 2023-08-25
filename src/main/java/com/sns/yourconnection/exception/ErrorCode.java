@@ -17,7 +17,9 @@ public enum ErrorCode {
     DUPLICATED_USERNAME(HttpStatus.CONFLICT, "username is duplicated"),
     DUPLICATED_NICKNAME(HttpStatus.CONFLICT, "nickname is duplicated"),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "invalid password"),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not found");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "user not found"),
+    POST_DOES_NOT_EXIST(HttpStatus.NOT_FOUND, "post does not exist");
+
 
     private final HttpStatus httpStatus;
     private final String message;
