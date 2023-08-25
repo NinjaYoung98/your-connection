@@ -12,6 +12,7 @@ import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder encoder;
     private final JwtTokenGenerator jwtTokenGenerator;
 
     @Transactional
@@ -31,9 +33,10 @@ public class UserService implements UserDetailsService {
          */
         DuplicateUsername(userJoinRequest.getUsername());
         UserEntity userEntity = UserEntity.of(
-            userJoinRequest.getUsername(), userJoinRequest.getPassword(),
+            userJoinRequest.getUsername(), encoder.encode(userJoinRequest.getPassword()),
             userJoinRequest.getNickname());
-        log.info("UserEntity has created for join with ID: {} username: {} nickname: {}",
+
+        log.info("UserEntity has created for join with ID: {} username: nickname: {}",
             userEntity.getId(), userEntity.getUsername(), userEntity.getNickname());
 
         userRepository.save(userEntity);
@@ -62,7 +65,7 @@ public class UserService implements UserDetailsService {
     }
 
     private void validatePassword(UserLoginRequest userLoginRequest, User user) {
-        if (!userLoginRequest.getPassword().equals(user.getPassword())) {
+        if (!encoder.matches(userLoginRequest.getPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
     }
