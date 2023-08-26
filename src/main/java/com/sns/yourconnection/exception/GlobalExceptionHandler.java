@@ -34,6 +34,13 @@ public class GlobalExceptionHandler {
             .body(ResponseError.response(HttpStatus.CONFLICT.toString(), e.getMessage()));
     }
 
+    @ExceptionHandler(TranslateException.class)
+    public ResponseEntity<ResponseError> translateExceptionHandler(TranslateException e) {
+        log.error("[TranslateError Occurs] error: {}", e.getErrorCode().name());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
+            .body(ResponseError.response(e.getErrorCode()));
+    }
+
     @ExceptionHandler(AppException.class)
     public ResponseEntity<ResponseError> appExceptionHandler(AppException e) {
         log.warn("[AppException Occurs] message: {} HttpStatus: {}", e.getErrorCode().getMessage(),
