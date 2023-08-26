@@ -1,7 +1,7 @@
 package com.sns.yourconnection.repository;
 
-import com.sns.yourconnection.model.follow.entity.FollowEntity;
-import com.sns.yourconnection.model.user.entity.UserEntity;
+import com.sns.yourconnection.model.entity.follow.FollowEntity;
+import com.sns.yourconnection.model.entity.user.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

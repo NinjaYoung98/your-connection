@@ -13,6 +13,9 @@ jwt:
     key: ${JWT_TOKEN_KEY}
   access-expired: 3600000 #1시간  #6000 5초?
   refresh-expired: 86400000   # 1 day
+deep-l:
+  key: ${DEEPL_KEY}
+  host: ${DEEPL_HOST}
 ---
 spring:
   config:

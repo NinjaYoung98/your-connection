@@ -39,6 +39,11 @@ dependencies {
     //lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    //Configuration properties
+    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.4'
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    // okhttp for  DeepL
+    implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
 
 }
 
