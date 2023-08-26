@@ -1,15 +1,15 @@
 package com.sns.yourconnection.service;
 
 
-import com.sns.yourconnection.model.post.dto.Post;
-import com.sns.yourconnection.model.post.entity.PostCountEntity;
-import com.sns.yourconnection.model.post.entity.PostLogEntity;
-import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.model.dto.Post;
+import com.sns.yourconnection.model.entity.post.PostCountEntity;
+import com.sns.yourconnection.model.entity.post.PostLogEntity;
+import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.repository.*;
-import com.sns.yourconnection.model.post.param.PostRequest;
+import com.sns.yourconnection.model.param.post.PostRequest;
 
-import com.sns.yourconnection.model.post.entity.PostEntity;
-import com.sns.yourconnection.model.user.entity.UserEntity;
+import com.sns.yourconnection.model.entity.post.PostEntity;
+import com.sns.yourconnection.model.entity.user.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;

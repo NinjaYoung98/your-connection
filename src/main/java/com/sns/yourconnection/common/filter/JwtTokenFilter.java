@@ -3,7 +3,7 @@ package com.sns.yourconnection.common.filter;
 
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.MissingBearerTokenException;
-import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import com.sns.yourconnection.service.UserService;
 import java.io.IOException;

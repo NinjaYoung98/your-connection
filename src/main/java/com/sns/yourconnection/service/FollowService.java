@@ -1,9 +1,9 @@
 package com.sns.yourconnection.service;
 
-import com.sns.yourconnection.model.follow.dto.Follow;
-import com.sns.yourconnection.model.follow.entity.FollowEntity;
-import com.sns.yourconnection.model.user.dto.User;
-import com.sns.yourconnection.model.user.entity.UserEntity;
+import com.sns.yourconnection.model.dto.Follow;
+import com.sns.yourconnection.model.entity.follow.FollowEntity;
+import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.entity.user.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.FollowRepository;

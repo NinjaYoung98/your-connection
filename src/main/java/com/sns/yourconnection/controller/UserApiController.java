@@ -2,11 +2,11 @@ package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.common.annotation.ValidatedPageRequest;
-import com.sns.yourconnection.model.follow.result.FollowerResponse;
-import com.sns.yourconnection.model.follow.result.FollowingResponse;
+import com.sns.yourconnection.model.result.follow.FollowerResponse;
+import com.sns.yourconnection.model.result.follow.FollowingResponse;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
-import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
