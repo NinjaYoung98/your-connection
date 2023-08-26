@@ -1,7 +1,7 @@
 package com.sns.yourconnection.common.configuration.auditor;
 
 
-import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.utils.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;

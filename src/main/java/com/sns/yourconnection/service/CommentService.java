@@ -1,11 +1,11 @@
 package com.sns.yourconnection.service;
 
-import com.sns.yourconnection.model.comment.dto.Comment;
-import com.sns.yourconnection.model.comment.param.CommentRequest;
-import com.sns.yourconnection.model.comment.entity.CommentEntity;
-import com.sns.yourconnection.model.post.entity.PostEntity;
-import com.sns.yourconnection.model.user.dto.User;
-import com.sns.yourconnection.model.user.entity.UserEntity;
+import com.sns.yourconnection.model.dto.Comment;
+import com.sns.yourconnection.model.param.comment.CommentRequest;
+import com.sns.yourconnection.model.entity.comment.CommentEntity;
+import com.sns.yourconnection.model.entity.post.PostEntity;
+import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.entity.user.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.CommentRepository;

@@ -1,11 +1,11 @@
 package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.controller.response.ResponseSuccess;
-import com.sns.yourconnection.model.user.dto.User;
-import com.sns.yourconnection.model.user.param.UserJoinRequest;
-import com.sns.yourconnection.model.user.param.UserLoginRequest;
-import com.sns.yourconnection.model.user.result.UserJoinResponse;
-import com.sns.yourconnection.model.user.result.UserLoginResponse;
+import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.param.user.UserJoinRequest;
+import com.sns.yourconnection.model.param.user.UserLoginRequest;
+import com.sns.yourconnection.model.result.user.UserJoinResponse;
+import com.sns.yourconnection.model.result.user.UserLoginResponse;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.service.UserService;
 import lombok.RequiredArgsConstructor;

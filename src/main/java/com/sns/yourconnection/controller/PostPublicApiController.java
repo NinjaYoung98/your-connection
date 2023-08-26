@@ -1,11 +1,9 @@
 package com.sns.yourconnection.controller;
 
-import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.common.annotation.ValidatedPageRequest;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
-import com.sns.yourconnection.model.post.result.PostResponse;
-import com.sns.yourconnection.model.user.dto.User;
+import com.sns.yourconnection.model.result.post.PostResponse;
 import com.sns.yourconnection.service.LikeCountService;
 import com.sns.yourconnection.service.PostService;
 import lombok.RequiredArgsConstructor;

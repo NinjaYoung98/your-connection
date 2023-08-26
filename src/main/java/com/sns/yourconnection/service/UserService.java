@@ -1,9 +1,9 @@
 package com.sns.yourconnection.service;
 
-import com.sns.yourconnection.model.user.dto.User;
-import com.sns.yourconnection.model.user.param.UserJoinRequest;
-import com.sns.yourconnection.model.user.param.UserLoginRequest;
-import com.sns.yourconnection.model.user.entity.UserEntity;
+import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.param.user.UserJoinRequest;
+import com.sns.yourconnection.model.param.user.UserLoginRequest;
+import com.sns.yourconnection.model.entity.user.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.UserRepository;
