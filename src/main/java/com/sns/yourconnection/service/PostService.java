@@ -3,6 +3,7 @@ package com.sns.yourconnection.service;
 
 import com.sns.yourconnection.model.post.dto.Post;
 import com.sns.yourconnection.model.post.entity.PostCountEntity;
+import com.sns.yourconnection.model.post.entity.PostLogEntity;
 import com.sns.yourconnection.model.user.dto.User;
 import com.sns.yourconnection.repository.*;
 import com.sns.yourconnection.model.post.param.PostRequest;
@@ -27,6 +28,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PostCountRepository postCountRepository;
+    private final PostLogRepository postLogRepository;
 
     @Transactional
     public Post createPost(PostRequest postCreateRequest, User user) {
@@ -75,12 +77,28 @@ public class PostService {
         post 를 수정한다(제목, 컨텐츠)
             - post 존재하는지 확인한다.
             - post 작성자만 해당 post 를 수정할 수 있다.
+            - post 변경사항이 없을 경우 post log 객체를 생성하지 않는다.
             - post 수정한다.
+            - 수정된 내용을 postLog에 기록한다.
          */
         PostEntity postEntity = getPostEntity(postId);
         validateMatches(user, postEntity);
-        postEntity.update(postUpdateRequest.getTitle(), postUpdateRequest.getContent());
+        if (!isPostUpdateRequestChanged(postUpdateRequest, postEntity)) {
+            return Post.fromEntity(postEntity);
+        }
+
+        updateAndLog(postUpdateRequest, postEntity);
+
         return Post.fromEntity(postEntity);
+    }
+
+    private void updateAndLog(PostRequest postUpdateRequest, PostEntity postEntity) {
+        PostLogEntity postLogEntity = getPostLogEntity(postEntity);
+        log.info("PostLogEntity has created with ID: {} for post: {}", postLogEntity.getId(),
+            postLogEntity.getPost().getId());
+
+        postLogEntity.updateAndLog(postUpdateRequest.getTitle(), postUpdateRequest.getContent(),
+            postEntity);
     }
 
     @Transactional
@@ -129,5 +147,20 @@ public class PostService {
         if (postEntity.getUser().getId() != user.getId()) {
             throw new AppException(ErrorCode.HAS_NOT_PERMISSION_TO_ACCESS);
         }
+    }
+
+    private PostLogEntity getPostLogEntity(PostEntity postEntity) {
+        PostLogEntity postLog = PostLogEntity.of(postEntity, postEntity.getTitle(),
+            postEntity.getContent(), postEntity.getUpdatedAt(), postEntity.getUpdatedBy());
+        return postLogRepository.save(postLog);
+    }
+
+    public boolean isPostUpdateRequestChanged(PostRequest postUpdateRequest,
+        PostEntity postEntity) {
+        if (postUpdateRequest.getTitle().equals(postEntity.getTitle())
+            && postUpdateRequest.getContent().equals(postEntity.getContent())) {
+            return false;
+        }
+        return true;
     }
 }

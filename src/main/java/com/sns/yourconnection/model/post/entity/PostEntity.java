@@ -7,7 +7,6 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -50,5 +49,10 @@ public class PostEntity extends AuditEntity {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void updateAndLog(PostLogEntity postLog) {
+        this.title = postLog.getAfterTitle();
+        this.content = postLog.getAfterContent();
     }
 }
