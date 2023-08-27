@@ -36,10 +36,10 @@ public class UserService implements UserDetailsService {
             userJoinRequest.getUsername(), encoder.encode(userJoinRequest.getPassword()),
             userJoinRequest.getNickname());
 
-        log.info("UserEntity has created for join with ID: {} username: nickname: {}",
+        userRepository.save(userEntity);
+        log.info("UserEntity has created for join with ID: {} username:{} nickname: {}",
             userEntity.getId(), userEntity.getUsername(), userEntity.getNickname());
 
-        userRepository.save(userEntity);
         return User.fromEntity(userEntity);
     }
 
