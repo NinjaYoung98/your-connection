@@ -9,11 +9,15 @@ import org.springframework.http.HttpStatus;
 public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "status code 500 is occurred"),
 
+    TELEGRAM_SEND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,
+        "error occurred while sending a message on telegram"),
+
     TRANSLATION_PARSE_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,
         "error occurred while translating the text."),
     TRANSLATION_BUILD_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,
         "translate build processing failed"),
-    TRANSLATION_PARSE_NO_TEXT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR,"cannot parse the text for translate"),
+    TRANSLATION_PARSE_NO_TEXT_FOUND(HttpStatus.INTERNAL_SERVER_ERROR,
+        "cannot parse the text for translate"),
 
     INVALID_TOKEN_FORMED(HttpStatus.UNAUTHORIZED, "not support to this token`s formed"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "token is expired"),
