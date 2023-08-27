@@ -25,7 +25,8 @@ public class UserPublicApiController {
 
     @PostMapping("/join")
     public ResponseSuccess<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest) {
-        log.info("create a new User Request Details: {}", userJoinRequest);
+        log.info("create a new User Request Details: username: {}, nickname: {}",
+            userJoinRequest.getUsername(), userJoinRequest.getNickname());
 
         User user = userService.join(userJoinRequest);
         log.info("Successfully join for user: {}", user.getId());
@@ -34,7 +35,8 @@ public class UserPublicApiController {
     }
 
     @PostMapping("/login")
-    public ResponseSuccess<UserLoginResponse> login(@RequestBody UserLoginRequest userLoginRequest) {
+    public ResponseSuccess<UserLoginResponse> login(
+        @RequestBody UserLoginRequest userLoginRequest) {
         log.info("User is attempting to login with username: {}", userLoginRequest.getUsername());
 
         AccessToken accessToken = userService.login(userLoginRequest);
