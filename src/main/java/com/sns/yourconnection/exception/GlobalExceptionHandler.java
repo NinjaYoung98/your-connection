@@ -1,6 +1,7 @@
 package com.sns.yourconnection.exception;
 
 import com.sns.yourconnection.controller.response.ResponseError;
+import com.sns.yourconnection.service.thirdparty.telegram.TelegramService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -20,8 +21,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  **/
 public class GlobalExceptionHandler {
 
+    private final TelegramService telegramService;
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseError> globalExceptionHandler(Exception e) {
+        telegramService.sendTelegram(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         log.error("[InternalServerError Occurs] error: {}", e.getMessage());
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
             .body(ResponseError.response(ErrorCode.INTERNAL_SERVER_ERROR));
@@ -34,8 +38,16 @@ public class GlobalExceptionHandler {
             .body(ResponseError.response(HttpStatus.CONFLICT.toString(), e.getMessage()));
     }
 
+    @ExceptionHandler(TelegramException.class)
+    public ResponseEntity<ResponseError> telegramExceptionHandler(TelegramException e) {
+        log.error("[TelegramError Occurs] error: {}", e.getErrorCode().name());
+        return ResponseEntity.status(e.getErrorCode().getHttpStatus())
+            .body(ResponseError.response(e.getErrorCode()));
+    }
+
     @ExceptionHandler(TranslateException.class)
     public ResponseEntity<ResponseError> translateExceptionHandler(TranslateException e) {
+        telegramService.sendTelegram(e.getErrorCode().getMessage());
         log.error("[TranslateError Occurs] error: {}", e.getErrorCode().name());
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
             .body(ResponseError.response(e.getErrorCode()));
