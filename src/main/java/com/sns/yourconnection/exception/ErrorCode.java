@@ -35,7 +35,9 @@ public enum ErrorCode {
     PAGE_SIZE_NOT_APPLICABLE(HttpStatus.BAD_REQUEST, "page size is too large"),
     CANNOT_FOLLOW_YOURSELF(HttpStatus.CONFLICT, "cannot follow yourself"),
     HAS_NOT_PERMISSION_TO_ACCESS(HttpStatus.UNAUTHORIZED, "has not permission to access"),
-    NONE_MATCH(HttpStatus.NOT_FOUND, "can not find any match");
+    NO_SUCH_ALGORITHM(HttpStatus.INTERNAL_SERVER_ERROR, "no such algorithm"),
+    NONE_MATCH(HttpStatus.NOT_FOUND, "can not find any match"),
+    NOT_SUPPORT_FORMAT(HttpStatus.BAD_REQUEST, "not support to this format");
 
 
     private final HttpStatus httpStatus;

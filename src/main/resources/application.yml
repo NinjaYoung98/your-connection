@@ -24,7 +24,7 @@ spring:
           connection-timeout: 5000
           timeout: 5000
           write-timeout: 5000
-    security-code-expiration-millis: 50000 #5분
+    security-code-expiration-millis: 300000 #5분
 jwt:
   token:
     key: ${JWT_TOKEN_KEY}
