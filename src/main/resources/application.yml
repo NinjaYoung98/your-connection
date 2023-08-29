@@ -46,6 +46,9 @@ spring:
     url: ${LOCAL_DB_URL}
     username: ${LOCAL_DB_USERNAME}
     password: ${LOCAL_DB_PASSWORD}
+  redis:
+    host: ${LOCAL_REDIS_HOST}
+    port: ${LOCAL_REDIS_PORT}
 
 ---
 spring:
@@ -57,4 +60,7 @@ spring:
     url: ${DEVELOPMENT_DB_URL}
     username: ${DEVELOPMENT_DB_USERNAME}
     password: ${DEVELOPMENT_DB_PASSWORD}
+  redis:
+    host: ${DEVELOPMENT_REDIS_HOST}
+    port: ${DEVELOPMENT_REDIS_PORT}
 
