@@ -21,6 +21,10 @@ public enum ErrorCode {
         "cannot parse the text for translate"),
     //rate limit
     TOO_MANY_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, "too many request"),
+    // smtp email
+    EXPIRED_VERIFICATION(HttpStatus.UNAUTHORIZED, "expired email-verification"),
+    INVALID_SECURITY_CODE(HttpStatus.UNAUTHORIZED, "invalid security code"),
+
     // application
     INVALID_TOKEN_FORMED(HttpStatus.UNAUTHORIZED, "not support to this token`s formed"),
     EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "token is expired"),
