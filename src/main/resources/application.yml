@@ -8,6 +8,23 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    encode: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connection-timeout: 5000
+          timeout: 5000
+          write-timeout: 5000
+    security-code-expiration-millis: 50000 #5분
 jwt:
   token:
     key: ${JWT_TOKEN_KEY}
@@ -29,6 +46,9 @@ spring:
     url: ${LOCAL_DB_URL}
     username: ${LOCAL_DB_USERNAME}
     password: ${LOCAL_DB_PASSWORD}
+  redis:
+    host: ${LOCAL_REDIS_HOST}
+    port: ${LOCAL_REDIS_PORT}
 
 ---
 spring:
@@ -40,4 +60,7 @@ spring:
     url: ${DEVELOPMENT_DB_URL}
     username: ${DEVELOPMENT_DB_USERNAME}
     password: ${DEVELOPMENT_DB_PASSWORD}
+  redis:
+    host: ${DEVELOPMENT_REDIS_HOST}
+    port: ${DEVELOPMENT_REDIS_PORT}
 
