@@ -42,6 +42,11 @@ public class UserPublicApiController {
         mailService.sendCodeToEmail(email);
         return response();
     }
+    @GetMapping("/emails/verifications")
+    public ResponseSuccess<Void> verificationEmail(@RequestParam String email, @RequestBody SmtpVerifyRequest smtpVerifyRequest) {
+        mailService.verifiedCode(email, smtpVerifyRequest.getSecurityCode());
+        return response();
+    }
 
     @PostMapping("/login")
     public ResponseSuccess<UserLoginResponse> login(

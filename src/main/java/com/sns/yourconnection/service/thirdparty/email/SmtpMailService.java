@@ -37,6 +37,16 @@ public class SmtpMailService {
         sendEmail(toEmail, securityCode);
     }
 
+    @Transactional(readOnly = true)
+    public void verifiedCode(String email, String userCode) {
+        String securityCode = smtpMailRepository.getValues(email).orElseThrow(() ->
+            new AppException(ErrorCode.EXPIRED_VERIFICATION)
+        );
+        if (!securityCode.equals(userCode)) {
+            throw new AppException(ErrorCode.INVALID_SECURITY_CODE);
+        }
+    }
+
 
     private void sendEmail(String toEmail, String securityCode) {
         SimpleMailMessage emailForm = createEmailForm(toEmail, securityCode);
