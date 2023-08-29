@@ -8,6 +8,7 @@ import com.sns.yourconnection.model.param.user.UserLoginRequest;
 import com.sns.yourconnection.model.result.user.UserJoinResponse;
 import com.sns.yourconnection.model.result.user.UserLoginResponse;
 import com.sns.yourconnection.security.oauth2.params.KakaoLoginParams;
+import com.sns.yourconnection.security.oauth2.params.NaverLoginParams;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.service.UserService;
 import com.sns.yourconnection.service.thirdparty.email.SmtpMailService;
@@ -73,4 +74,15 @@ public class UserPublicApiController {
 
         return response(UserLoginResponse.of(accessToken));
     }
+
+    @PostMapping("/login/naver")
+    public ResponseSuccess<UserLoginResponse> loginNaver(@RequestBody NaverLoginParams params) {
+        log.info("[UserPublicApiController] NaverLoginParams : {} ", params.getAuthorizationCode());
+
+        AccessToken accessToken = oAuth2LoginService.login(params);
+        log.info("naver login is success and issued access token");
+
+        return response(UserLoginResponse.of(accessToken));
+    }
+
 }
