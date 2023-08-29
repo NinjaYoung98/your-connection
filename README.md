@@ -39,13 +39,15 @@
   <br>
   <img width="865" alt="스크린샷 2023-08-30 045225" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10d6e02f-e3bd-481f-b5a2-1d84b6564869">
 </details>
+<br></br>
 
 ## 🚀 프로젝트 중점사항 요약
   
 - <Strong>[Clean code]</Strong>
   - 효율적인 코드를 만들기 위해 코드의 규칙성을 캐치하려 합니다.
   - 코드의 가독성을 위해 단순하고 간단한 네이밍을 지향합니다.
-  - resolver, interceptor 등을 활용하여 불필요한 controller의 로직을 줄여나갑니다. <br>
+  - resolver, interceptor 등을 활용하여 불필요한 controller의 로직을 줄여나갑니다. 
+  <br></br>
 - <Strong>[서비스 로직]</Strong>
   - 로그인 기능
     - SMTP, Redis 활용한 이메일 보안 코드 발신 및 회원가입 인증
@@ -56,9 +58,11 @@
   - 비즈니스 로직
     - DeepL api를 활용한 다국어 번역 기능
     - redis pub/sub 활용한 채팅 기능 지원 (예정)
+    <br></br>
 - <Strong>[서비스 운영]</Strong>
   - 텔레그램을 통한 에러 모니터링 시스템 구축
   - 1초에 10번 이상의 Rate limit 발생 될 경우 텔레그램으로 알림
+   <br></br>
 - <Strong> [성능 개선] </Strong>
   - 페이지네이션으로 한 번에 조회되는 데이터의 size를 조정합니다.
   - JPA N+1 문제를 의식하고 이를 해결할 수 있는 방법들을 도입합니다 (fetch join , batch size...)<br>
