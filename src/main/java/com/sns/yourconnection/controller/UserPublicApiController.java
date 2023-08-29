@@ -2,12 +2,14 @@ package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.param.email.SmtpVerifyRequest;
 import com.sns.yourconnection.model.param.user.UserJoinRequest;
 import com.sns.yourconnection.model.param.user.UserLoginRequest;
 import com.sns.yourconnection.model.result.user.UserJoinResponse;
 import com.sns.yourconnection.model.result.user.UserLoginResponse;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.service.UserService;
+import com.sns.yourconnection.service.thirdparty.email.SmtpMailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +24,7 @@ import static com.sns.yourconnection.controller.response.ResponseSuccess.respons
 public class UserPublicApiController {
 
     private final UserService userService;
+    private final SmtpMailService mailService;
 
     @PostMapping("/join")
     public ResponseSuccess<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest) {
@@ -32,6 +35,12 @@ public class UserPublicApiController {
         log.info("Successfully join for user: {}", user.getId());
 
         return response(UserJoinResponse.fromUser(user));
+    }
+
+    @PostMapping("/emails/verification-requests")
+    public ResponseSuccess<Void> sendMessage(@RequestParam String email) {
+        mailService.sendCodeToEmail(email);
+        return response();
     }
 
     @PostMapping("/login")
