@@ -34,22 +34,16 @@ public class OAuth2LoginService {
      */
     public AccessToken login(OAuth2LoginParams params) {
         OAuth2UserProfile oAuth2UserProfile = requestUserProfile(params);
-        return jwtTokenGenerator.generateAccessToken(getUsername(oAuth2UserProfile));
+        return jwtTokenGenerator.generateAccessToken(findUserProfile(oAuth2UserProfile));
     }
 
-    private String getUsername(OAuth2UserProfile oAuth2UserProfile) {
-        //TODO: Naver 로그인 구현 후 해당 부분 정리하기
-        String providerId = oAuth2UserProfile.getId();
-        String username = oAuth2UserProfile.getOAuthProvider().name() + providerId;
-        String dummyPassword = encoder.encode("{bcrypt}" + UUID.randomUUID());
-        String nickName = oAuth2UserProfile.getNickname();
-
+    private String findUserProfile(OAuth2UserProfile oAuth2UserProfile) {
+        String username = getUsernameByUserProfile(oAuth2UserProfile);
+        log.info("[OAuth2LoginService] Find user by username : {}",username);
         return userRepository.findByUsername(username)
             .map(User::fromEntity)
             .map(User::getUsername)
-            .orElseGet(() ->
-                userRepository.save(UserEntity.of(username, dummyPassword, nickName))
-                    .getUsername()
+            .orElseGet(() -> createUserProfile(oAuth2UserProfile, username)
             );
     }
 
@@ -62,5 +56,19 @@ public class OAuth2LoginService {
         } catch (Exception e) {
             throw new OAuth2RestClientException("Failed to retrieve access token.");
         }
+    }
+
+    private String createUserProfile(OAuth2UserProfile oAuth2UserProfile, String username) {
+        String dummyPassword = encoder.encode("{bcrypt}" + UUID.randomUUID());
+        String nickname = oAuth2UserProfile.getNickname();
+        return userRepository.save(
+                UserEntity.of(username, dummyPassword, nickname))
+            .getUsername();
+    }
+
+    private String getUsernameByUserProfile(OAuth2UserProfile oAuth2UserProfile) {
+        String providerId = oAuth2UserProfile.getId();
+        String username = "[" + oAuth2UserProfile.getOAuthProvider().name() + "]" + providerId;
+        return username;
     }
 }
