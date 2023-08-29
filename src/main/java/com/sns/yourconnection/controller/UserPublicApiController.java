@@ -7,9 +7,11 @@ import com.sns.yourconnection.model.param.user.UserJoinRequest;
 import com.sns.yourconnection.model.param.user.UserLoginRequest;
 import com.sns.yourconnection.model.result.user.UserJoinResponse;
 import com.sns.yourconnection.model.result.user.UserLoginResponse;
+import com.sns.yourconnection.security.oauth2.params.KakaoLoginParams;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.service.UserService;
 import com.sns.yourconnection.service.thirdparty.email.SmtpMailService;
+import com.sns.yourconnection.service.thirdparty.oauth2.OAuth2LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ public class UserPublicApiController {
 
     private final UserService userService;
     private final SmtpMailService mailService;
+    private final OAuth2LoginService oAuth2LoginService;
 
     @PostMapping("/join")
     public ResponseSuccess<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest) {
@@ -42,8 +45,10 @@ public class UserPublicApiController {
         mailService.sendCodeToEmail(email);
         return response();
     }
+
     @GetMapping("/emails/verifications")
-    public ResponseSuccess<Void> verificationEmail(@RequestParam String email, @RequestBody SmtpVerifyRequest smtpVerifyRequest) {
+    public ResponseSuccess<Void> verificationEmail(@RequestParam String email,
+        @RequestBody SmtpVerifyRequest smtpVerifyRequest) {
         mailService.verifiedCode(email, smtpVerifyRequest.getSecurityCode());
         return response();
     }
@@ -55,6 +60,16 @@ public class UserPublicApiController {
 
         AccessToken accessToken = userService.login(userLoginRequest);
         log.info("your connection login is success and issued access token");
+
+        return response(UserLoginResponse.of(accessToken));
+    }
+
+    @PostMapping("/login/kakao")
+    public ResponseSuccess<UserLoginResponse> loginKakao(@RequestBody KakaoLoginParams params) {
+        log.info("[UserPublicApiController] KakaoLoginParams : {} ", params.getAuthorizationCode());
+
+        AccessToken accessToken = oAuth2LoginService.login(params);
+        log.info("kakao login is success and issued access token");
 
         return response(UserLoginResponse.of(accessToken));
     }

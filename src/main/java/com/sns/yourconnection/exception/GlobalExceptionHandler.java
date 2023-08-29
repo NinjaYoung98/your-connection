@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.RestClientException;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -43,6 +44,14 @@ public class GlobalExceptionHandler {
         log.error("[TelegramError Occurs] error: {}", e.getErrorCode().name());
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
             .body(ResponseError.response(e.getErrorCode()));
+    }
+
+    @ExceptionHandler(RestClientException.class)
+    public ResponseEntity<ResponseError> restClientException(RestClientException e) {
+        telegramService.sendTelegram(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
+        log.error("[RestClientException Occurs] error: {}", e.getMessage());
+        return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
+            .body(ResponseError.response(ErrorCode.INTERNAL_SERVER_ERROR));
     }
 
     @ExceptionHandler(TranslateException.class)
