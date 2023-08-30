@@ -15,7 +15,13 @@ import com.sns.yourconnection.service.thirdparty.email.SmtpMailService;
 import com.sns.yourconnection.service.thirdparty.oauth2.OAuth2LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 
 import static com.sns.yourconnection.controller.response.ResponseSuccess.response;
 
@@ -84,5 +90,4 @@ public class UserPublicApiController {
 
         return response(UserLoginResponse.of(accessToken));
     }
-
 }
