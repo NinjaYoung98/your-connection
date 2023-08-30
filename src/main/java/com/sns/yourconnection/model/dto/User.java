@@ -25,6 +25,8 @@ public class User implements UserDetails {
 
     private String nickname;
 
+    private String email;
+
     private UserRole role;
 
     private LocalDateTime createdAt;
@@ -40,6 +42,7 @@ public class User implements UserDetails {
             userEntity.getUsername(),
             userEntity.getPassword(),
             userEntity.getNickname(),
+            userEntity.getEmail(),
             userEntity.getRole(),
             userEntity.getCreatedAt(),
             userEntity.getUpdatedAt(),

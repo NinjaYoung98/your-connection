@@ -5,13 +5,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sns.yourconnection.security.oauth2.OAuth2Provider;
 import lombok.Getter;
 
-public class NaverUserProfile implements OAuth2UserProfile {
+public class NaverUserInfo implements OAuth2UserInfo {
+
     @JsonProperty("response")
     private Response response;
 
     @Getter
     @JsonIgnoreProperties(ignoreUnknown = true)
     static class Response {
+
         private String id;
         private String email;
         private String nickname;

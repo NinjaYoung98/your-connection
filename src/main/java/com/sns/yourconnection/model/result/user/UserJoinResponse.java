@@ -12,14 +12,16 @@ import java.time.LocalDateTime;
 @Getter
 public class UserJoinResponse {
 
-    private String userName;
-    private String nickName;
+    private String username;
+    private String nickname;
+    private String email;
     private LocalDateTime createdAt;
 
     public static UserJoinResponse fromUser(User user) {
         return new UserJoinResponse(
             user.getUsername(),
             user.getNickname(),
+            user.getEmail(),
             user.getCreatedAt());
     }
 }

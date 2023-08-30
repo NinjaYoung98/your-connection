@@ -9,6 +9,7 @@ import org.springframework.util.MultiValueMap;
 @Getter
 @NoArgsConstructor
 public class KakaoLoginParams implements OAuth2LoginParams {
+
     private String authorizationCode;
 
     @Override

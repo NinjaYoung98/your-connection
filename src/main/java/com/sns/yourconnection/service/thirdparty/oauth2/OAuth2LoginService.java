@@ -9,7 +9,7 @@ import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.security.oauth2.params.OAuth2ApiClient;
 import com.sns.yourconnection.security.oauth2.params.OAuth2LoginParams;
-import com.sns.yourconnection.security.oauth2.result.OAuth2UserProfile;
+import com.sns.yourconnection.security.oauth2.result.OAuth2UserInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,42 +33,42 @@ public class OAuth2LoginService {
      * @return Access token generated JWT
      */
     public AccessToken login(OAuth2LoginParams params) {
-        OAuth2UserProfile oAuth2UserProfile = requestUserProfile(params);
-        return jwtTokenGenerator.generateAccessToken(findUserProfile(oAuth2UserProfile));
+        OAuth2UserInfo oAuth2UserInfo = requestUserInfo(params);
+        return jwtTokenGenerator.generateAccessToken(findUser(oAuth2UserInfo));
     }
 
-    private String findUserProfile(OAuth2UserProfile oAuth2UserProfile) {
-        String username = getUsernameByUserProfile(oAuth2UserProfile);
-        log.info("[OAuth2LoginService] Find user by username : {}",username);
+    private String findUser(OAuth2UserInfo oAuth2UserInfo) {
+        String username = getUsernameByUserInfo(oAuth2UserInfo);
+        log.info("[OAuth2LoginService] Find user by username : {}", username);
         return userRepository.findByUsername(username)
             .map(User::fromEntity)
             .map(User::getUsername)
-            .orElseGet(() -> createUserProfile(oAuth2UserProfile, username)
+            .orElseGet(() -> createUserInfo(oAuth2UserInfo, username)
             );
     }
 
-    public OAuth2UserProfile requestUserProfile(OAuth2LoginParams params) {
+    public OAuth2UserInfo requestUserInfo(OAuth2LoginParams params) {
         OAuth2ApiClient oAuth2ApiClient = oAuth2ApiClientMap.get(params.oAuth2Provider());
         try {
             String accessToken = oAuth2ApiClient.requestAccessToken(params);
-            OAuth2UserProfile oAuth2UserProfile = oAuth2ApiClient.requestUserProfile(accessToken);
-            return oAuth2UserProfile;
+            return oAuth2ApiClient.requestUserInfo(accessToken);
         } catch (Exception e) {
             throw new OAuth2RestClientException("Failed to retrieve access token.");
         }
     }
 
-    private String createUserProfile(OAuth2UserProfile oAuth2UserProfile, String username) {
+    private String createUserInfo(OAuth2UserInfo oAuth2UserInfo, String username) {
         String dummyPassword = encoder.encode("{bcrypt}" + UUID.randomUUID());
-        String nickname = oAuth2UserProfile.getNickname();
+        String nickname = oAuth2UserInfo.getNickname();
+        String email = oAuth2UserInfo.getEmail();
         return userRepository.save(
-                UserEntity.of(username, dummyPassword, nickname))
+                UserEntity.of(username, dummyPassword, nickname, email))
             .getUsername();
     }
 
-    private String getUsernameByUserProfile(OAuth2UserProfile oAuth2UserProfile) {
-        String providerId = oAuth2UserProfile.getId();
-        String username = "[" + oAuth2UserProfile.getOAuthProvider().name() + "]" + providerId;
+    private String getUsernameByUserInfo(OAuth2UserInfo oAuth2UserInfo) {
+        String providerId = oAuth2UserInfo.getId();
+        String username = "[" + oAuth2UserInfo.getOAuthProvider().name() + "]" + providerId;
         return username;
     }
 }
