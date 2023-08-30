@@ -2,8 +2,8 @@ package com.sns.yourconnection.security.oauth2.params;
 
 import com.sns.yourconnection.exception.OAuth2RestClientException;
 import com.sns.yourconnection.security.oauth2.OAuth2Provider;
-import com.sns.yourconnection.security.oauth2.result.NaverUserProfile;
-import com.sns.yourconnection.security.oauth2.result.OAuth2UserProfile;
+import com.sns.yourconnection.security.oauth2.result.NaverUserInfo;
+import com.sns.yourconnection.security.oauth2.result.OAuth2UserInfo;
 import com.sns.yourconnection.security.token.NaverTokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Slf4j
 public class NaverApiClient implements OAuth2ApiClient {
+
     private static final String GRANT_TYPE = "authorization_code";
 
     @Value("${spring.security.oauth2.client.provider.naver.token-uri}")
@@ -58,7 +59,8 @@ public class NaverApiClient implements OAuth2ApiClient {
         NaverTokens naverTokens = restTemplate.postForObject(tokenUri, request, NaverTokens.class);
 
         if (naverTokens == null) {
-            throw new OAuth2RestClientException("[NaverApiClient] Failed to retrieve access token.");
+            throw new OAuth2RestClientException(
+                "[NaverApiClient] Failed to retrieve access token.");
         }
 
         log.info("[NaverApiClient] naverTokens is successfully issued");
@@ -66,7 +68,7 @@ public class NaverApiClient implements OAuth2ApiClient {
     }
 
     @Override
-    public OAuth2UserProfile requestUserProfile(String accessToken) {
+    public OAuth2UserInfo requestUserInfo(String accessToken) {
         //header
         HttpHeaders httpHeaders = createUrlEncodedHttpHeaders();
         httpHeaders.set("Authorization", "Bearer " + accessToken);
@@ -75,9 +77,11 @@ public class NaverApiClient implements OAuth2ApiClient {
         //request
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
         //response
-        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(userInfoUri, request, String.class);
-        log.info("API response: stringResponseEntity.getBody(): {}", stringResponseEntity.getBody());
-        return restTemplate.postForObject(userInfoUri, request, NaverUserProfile.class);
+        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(userInfoUri,
+            request, String.class);
+        log.info("API response: stringResponseEntity.getBody(): {}",
+            stringResponseEntity.getBody());
+        return restTemplate.postForObject(userInfoUri, request, NaverUserInfo.class);
     }
 
     @Override

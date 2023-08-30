@@ -2,8 +2,8 @@ package com.sns.yourconnection.security.oauth2.params;
 
 import com.sns.yourconnection.exception.OAuth2RestClientException;
 import com.sns.yourconnection.security.oauth2.*;
-import com.sns.yourconnection.security.oauth2.result.KakaoUserProfile;
-import com.sns.yourconnection.security.oauth2.result.OAuth2UserProfile;
+import com.sns.yourconnection.security.oauth2.result.KakaoUserInfo;
+import com.sns.yourconnection.security.oauth2.result.OAuth2UserInfo;
 import com.sns.yourconnection.security.token.KakaoTokens;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Slf4j
 public class KakaoApiClient implements OAuth2ApiClient {
+
     private static final String GRANT_TYPE = "authorization_code";
 
     @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
@@ -56,14 +57,15 @@ public class KakaoApiClient implements OAuth2ApiClient {
         KakaoTokens kakaoTokens = restTemplate.postForObject(tokenUri, request, KakaoTokens.class);
 
         if (kakaoTokens == null) {
-            throw new OAuth2RestClientException("[KakaoApiClient] Failed to retrieve access token.");
+            throw new OAuth2RestClientException(
+                "[KakaoApiClient] Failed to retrieve access token.");
         }
         log.info("[KakaoApiClient] KakaoTokens is successfully issued");
         return kakaoTokens.getAccessToken();
     }
 
     @Override
-    public OAuth2UserProfile requestUserProfile(String accessToken) {
+    public OAuth2UserInfo requestUserInfo(String accessToken) {
         // header
         HttpHeaders httpHeaders = createUrlEncodedHttpHeaders();
         httpHeaders.set("Authorization", "Bearer " + accessToken);
@@ -73,10 +75,11 @@ public class KakaoApiClient implements OAuth2ApiClient {
         //request
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
         //response
-        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(userInfoUri, request, String.class);
-        log.info("API response: stringResponseEntity.getBody(): {}", stringResponseEntity.getBody());
-        KakaoUserProfile kakaoUserProfile = restTemplate.postForObject(userInfoUri, request, KakaoUserProfile.class);
-        return kakaoUserProfile;
+        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity(userInfoUri,
+            request, String.class);
+        log.info("API response: stringResponseEntity.getBody(): {}",
+            stringResponseEntity.getBody());
+        return restTemplate.postForObject(userInfoUri, request, KakaoUserInfo.class);
     }
 
     @Override
