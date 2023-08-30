@@ -28,17 +28,18 @@ public class UserService implements UserDetailsService {
     @Transactional
     public User join(UserJoinRequest userJoinRequest) {
         /*
-        회원 정보(username, password, nickname)를 등록한다.
+        회원 정보(username, password, nickname, email)를 등록한다.
             -  username이 이미 존재할 경우 에러 반환
          */
         DuplicateUsername(userJoinRequest.getUsername());
         UserEntity userEntity = UserEntity.of(
             userJoinRequest.getUsername(), encoder.encode(userJoinRequest.getPassword()),
-            userJoinRequest.getNickname());
+            userJoinRequest.getNickname(), userJoinRequest.getEmail());
 
         userRepository.save(userEntity);
-        log.info("UserEntity has created for join with ID: {} username:{} nickname: {}",
-            userEntity.getId(), userEntity.getUsername(), userEntity.getNickname());
+        log.info("UserEntity has created for join with ID: {} username:{} nickname: {} email : {}",
+            userEntity.getId(), userEntity.getUsername(), userEntity.getNickname(),
+            userEntity.getEmail());
 
         return User.fromEntity(userEntity);
     }

@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class KakaoUserProfile implements OAuth2UserProfile {
+public class KakaoUserInfo implements OAuth2UserInfo {
 
     //TODO: NAVER 로그인 구현 후 해당 부분 RECORE 구현 고려해보기
     private Long id;
