@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import reactor.util.annotation.Nullable;
 
 
 @Entity
@@ -23,6 +24,8 @@ public class UserEntity {
     private String password;
 
     private String nickname;
+
+    private String email;
 
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
@@ -42,13 +45,14 @@ public class UserEntity {
         updatedAt = LocalDateTime.now();
     }
 
-    private UserEntity(String username, String password, String nickname) {
+    private UserEntity(String username, String password, String nickname, String email) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.email = email;
     }
 
-    public static UserEntity of(String userName, String password, String nickName) {
-        return new UserEntity(userName, password, nickName);
+    public static UserEntity of(String userName, String password, String nickName, String email) {
+        return new UserEntity(userName, password, nickName, email);
     }
 }
