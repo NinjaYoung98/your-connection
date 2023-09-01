@@ -56,6 +56,12 @@ dependencies {
     annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     // okhttp for  DeepL
     implementation group: 'com.squareup.okhttp', name: 'okhttp', version: '2.7.5'
+    //aws s3
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.389'
+    // marvin (for resizing image)
+    implementation 'com.github.downgoon:marvin:1.5.5'
+    implementation 'com.github.downgoon:MarvinPlugins:1.5.5'
+    implementation 'org.springframework:spring-test'
 
 }
 

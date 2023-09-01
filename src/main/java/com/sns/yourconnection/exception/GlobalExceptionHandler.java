@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
         log.warn("[AppException Occurs] message: {} HttpStatus: {}", e.getErrorCode().getMessage(),
             e.getErrorCode().getHttpStatus());
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
-            .body(ResponseError.response(e.getErrorCode()));
+            .body(ResponseError.response(e.getErrorCode(),e.getMessage()));
     }
 
     @ExceptionHandler(MalformedJwtException.class)
