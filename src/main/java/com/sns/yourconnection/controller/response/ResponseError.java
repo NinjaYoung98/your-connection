@@ -18,4 +18,8 @@ public class ResponseError {
     public static ResponseError response(ErrorCode errorCode) {
         return new ResponseError(errorCode.getHttpStatus().toString(), errorCode.getMessage());
     }
+
+    public static ResponseError response(ErrorCode errorCode, String message) {
+        return new ResponseError(errorCode.getHttpStatus().toString(), message);
+    }
 }
