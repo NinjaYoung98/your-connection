@@ -41,7 +41,9 @@ public enum ErrorCode {
     HAS_NOT_PERMISSION_TO_ACCESS(HttpStatus.UNAUTHORIZED, "has not permission to access"),
     NO_SUCH_ALGORITHM(HttpStatus.INTERNAL_SERVER_ERROR, "no such algorithm"),
     NONE_MATCH(HttpStatus.NOT_FOUND, "can not find any match"),
-    NOT_SUPPORT_FORMAT(HttpStatus.BAD_REQUEST, "not support to this format");
+    NOT_SUPPORT_FORMAT(HttpStatus.BAD_REQUEST, "not support to this format"),
+    IMAGE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST,"Image upload failed, the image you selected may be in an unsupported format"),
+    FAILED_RESIZE_IMAGE(HttpStatus.BAD_REQUEST,"image resize failed");
 
 
     private final HttpStatus httpStatus;
