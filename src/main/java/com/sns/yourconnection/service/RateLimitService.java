@@ -1,53 +1,57 @@
-package com.sns.yourconnection.utils;
+package com.sns.yourconnection.service;
 
 import com.sns.yourconnection.service.thirdparty.telegram.TelegramService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import org.springframework.stereotype.Service;
 
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
-public class RateLimitUtil {
+public class RateLimitService {
+
     private Map<String, RequestInfo> rateLimitErrorCounter = new ConcurrentHashMap<>();
     private final TelegramService telegramService;
 
-    public void checkLimitReachedThreshold(String clientIp) {
-        RequestInfo requestInfo = rateLimitErrorCounter.computeIfAbsent(clientIp, key -> new RequestInfo());
+    public boolean isLimitReachedThreshold(String clientIp) {
+        RequestInfo requestInfo = rateLimitErrorCounter.computeIfAbsent(clientIp,
+            key -> new RequestInfo());
+
         if (!isApplyHandling(clientIp, requestInfo)) {
             requestInfo.saveCount();
+            return false;
         }
+        return true;
     }
 
     private boolean isApplyHandling(String clientIp, RequestInfo requestInfo) {
         if (requestInfo.isWithinTimeWindow()) {
             int count = requestInfo.incrementAndGetCount();
             log.info("[Rate limit count] client IP : {}  limit count  : {} ", clientIp, count);
-            RateLimitHandling(clientIp, requestInfo, count);
+            checkAndResetIfLimitExceeded(clientIp, requestInfo, count);
             return true;
         }
         return false;
     }
 
-    private void RateLimitHandling(String clientIp, RequestInfo requestInfo, int count) {
+    private void checkAndResetIfLimitExceeded(String clientIp, RequestInfo requestInfo, int count) {
         if (count >= 10) {
-            alertRateLimit(clientIp);
             requestInfo.resetCount();
+            telegramService.sendTelegram(
+                String.format(" Rate limit is occurred 10 or more times for this client IP: %s",
+                    clientIp));
         }
     }
 
-    private void alertRateLimit(String clientIp) {
-        telegramService.sendTelegram(String.format(" Rate limit is occurred 10 or more times for this client IP: %s", clientIp));
-    }
-
     private static class RequestInfo {
+
         private AtomicInteger count = new AtomicInteger(0);
         private LocalDateTime lastRequestTime;
 
