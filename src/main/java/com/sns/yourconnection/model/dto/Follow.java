@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Follow {
-    private Long id;
-    private User follower;
-    private User following;
 
-    public static Follow FromEntity(FollowEntity followEntity) {
+    private Long id;
+    private User followingUser;
+    private User followedUser;
+
+    public static Follow fromEntity(FollowEntity followEntity) {
         return new Follow(followEntity.getId(),
-                User.fromEntity(followEntity.getFollower()),
-                User.fromEntity(followEntity.getFollowing()));
+            User.fromEntity(followEntity.getFollowingUser()),
+            User.fromEntity(followEntity.getFollowedUser()));
     }
 }
