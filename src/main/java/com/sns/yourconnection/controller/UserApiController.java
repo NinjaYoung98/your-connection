@@ -2,13 +2,11 @@ package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.common.annotation.ValidatedPageRequest;
-import com.sns.yourconnection.model.dto.Follow;
 import com.sns.yourconnection.model.result.follow.FollowerResponse;
 import com.sns.yourconnection.model.result.follow.FollowingResponse;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.result.follow.UserRelatedFollowingResponse;
 import com.sns.yourconnection.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -65,15 +63,5 @@ public class UserApiController {
             followerPage.getSize());
 
         return response(followerPage.getContent(), PageResponseWrapper.fromPage(followerPage));
-    }
-
-    @GetMapping("/follow/{targetId}")
-    public ResponseSuccess<UserRelatedFollowingResponse> getUserRelatedToFollowingList(
-        @AuthUser User user,
-        @PathVariable Long targetId, Pageable pageable) {
-        log.info("user: {} Getting following list related to targetId : {}", user, targetId);
-        UserRelatedFollowingResponse userRelatedFollowingResponse = followService.getUserRelatedToFriend(
-            user, targetId, pageable);
-        return response(userRelatedFollowingResponse);
     }
 }

@@ -5,40 +5,37 @@ import com.sns.yourconnection.model.entity.user.UserEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Getter
-@Slf4j
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "follow")
 public class FollowEntity extends AuditEntity {
 
     /*
-        followingUser = 팔로우를 신청한 user
-        followedUser = 팔로우를 당한 user
+        follower = 팔로우를 신청한 user
+        following = 팔로우를 당한 user
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_user_id")
-    private UserEntity followingUser;
+    @JoinColumn(name = "follower")
+    private UserEntity follower;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "followed_user_id")
-    private UserEntity followedUser;
+    @JoinColumn(name = "following")
+    private UserEntity following;
 
-    private FollowEntity(UserEntity followingUser, UserEntity followedUser) {
-        this.followingUser = followingUser;
-        this.followedUser = followedUser;
-        this.followingUser.getFollowingList().add(this);
-        this.followedUser.getFollowedList().add(this);
+    private FollowEntity(UserEntity follower, UserEntity following) {
+        this.follower = follower;
+        this.following = following;
     }
 
-    public static FollowEntity of(UserEntity followingUser, UserEntity followedUser) {
-        return new FollowEntity(followingUser, followedUser);
+    public static FollowEntity of(UserEntity follower, UserEntity following) {
+        return new FollowEntity(follower, following);
     }
 }
