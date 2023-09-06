@@ -31,8 +31,6 @@ public class User implements UserDetails {
 
     private LocalDateTime createdAt;
 
-    private LocalDateTime updatedAt;
-
     private Map<String, Object> oAuth2Attributes;
 
 
@@ -45,7 +43,6 @@ public class User implements UserDetails {
             userEntity.getEmail(),
             userEntity.getRole(),
             userEntity.getCreatedAt(),
-            userEntity.getUpdatedAt(),
             Map.of()
         );
     }

@@ -26,9 +26,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class RateLimitingInterceptor implements HandlerInterceptor {
 
-    private final Long BUCKET_CAPACITY = 1L;
-    private final Long BUCKET_TOKENS = 1L;
-    private final Duration CALLS_IN_SECONDS = Duration.ofSeconds(10);
+    private final Long BUCKET_CAPACITY = 100L;
+    private final Long BUCKET_TOKENS = 50L;
+    private final Duration CALLS_IN_SECONDS = Duration.ofSeconds(1);
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
     private final RateLimitService rateLimitService;
 
