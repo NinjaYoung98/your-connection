@@ -14,7 +14,7 @@ public class FollowerResponse {
 
     public static FollowerResponse fromFollow(Follow follow) {
         return new FollowerResponse(
-                follow.getFollower().getId(),
-                follow.getFollower().getNickname());
+                follow.getFollowingUser().getId(),
+                follow.getFollowingUser().getNickname());
     }
 }
