@@ -1,12 +1,14 @@
 package com.sns.yourconnection.model.entity.user;
 
+import com.sns.yourconnection.model.entity.follow.FollowEntity;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import reactor.util.annotation.Nullable;
 
 
 @Entity
@@ -27,22 +29,21 @@ public class UserEntity {
 
     private String email;
 
+    @OneToMany(mappedBy = "followingUser", fetch = FetchType.LAZY)
+    private List<FollowEntity> followingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followedUser", fetch = FetchType.LAZY)
+    private List<FollowEntity> followedList = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 
     @PostPersist
     private void setCreatedAt() {
         createdAt = LocalDateTime.now();
-    }
-
-    @PostUpdate
-    private void setUpdatedAt() {
-        updatedAt = LocalDateTime.now();
     }
 
     private UserEntity(String username, String password, String nickname, String email) {
