@@ -125,8 +125,7 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Integer getPostCount(Long postId) {
-        // findByIdWithPostCount -> jpa n+1 문제 방지를 위한 fetch join
-        return postRepository.findByIdWithPostCount(postId)
+        return postRepository.fetchJoinIdWithPostCount(postId)
             .map(PostEntity::getPostCounts)
             .map(postCount -> postCount.size())
             .orElseThrow(() ->

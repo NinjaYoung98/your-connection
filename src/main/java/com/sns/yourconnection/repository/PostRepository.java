@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
-    @Query("SELECT p FROM PostEntity p LEFT JOIN FETCH p.postCounts WHERE p.id = :postId")
-    Optional<PostEntity> findByIdWithPostCount(@Param("postId") Long postId);
+    @Query("SELECT p FROM PostEntity p JOIN FETCH p.postCounts WHERE p.id = :postId")
+    Optional<PostEntity> fetchJoinIdWithPostCount(@Param("postId") Long postId);
 
     @Query("SELECT p FROM PostEntity p WHERE (:keyword IS NULL OR :keyword = '') OR p.title LIKE %:keyword%")
     Page<PostEntity> searchByKeyword(@Param(value = "keyword") String keyword, Pageable pageable);
