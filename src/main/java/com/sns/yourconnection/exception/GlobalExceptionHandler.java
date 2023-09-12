@@ -1,7 +1,7 @@
 package com.sns.yourconnection.exception;
 
 import com.sns.yourconnection.controller.response.ResponseError;
-import com.sns.yourconnection.service.thirdparty.telegram.TelegramService;
+import com.sns.yourconnection.service.notifitation.NotificationService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -22,11 +22,11 @@ import org.springframework.web.client.RestClientException;
  **/
 public class GlobalExceptionHandler {
 
-    private final TelegramService telegramService;
+    private final NotificationService notificationService;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseError> globalExceptionHandler(Exception e) {
-        telegramService.sendTelegram(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
+        notificationService.sendMessage(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         log.error("[InternalServerError Occurs] error: {}", e.getMessage());
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
             .body(ResponseError.response(ErrorCode.INTERNAL_SERVER_ERROR));
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(RestClientException.class)
     public ResponseEntity<ResponseError> restClientException(RestClientException e) {
-        telegramService.sendTelegram(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
+        notificationService.sendMessage(ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
         log.error("[RestClientException Occurs] error: {}", e.getMessage());
         return ResponseEntity.status(ErrorCode.INTERNAL_SERVER_ERROR.getHttpStatus())
             .body(ResponseError.response(ErrorCode.INTERNAL_SERVER_ERROR));
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(TranslateException.class)
     public ResponseEntity<ResponseError> translateExceptionHandler(TranslateException e) {
-        telegramService.sendTelegram(e.getErrorCode().getMessage());
+        notificationService.sendMessage(e.getErrorCode().getMessage());
         log.error("[TranslateError Occurs] error: {}", e.getErrorCode().name());
         return ResponseEntity.status(e.getErrorCode().getHttpStatus())
             .body(ResponseError.response(e.getErrorCode()));

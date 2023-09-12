@@ -1,4 +1,4 @@
-package com.sns.yourconnection.model.param.storage;
+package com.sns.yourconnection.utils;
 
 import com.sns.yourconnection.model.entity.common.StorageType;
 import lombok.AllArgsConstructor;

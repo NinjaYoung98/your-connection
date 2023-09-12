@@ -7,7 +7,7 @@ import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.param.translate.TranslateRequest;
 import com.sns.yourconnection.model.result.translate.TranslateResponse;
-import com.sns.yourconnection.service.thirdparty.translator.TranslateService;
+import com.sns.yourconnection.service.translator.TranslateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -1,4 +1,4 @@
-package com.sns.yourconnection.service.thirdparty.translator;
+package com.sns.yourconnection.service.translator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sns.yourconnection.common.properties.TranslateProperties;
