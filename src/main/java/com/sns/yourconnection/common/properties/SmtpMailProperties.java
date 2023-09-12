@@ -1,4 +1,4 @@
-package com.sns.yourconnection.service.thirdparty.email;
+package com.sns.yourconnection.common.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,15 +6,21 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Data
-@Component
 @ConfigurationProperties(prefix = "spring.mail")
 public class SmtpMailProperties {
+
     private String host;
+
     private int port;
+
     private String username;
+
     private String password;
+
     private String encode;
+
     private long securityCodeExpirationMillis;
+
     @Value("${spring.mail.properties.mail.smtp.auth}")
     private boolean auth;
 

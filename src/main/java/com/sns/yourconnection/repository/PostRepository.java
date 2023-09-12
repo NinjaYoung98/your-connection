@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PostRepository extends JpaRepository<PostEntity, Long> {
+
     @Query("SELECT p FROM PostEntity p JOIN FETCH p.postCounts WHERE p.id = :postId")
     Optional<PostEntity> fetchJoinIdWithPostCount(@Param("postId") Long postId);
 

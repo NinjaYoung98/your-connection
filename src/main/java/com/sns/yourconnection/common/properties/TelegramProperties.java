@@ -1,11 +1,10 @@
-package com.sns.yourconnection.service.thirdparty.telegram;
+package com.sns.yourconnection.common.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+
 
 @Data
-@Component
 @ConfigurationProperties(prefix = "telegram-v2")
 public class TelegramProperties {
 

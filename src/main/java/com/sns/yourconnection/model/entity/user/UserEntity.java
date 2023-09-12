@@ -1,6 +1,7 @@
 package com.sns.yourconnection.model.entity.user;
 
 import com.sns.yourconnection.model.entity.follow.FollowEntity;
+import com.sns.yourconnection.model.entity.post.PostEntity;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -35,6 +36,13 @@ public class UserEntity {
     @OneToMany(mappedBy = "followedUser", fetch = FetchType.LAZY)
     private List<FollowEntity> followedList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<PostEntity> posts = new ArrayList<>();
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "profile_image_id")
+    private UserProfileImageEntity profileImage;
+
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
@@ -55,5 +63,13 @@ public class UserEntity {
 
     public static UserEntity of(String userName, String password, String nickName, String email) {
         return new UserEntity(userName, password, nickName, email);
+    }
+
+    public void uploadProfileImage(UserProfileImageEntity profileImage) {
+        this.profileImage = profileImage;
+    }
+
+    public void removeProfileImage() {
+        this.profileImage = null;
     }
 }

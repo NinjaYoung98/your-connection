@@ -1,6 +1,8 @@
 package com.sns.yourconnection.model.entity.post;
 
 import com.sns.yourconnection.model.entity.audit.AuditEntity;
+import com.sns.yourconnection.model.entity.comment.CommentEntity;
+import com.sns.yourconnection.model.entity.like.LikeCountEntity;
 import com.sns.yourconnection.model.entity.user.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,12 +36,23 @@ public class PostEntity extends AuditEntity {
     private UserEntity user;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private List<CommentEntity> comments = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PostStorageEntity> postStorage = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
+    private List<LikeCountEntity> likes = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostCountEntity> postCounts = new ArrayList<>();
+
 
     private PostEntity(String title, String content, UserEntity user) {
         this.title = title;
         this.content = content;
         this.user = user;
+        user.getPosts().add(this);
     }
 
     public static PostEntity of(String title, String content, UserEntity user) {
@@ -54,5 +67,12 @@ public class PostEntity extends AuditEntity {
     public void updateAndLog(PostLogEntity postLog) {
         this.title = postLog.getAfterTitle();
         this.content = postLog.getAfterContent();
+    }
+
+    public void updateStorage(List<PostStorageEntity> postStorageEntities) {
+        if (!this.postStorage.isEmpty()) {
+            postStorage.clear();
+        }
+        postStorageEntities.forEach(postStorageEntity -> postStorageEntity.setPost(this));
     }
 }

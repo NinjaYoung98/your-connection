@@ -2,14 +2,15 @@ package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.common.annotation.ValidatedPageRequest;
-import com.sns.yourconnection.model.dto.Follow;
 import com.sns.yourconnection.model.result.follow.FollowerResponse;
 import com.sns.yourconnection.model.result.follow.FollowingResponse;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.result.follow.UserRelatedFollowingResponse;
+import com.sns.yourconnection.model.result.storage.FileInfoResponse;
 import com.sns.yourconnection.service.FollowService;
+import com.sns.yourconnection.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 import static com.sns.yourconnection.controller.response.ResponseSuccess.*;
 
@@ -28,6 +30,7 @@ import static com.sns.yourconnection.controller.response.ResponseSuccess.*;
 public class UserApiController {
 
     private final FollowService followService;
+    private final UserService userService;
 
     @PostMapping("/follow/{followingId}")
     public ResponseSuccess follow(@PathVariable Long followingId, @AuthUser User user) {
@@ -75,5 +78,21 @@ public class UserApiController {
         UserRelatedFollowingResponse userRelatedFollowingResponse = followService.getUserRelatedToFriend(
             user, targetId, pageable);
         return response(userRelatedFollowingResponse);
+    }
+
+    @PostMapping("/image")
+    public ResponseSuccess<FileInfoResponse> uploadUserProfile(@AuthUser User user,
+        @RequestParam("images") MultipartFile multipartFile) {
+
+        log.info("[uploadImage] upload image ");
+        return response(
+            FileInfoResponse.fromFileInfo(userService.uploadProfile(user, multipartFile)));
+    }
+
+    @DeleteMapping("/image")
+    public ResponseSuccess<Void> deleteUserProfile(@AuthUser User user) {
+        log.info("[deleteImage] delete image");
+        userService.deleteProfile(user);
+        return response();
     }
 }

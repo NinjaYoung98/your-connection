@@ -1,6 +1,8 @@
 package com.sns.yourconnection.service;
 
 import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.entity.user.UserProfileImageEntity;
+import com.sns.yourconnection.model.param.storage.FileInfo;
 import com.sns.yourconnection.model.param.user.UserJoinRequest;
 import com.sns.yourconnection.model.param.user.UserLoginRequest;
 import com.sns.yourconnection.model.entity.user.UserEntity;
@@ -9,12 +11,14 @@ import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.UserRepository;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;
+import com.sns.yourconnection.service.storage.StorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +28,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
     private final JwtTokenGenerator jwtTokenGenerator;
+    private final StorageService storageService;
 
     @Transactional
     public User join(UserJoinRequest userJoinRequest) {
@@ -65,15 +70,50 @@ public class UserService implements UserDetailsService {
             .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
+    @Transactional
+    public FileInfo uploadProfile(User user, MultipartFile userProfileImage) {
+
+        if (userProfileImage == null || userProfileImage.isEmpty()) {
+            return FileInfo.EMPTY;
+        }
+
+        UserEntity userEntity = userRepository.findById(user.getId())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if (userEntity.getProfileImage() != null) {
+            storageService.delete(userEntity.getProfileImage().getStoreFilename());
+        }
+
+        FileInfo fileInfo = storageService.upload(userProfileImage);
+
+        userEntity.uploadProfileImage(UserProfileImageEntity.of(fileInfo.getOriginalFilename(),
+            fileInfo.getStoreFilename(), fileInfo.getPathUrl(), userEntity));
+
+        return fileInfo;
+    }
+
+    @Transactional
+    public void deleteProfile(User user) {
+
+        UserEntity userEntity = userRepository.findById(user.getId())
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        if (userEntity.getProfileImage() != null) {
+            userEntity.removeProfileImage();
+            storageService.delete(userEntity.getProfileImage().getStoreFilename());
+        }
+    }
+
     private void validatePassword(UserLoginRequest userLoginRequest, User user) {
         if (!encoder.matches(userLoginRequest.getPassword(), user.getPassword())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
     }
 
-    public void DuplicateUsername(String username) {
+    private void DuplicateUsername(String username) {
         userRepository.findByUsername(username).ifPresent(userEntity -> {
             throw new AppException(ErrorCode.DUPLICATED_USERNAME);
         });
     }
 }
+
