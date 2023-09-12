@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -35,12 +36,14 @@ public class PostApiController {
     private final LikeCountService likeCountService;
 
     @PostMapping("")
-    public ResponseSuccess<PostResponse> createPost(@RequestBody PostRequest postCreateRequest,
+    public ResponseSuccess<PostResponse> createPost(
+        @RequestPart(value = "request") PostRequest postCreateRequest,
+        @RequestPart(value = "storage", required = false) List<MultipartFile> multipartFiles,
         @AuthUser User user) {
         log.info("Create a new post for user: {}. Request details: postCreateRequest: {}",
             user.getId(), postCreateRequest);
 
-        Post post = postService.createPost(postCreateRequest, user);
+        Post post = postService.createPost(postCreateRequest, user, multipartFiles);
         PostResponse postResponse = PostResponse.fromPost(post);
         log.info("Post created successfully. Post details:{}", postResponse);
 
@@ -59,11 +62,13 @@ public class PostApiController {
 
     @PutMapping("{postId}")
     public ResponseSuccess<PostResponse> updatePost(@PathVariable Long postId,
-        @RequestBody PostRequest postUpdateRequest, @AuthUser User user) {
+        @RequestPart(value = "request") PostRequest postUpdateRequest,
+        @RequestPart(value = "storage", required = false) List<MultipartFile> multipartFiles,
+        @AuthUser User user) {
         log.info("Updating post with ID: {} for user: {} Request details: postUpdateRequest: {}",
             postId, user.getId(), postUpdateRequest);
 
-        Post post = postService.updatePost(postId, postUpdateRequest, user);
+        Post post = postService.updatePost(postId, postUpdateRequest, user, multipartFiles);
         PostResponse postResponse = PostResponse.fromPost(post);
         log.info("Post with ID: {} updated successfully. Updated post details: {}", post.getId(),
             postResponse);
