@@ -55,14 +55,14 @@ public class FollowService {
     @Transactional(readOnly = true)
     public Page<Follow> getFollowingPage(User user, Pageable pageable) {
         //   팔로잉 리스트 조회
-        return followRepository.findByFollowingUserId(user.getId(), pageable)
+        return followRepository.findAllByFollowingUserId(user.getId(), pageable)
             .map(Follow::fromEntity);
     }
 
     @Transactional(readOnly = true)
     public Page<Follow> getFollowerPage(User user, Pageable pageable) {
         //  팔로워 리스트 조회
-        return followRepository.findByFollowedUserId(user.getId(), pageable)
+        return followRepository.findAllByFollowedUserId(user.getId(), pageable)
             .map(Follow::fromEntity);
     }
 
@@ -74,9 +74,7 @@ public class FollowService {
                 - 특정 유저 검색시 그 유저를 팔로잉하고 있는 나의 팔로잉 리스트를 조회합니다.
                 - 네이밍: 조회된 user 사이의 관계를 표현
          */
-
         Integer relatedUserTotalCount = followRepository.countMutualFollows(user.getId(), targetId);
-
         return UserRelatedFollowingResponse.fromFollowAndTotalCount(
             getUserRelatedToFollowingList(user, targetId, pageable), relatedUserTotalCount);
     }
@@ -100,7 +98,7 @@ public class FollowService {
     private List<Follow> getUserRelatedToFollowingList(User user, Long targetId,
         Pageable pageable) {
 
-        return followRepository.findByFollowingUserId(user.getId(), pageable)
+        return followRepository.findAllByFollowingUserId(user.getId(), pageable)
             .stream()
             .flatMap(relationAsFollowingUser -> relationAsFollowingUser.getFollowedUser()
                 .getFollowingList().stream())

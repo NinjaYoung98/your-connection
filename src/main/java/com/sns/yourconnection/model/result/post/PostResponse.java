@@ -1,6 +1,8 @@
 package com.sns.yourconnection.model.result.post;
 
 import com.sns.yourconnection.model.dto.Post;
+import com.sns.yourconnection.model.dto.PostStorage;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +23,8 @@ public class PostResponse {
     private String createdBy;
     private LocalDateTime updatedAt;
     private String updatedBy;
+    private List<PostStorage> postStorageList;
+
 
     public static PostResponse fromPost(Post post) {
         return new PostResponse(
@@ -30,7 +34,8 @@ public class PostResponse {
             post.getCreatedAt(),
             post.getCreatedBy(),
             post.getUpdatedAt(),
-            post.getUpdatedBy()
+            post.getUpdatedBy(),
+            post.getPostStorage()
         );
     }
 }

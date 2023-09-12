@@ -2,6 +2,8 @@ package com.sns.yourconnection.model.dto;
 
 import com.sns.yourconnection.model.entity.post.PostEntity;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,6 +19,7 @@ public class Post {
     private String createdBy;
     private String updatedBy;
     private User user;
+    private List<PostStorage> postStorage;
 
     public static Post fromEntity(PostEntity postEntity) {
         return new Post(
@@ -27,7 +30,15 @@ public class Post {
             postEntity.getUpdatedAt(),
             postEntity.getCreatedBy(),
             postEntity.getUpdatedBy(),
-            User.fromEntity(postEntity.getUser())
+            User.fromEntity(postEntity.getUser()),
+            PostStorageEntityToDTO(postEntity)
         );
+    }
+
+    private static List<PostStorage> PostStorageEntityToDTO(PostEntity postEntity) {
+
+        return postEntity.getPostStorage().stream()
+            .map(PostStorage::fromEntity)
+            .collect(Collectors.toList());
     }
 }

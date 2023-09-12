@@ -1,5 +1,6 @@
 package com.sns.yourconnection.service.thirdparty.telegram;
 
+import com.sns.yourconnection.common.properties.TelegramProperties;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.TelegramException;
 import lombok.RequiredArgsConstructor;

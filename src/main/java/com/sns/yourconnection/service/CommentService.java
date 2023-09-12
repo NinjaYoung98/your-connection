@@ -48,6 +48,7 @@ public class CommentService {
         post에 달린 comment 목록을 확인한다.
             - post가 존재할 경우에 comment 목록을 확인할 수 있다.
          */
+
         PostEntity postEntity = getPostEntity(postId);
         return commentRepository.findAllByPost(postEntity, pageable).map(Comment::fromEntity);
     }

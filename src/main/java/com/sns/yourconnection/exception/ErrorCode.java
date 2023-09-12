@@ -10,6 +10,8 @@ public enum ErrorCode {
     //internal server error
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "status code 500 is occurred"),
 
+    DATABASE_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"database error"),
+
     TELEGRAM_SEND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,
         "error occurred while sending a message on telegram"),
     //translate
@@ -42,8 +44,9 @@ public enum ErrorCode {
     NO_SUCH_ALGORITHM(HttpStatus.INTERNAL_SERVER_ERROR, "no such algorithm"),
     NONE_MATCH(HttpStatus.NOT_FOUND, "can not find any match"),
     NOT_SUPPORT_FORMAT(HttpStatus.BAD_REQUEST, "not support to this format"),
-    IMAGE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST,"Image upload failed, the image you selected may be in an unsupported format"),
-    FAILED_RESIZE_IMAGE(HttpStatus.BAD_REQUEST,"image resize failed");
+    FILE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST,"Image upload failed, the image you selected may be in an unsupported format"),
+    FAILED_RESIZE_IMAGE(HttpStatus.BAD_REQUEST,"image resize failed"),
+    INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST,"invalid file type");
 
 
     private final HttpStatus httpStatus;

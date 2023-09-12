@@ -5,6 +5,7 @@ import com.sns.yourconnection.exception.ErrorCode;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.imageio.ImageIO;
 import marvin.image.MarvinImage;
 import org.marvinproject.image.transform.scale.Scale;
@@ -15,19 +16,17 @@ public class ImageResizer {
 
     private static final int RESIZE_TARGET_WIDTH = 768;
 
-    public static MultipartFile resizeImage(String fileName, String fileFormatName,
-        MultipartFile originalImage) {
+    public static MultipartFile resizeImage(String filename, String fileFormatName,
+        MultipartFile originalImage, BufferedImage bufferedImage) {
         try {
-            // MultipartFile -> BufferedImage Convert
-            BufferedImage bufferedOriginImage = convertToBufferImage(originalImage);
 
-            if (!isResizeTargetWidth(bufferedOriginImage)) {
+            if (!isResizeTargetWidth(bufferedImage)) {
                 return originalImage;
             }
-            MarvinImage imageMarvin = resizeMarvinImage(bufferedOriginImage);
+            MarvinImage imageMarvin = resizeMarvinImage(bufferedImage);
             ByteArrayOutputStream byteArrayOutputStream = convertToByteArray(fileFormatName,
                 imageMarvin);
-            return new MockMultipartFile(fileName, byteArrayOutputStream.toByteArray());
+            return new MockMultipartFile(filename, byteArrayOutputStream.toByteArray());
 
         } catch (IOException e) {
             throw new AppException(ErrorCode.FAILED_RESIZE_IMAGE);
@@ -48,11 +47,6 @@ public class ImageResizer {
         return imageMarvin;
     }
 
-    private static BufferedImage convertToBufferImage(MultipartFile originalImage)
-        throws IOException {
-        BufferedImage bufferedOriginImage = ImageIO.read(originalImage.getInputStream());
-        return bufferedOriginImage;
-    }
 
     private static boolean isResizeTargetWidth(BufferedImage bufferedOriginImage) {
         if (bufferedOriginImage.getWidth() < RESIZE_TARGET_WIDTH) {

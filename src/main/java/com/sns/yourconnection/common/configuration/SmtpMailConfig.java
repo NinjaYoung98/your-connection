@@ -1,6 +1,6 @@
 package com.sns.yourconnection.common.configuration;
 
-import com.sns.yourconnection.service.thirdparty.email.SmtpMailProperties;
+import com.sns.yourconnection.common.properties.SmtpMailProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

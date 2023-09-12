@@ -44,6 +44,7 @@ public class LikeCountService {
         if (!isLiked(likeCountEntityOptional)) {
             increaseLikeCount(userEntity, postEntity);
         }
+
     }
 
     private boolean isLiked(Optional<LikeCountEntity> likeCountEntityOptional) {
@@ -61,6 +62,7 @@ public class LikeCountService {
             likeCountEntity.getPost().getId(), likeCountEntity.getUser().getId());
 
         likeCountRepository.delete(likeCountEntity);
+
     }
 
     private void increaseLikeCount(UserEntity userEntity, PostEntity postEntity) {
