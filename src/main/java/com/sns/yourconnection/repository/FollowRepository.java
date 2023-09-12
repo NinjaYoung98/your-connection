@@ -19,10 +19,10 @@ public interface FollowRepository extends JpaRepository<FollowEntity, Long> {
 
 
     @Query("SELECT f FROM FollowEntity f WHERE f.followedUser.Id = :followedId")
-    Page<FollowEntity> findByFollowedUserId(@Param("followedId") Long followedId, Pageable pageable);
+    Page<FollowEntity> findAllByFollowedUserId(@Param("followedId") Long followedId, Pageable pageable);
 
     @Query("SELECT f FROM FollowEntity f WHERE f.followingUser.Id = :followingUserId")
-    Page<FollowEntity> findByFollowingUserId(@Param("followingUserId") Long followingUserId,
+    Page<FollowEntity> findAllByFollowingUserId(@Param("followingUserId") Long followingUserId,
         Pageable pageable);
 
     @Query("SELECT COUNT(f) FROM FollowEntity f WHERE f.followingUser.Id = :userId "
