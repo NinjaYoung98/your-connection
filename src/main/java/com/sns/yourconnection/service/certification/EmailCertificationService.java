@@ -1,8 +1,8 @@
-package com.sns.yourconnection.service.thirdparty.email;
+package com.sns.yourconnection.service.certification;
 
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.repository.redis.SmtpMailRepository;
+import com.sns.yourconnection.repository.redis.EmailCertificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,10 +18,10 @@ import java.util.regex.Pattern;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SmtpMailService {
+public class EmailCertificationService {
 
     private final JavaMailSender javaMailSender;
-    private final SmtpMailRepository smtpMailRepository;
+    private final EmailCertificationRepository emailCertificationRepository;
     private static final String TITLE_TO_SEND = "Your Connection 이메일 인증 번호";
     private static final int SECURITY_DIGIT_NUMBER = 6;
     private static final int RANDOM_NUMBER_BOUND = 10;
@@ -33,13 +33,13 @@ public class SmtpMailService {
         String securityCode = createSecurityCode();
         log.info("[SmtpMailService] security code for Email: {} has successfully created.",
             toEmail);
-        smtpMailRepository.setValue(toEmail, securityCode);
+        emailCertificationRepository.setValue(toEmail, securityCode);
         sendEmail(toEmail, securityCode);
     }
 
     @Transactional(readOnly = true)
     public void verifiedCode(String email, String userCode) {
-        String securityCode = smtpMailRepository.getValues(email).orElseThrow(() ->
+        String securityCode = emailCertificationRepository.getValues(email).orElseThrow(() ->
             new AppException(ErrorCode.EXPIRED_VERIFICATION)
         );
         if (!securityCode.equals(userCode)) {

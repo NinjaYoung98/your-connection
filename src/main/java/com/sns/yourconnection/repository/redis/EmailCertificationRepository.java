@@ -16,7 +16,7 @@ import java.util.Optional;
  * @apiNote repository for Email - authentication
  * ttl : 5 minutes;
  */
-public class SmtpMailRepository {
+public class EmailCertificationRepository {
     private final RedisTemplate<String, String> SmtpMailRedisTemplate;
     private final SmtpMailProperties properties;
     private static final String PREFIX_FOR_KEY = "SMTP: ";

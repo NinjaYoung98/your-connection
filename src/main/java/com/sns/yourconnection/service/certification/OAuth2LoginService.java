@@ -1,4 +1,4 @@
-package com.sns.yourconnection.service.thirdparty.oauth2;
+package com.sns.yourconnection.service.certification;
 
 import com.sns.yourconnection.exception.OAuth2RestClientException;
 import com.sns.yourconnection.model.dto.User;

@@ -2,12 +2,10 @@ package com.sns.yourconnection.service;
 
 
 import com.sns.yourconnection.model.dto.Post;
-import com.sns.yourconnection.model.dto.PostStorage;
 import com.sns.yourconnection.model.entity.post.PostCountEntity;
-import com.sns.yourconnection.model.entity.post.PostLogEntity;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.post.PostStorageEntity;
-import com.sns.yourconnection.model.param.storage.FileInfo;
+import com.sns.yourconnection.utils.FileInfo;
 import com.sns.yourconnection.repository.*;
 import com.sns.yourconnection.model.param.post.PostRequest;
 
