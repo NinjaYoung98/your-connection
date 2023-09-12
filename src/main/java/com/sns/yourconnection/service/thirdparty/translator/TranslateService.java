@@ -1,6 +1,7 @@
 package com.sns.yourconnection.service.thirdparty.translator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sns.yourconnection.common.properties.TranslateProperties;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.TranslateException;
 import com.squareup.okhttp.MediaType;
