@@ -10,7 +10,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.sns.yourconnection.common.properties.AwsProperties;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.model.param.storage.FileInfo;
+import com.sns.yourconnection.utils.FileInfo;
 import com.sns.yourconnection.service.storage.strategy.FileUploadStrategy;
 import com.sns.yourconnection.utils.FilenameGenerator;
 import java.io.IOException;

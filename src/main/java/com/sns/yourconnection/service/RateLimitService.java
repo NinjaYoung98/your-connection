@@ -1,6 +1,6 @@
 package com.sns.yourconnection.service;
 
-import com.sns.yourconnection.service.thirdparty.telegram.TelegramService;
+import com.sns.yourconnection.service.notifitation.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 public class RateLimitService {
 
     private Map<String, RequestInfo> rateLimitErrorCounter = new ConcurrentHashMap<>();
-    private final TelegramService telegramService;
+    private final NotificationService notificationService;
 
     public boolean isLimitReachedThreshold(String clientIp) {
         RequestInfo requestInfo = rateLimitErrorCounter.computeIfAbsent(clientIp,
@@ -44,7 +44,7 @@ public class RateLimitService {
     private void checkAndResetIfLimitExceeded(String clientIp, RequestInfo requestInfo, int count) {
         if (count >= 10) {
             requestInfo.resetCount();
-            telegramService.sendTelegram(
+            notificationService.sendMessage(
                 String.format(" Rate limit is occurred 10 or more times for this client IP: %s",
                     clientIp));
         }

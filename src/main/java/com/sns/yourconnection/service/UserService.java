@@ -2,7 +2,7 @@ package com.sns.yourconnection.service;
 
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.user.UserProfileImageEntity;
-import com.sns.yourconnection.model.param.storage.FileInfo;
+import com.sns.yourconnection.utils.FileInfo;
 import com.sns.yourconnection.model.param.user.UserJoinRequest;
 import com.sns.yourconnection.model.param.user.UserLoginRequest;
 import com.sns.yourconnection.model.entity.user.UserEntity;

@@ -1,7 +1,6 @@
 package com.sns.yourconnection.common.interceptor;
 
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.service.thirdparty.telegram.TelegramService;
 import com.sns.yourconnection.service.RateLimitService;
 import com.sns.yourconnection.utils.HttpReqRespUtil;
 import io.github.bucket4j.Bandwidth;
@@ -10,7 +9,6 @@ import io.github.bucket4j.ConsumptionProbe;
 import io.github.bucket4j.Refill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 

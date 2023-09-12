@@ -1,7 +1,6 @@
-package com.sns.yourconnection.service.thirdparty.telegram;
+package com.sns.yourconnection.service.thirdparty.notifitation;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+import com.sns.yourconnection.service.notifitation.TelegramService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +14,6 @@ class TelegramServiceTest {
 
     @Test
     void send_message() {
-        telegramService.sendTelegram("message");
+        telegramService.sendMessage("message");
     }
 }

@@ -11,8 +11,8 @@ import com.sns.yourconnection.security.oauth2.params.KakaoLoginParams;
 import com.sns.yourconnection.security.oauth2.params.NaverLoginParams;
 import com.sns.yourconnection.security.token.AccessToken;
 import com.sns.yourconnection.service.UserService;
-import com.sns.yourconnection.service.thirdparty.email.SmtpMailService;
-import com.sns.yourconnection.service.thirdparty.oauth2.OAuth2LoginService;
+import com.sns.yourconnection.service.certification.EmailCertificationService;
+import com.sns.yourconnection.service.certification.OAuth2LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,7 @@ import static com.sns.yourconnection.controller.response.ResponseSuccess.respons
 public class UserPublicApiController {
 
     private final UserService userService;
-    private final SmtpMailService mailService;
+    private final EmailCertificationService mailService;
     private final OAuth2LoginService oAuth2LoginService;
 
     @PostMapping("/join")

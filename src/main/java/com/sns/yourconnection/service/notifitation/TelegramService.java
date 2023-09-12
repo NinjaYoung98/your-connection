@@ -1,4 +1,4 @@
-package com.sns.yourconnection.service.thirdparty.telegram;
+package com.sns.yourconnection.service.notifitation;
 
 import com.sns.yourconnection.common.properties.TelegramProperties;
 import com.sns.yourconnection.exception.ErrorCode;
@@ -21,23 +21,23 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TelegramService {
+public class TelegramService implements NotificationService{
 
     private final TelegramProperties properties;
     private final Environment environment;
     private final RestTemplate restTemplate;
-
-    public void sendTelegram(String message) {
+    @Override
+    public void sendMessage(String message) {
         message = environment.getProperty("spring.config.activate.on-profile") + message;
         try {
-            send(properties, message);
+            sendTelegram(properties, message);
             log.info(message);
         } catch (Exception e) {
             throw new TelegramException(ErrorCode.TELEGRAM_SEND_ERROR);
         }
     }
 
-    private void send(TelegramProperties properties, String message) {
+    private void sendTelegram(TelegramProperties properties, String message) {
         try {
             final String url = properties.getUrl();
             final String chatId = properties.getChatId();
