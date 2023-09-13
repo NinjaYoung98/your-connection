@@ -1,4 +1,4 @@
-package com.sns.yourconnection.model.entity.user;
+package com.sns.yourconnection.model.entity.users;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

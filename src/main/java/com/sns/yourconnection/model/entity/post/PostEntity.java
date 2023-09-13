@@ -3,7 +3,7 @@ package com.sns.yourconnection.model.entity.post;
 import com.sns.yourconnection.model.entity.audit.AuditEntity;
 import com.sns.yourconnection.model.entity.comment.CommentEntity;
 import com.sns.yourconnection.model.entity.like.LikeCountEntity;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;

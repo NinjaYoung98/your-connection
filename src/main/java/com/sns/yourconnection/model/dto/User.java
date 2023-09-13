@@ -1,7 +1,7 @@
 package com.sns.yourconnection.model.dto;
 
-import com.sns.yourconnection.model.entity.user.UserRole;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.common.UserRole;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import java.util.Collection;
 import java.util.List;
 import lombok.AllArgsConstructor;

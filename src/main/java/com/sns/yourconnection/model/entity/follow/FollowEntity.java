@@ -1,7 +1,7 @@
 package com.sns.yourconnection.model.entity.follow;
 
 import com.sns.yourconnection.model.entity.audit.AuditEntity;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

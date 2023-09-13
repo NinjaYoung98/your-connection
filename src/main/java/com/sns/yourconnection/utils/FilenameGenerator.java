@@ -16,7 +16,6 @@ public class FilenameGenerator {
         return UUID.randomUUID() + "-" + getFileExtension(originFilename);
     }
 
-
     private static String getFileExtension(String filename) {
         try {
             String extension = filename.substring(filename.lastIndexOf("."));
