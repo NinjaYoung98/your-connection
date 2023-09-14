@@ -1,7 +1,9 @@
-package com.sns.yourconnection.model.entity.user;
+package com.sns.yourconnection.model.entity.users;
 
 import com.sns.yourconnection.model.entity.follow.FollowEntity;
 import com.sns.yourconnection.model.entity.post.PostEntity;
+import com.sns.yourconnection.model.entity.users.common.UserRole;
+import com.sns.yourconnection.model.entity.users.common.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -46,6 +48,9 @@ public class UserEntity {
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
+    @Enumerated(EnumType.STRING)
+    private UserStatus userStatus = UserStatus.NORMAL;
+
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
@@ -71,5 +76,9 @@ public class UserEntity {
 
     public void removeProfileImage() {
         this.profileImage = null;
+    }
+
+    public void toAdmin() {
+        this.role = UserRole.ADMIN;
     }
 }

@@ -8,7 +8,7 @@ import com.sns.yourconnection.controller.response.PageResponseWrapper;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.result.follow.UserRelatedFollowingResponse;
-import com.sns.yourconnection.model.result.user.UserProfileImageResponse;
+import com.sns.yourconnection.model.result.users.UserProfileImageResponse;
 import com.sns.yourconnection.service.FollowService;
 import com.sns.yourconnection.service.UserService;
 import lombok.RequiredArgsConstructor;

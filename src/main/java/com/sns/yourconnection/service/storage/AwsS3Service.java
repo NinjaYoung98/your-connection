@@ -77,6 +77,7 @@ public class AwsS3Service implements StorageService {
                     .withCannedAcl(CannedAccessControlList.PublicRead));
 
             String s3ClientUrl = amazonS3Client.getUrl(bucket, filename).toString();
+
             return FileInfo.of(originalFilename, filename, s3ClientUrl,
                 fileUploadStrategy.getStorageType());
         } catch (IOException e) {
@@ -100,5 +101,4 @@ public class AwsS3Service implements StorageService {
         objectMetadata.setContentType(multipartFile.getContentType());
         return objectMetadata;
     }
-
 }

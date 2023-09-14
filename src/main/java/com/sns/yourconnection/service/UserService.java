@@ -1,11 +1,11 @@
 package com.sns.yourconnection.service;
 
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.entity.user.UserProfileImageEntity;
+import com.sns.yourconnection.model.entity.users.UserProfileImageEntity;
 import com.sns.yourconnection.utils.FileInfo;
-import com.sns.yourconnection.model.param.user.UserJoinRequest;
-import com.sns.yourconnection.model.param.user.UserLoginRequest;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.param.users.UserJoinRequest;
+import com.sns.yourconnection.model.param.users.UserLoginRequest;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.UserRepository;

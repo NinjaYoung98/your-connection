@@ -26,6 +26,7 @@ public class SecurityConfig {
             .cors().and()
             .authorizeRequests(request ->
                 request.antMatchers("/public-api/**").permitAll()
+                    .antMatchers("/api/admin/**").hasRole("ADMIN")
                     .antMatchers("/api/**").authenticated())
             .sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
