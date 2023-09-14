@@ -77,4 +77,8 @@ public class UserEntity {
     public void removeProfileImage() {
         this.profileImage = null;
     }
+
+    public void toAdmin() {
+        this.role = UserRole.ADMIN;
+    }
 }
