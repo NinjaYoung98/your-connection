@@ -1,4 +1,4 @@
-package com.sns.yourconnection.model.param.user;
+package com.sns.yourconnection.model.param.users;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.sns.yourconnection.model.result.user;
+package com.sns.yourconnection.model.result.users;
 
 import com.sns.yourconnection.model.dto.User;
 import lombok.AllArgsConstructor;
