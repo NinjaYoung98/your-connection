@@ -1,6 +1,6 @@
 package com.sns.yourconnection.model.entity.post;
 
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

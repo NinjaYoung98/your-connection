@@ -10,7 +10,7 @@ import com.sns.yourconnection.repository.*;
 import com.sns.yourconnection.model.param.post.PostRequest;
 
 import com.sns.yourconnection.model.entity.post.PostEntity;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.service.storage.StorageService;

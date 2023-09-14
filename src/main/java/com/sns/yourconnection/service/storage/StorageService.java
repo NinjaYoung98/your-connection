@@ -10,8 +10,8 @@ public interface StorageService {
 
     List<FileInfo> uploadFiles(List<MultipartFile> multipartFile);
 
-    void delete(String fileName);
+    void delete(String key);
 
-    void deleteFiles(String fileName);
+    void deleteFiles(String key);
 
 }

@@ -2,7 +2,7 @@ package com.sns.yourconnection.service.certification;
 
 import com.sns.yourconnection.exception.OAuth2RestClientException;
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.repository.UserRepository;
 import com.sns.yourconnection.security.oauth2.OAuth2Provider;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;

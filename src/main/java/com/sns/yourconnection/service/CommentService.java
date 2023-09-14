@@ -5,7 +5,7 @@ import com.sns.yourconnection.model.param.comment.CommentRequest;
 import com.sns.yourconnection.model.entity.comment.CommentEntity;
 import com.sns.yourconnection.model.entity.post.PostEntity;
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.entity.user.UserEntity;
+import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.repository.CommentRepository;
