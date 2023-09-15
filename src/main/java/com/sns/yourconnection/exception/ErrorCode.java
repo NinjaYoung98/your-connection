@@ -10,7 +10,7 @@ public enum ErrorCode {
     //internal server error
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "status code 500 is occurred"),
 
-    DATABASE_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"database error"),
+    DATABASE_ACCESS_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "database error"),
 
     TELEGRAM_SEND_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,
         "error occurred while sending a message on telegram"),
@@ -40,13 +40,17 @@ public enum ErrorCode {
     COMMENT_DOES_NOT_EXIST(HttpStatus.NOT_FOUND, "comment does not exist"),
     PAGE_SIZE_NOT_APPLICABLE(HttpStatus.BAD_REQUEST, "page size is too large"),
     CANNOT_FOLLOW_YOURSELF(HttpStatus.CONFLICT, "cannot follow yourself"),
+    CANNOT_REPORT_YOURSELF(HttpStatus.CONFLICT, "cannot report yourself"),
     HAS_NOT_PERMISSION_TO_ACCESS(HttpStatus.UNAUTHORIZED, "has not permission to access"),
     NO_SUCH_ALGORITHM(HttpStatus.INTERNAL_SERVER_ERROR, "no such algorithm"),
     NONE_MATCH(HttpStatus.NOT_FOUND, "can not find any match"),
+    USER_BANNED(HttpStatus.BAD_REQUEST, "already banned"),
+    RESTRICTED_CONTENT(HttpStatus.BAD_REQUEST, "already restricted"),
     NOT_SUPPORT_FORMAT(HttpStatus.BAD_REQUEST, "not support to this format"),
-    FILE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST,"Image upload failed, the image you selected may be in an unsupported format"),
-    FAILED_RESIZE_IMAGE(HttpStatus.BAD_REQUEST,"image resize failed"),
-    INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST,"invalid file type");
+    FILE_UPLOAD_FAILED(HttpStatus.BAD_REQUEST,
+        "Image upload failed, the image you selected may be in an unsupported format"),
+    FAILED_RESIZE_IMAGE(HttpStatus.BAD_REQUEST, "image resize failed"),
+    INVALID_FILE_TYPE(HttpStatus.BAD_REQUEST, "invalid file type");
 
 
     private final HttpStatus httpStatus;
