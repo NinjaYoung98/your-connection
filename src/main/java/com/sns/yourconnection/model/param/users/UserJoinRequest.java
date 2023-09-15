@@ -7,7 +7,6 @@ import lombok.ToString;
 
 @NoArgsConstructor
 @Getter
-@ToString
 @AllArgsConstructor
 public class UserJoinRequest {
 
