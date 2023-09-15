@@ -2,8 +2,8 @@ package com.sns.yourconnection.model.entity.users;
 
 import com.sns.yourconnection.model.entity.follow.FollowEntity;
 import com.sns.yourconnection.model.entity.post.PostEntity;
+import com.sns.yourconnection.model.entity.users.common.UserActivity;
 import com.sns.yourconnection.model.entity.users.common.UserRole;
-import com.sns.yourconnection.model.entity.users.common.UserStatus;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -49,7 +49,7 @@ public class UserEntity {
     private UserRole role = UserRole.USER;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus userStatus = UserStatus.NORMAL;
+    private UserActivity userActivity = UserActivity.NORMAL;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -80,5 +80,9 @@ public class UserEntity {
 
     public void toAdmin() {
         this.role = UserRole.ADMIN;
+    }
+
+    public void changeActivity(UserActivity userActivity) {
+        this.userActivity = userActivity;
     }
 }

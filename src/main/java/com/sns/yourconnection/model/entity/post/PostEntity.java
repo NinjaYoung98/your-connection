@@ -3,7 +3,9 @@ package com.sns.yourconnection.model.entity.post;
 import com.sns.yourconnection.model.entity.audit.AuditEntity;
 import com.sns.yourconnection.model.entity.comment.CommentEntity;
 import com.sns.yourconnection.model.entity.like.LikeCountEntity;
+import com.sns.yourconnection.model.entity.report.ContentActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
+import com.sns.yourconnection.model.entity.users.common.UserActivity;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -34,6 +36,9 @@ public class PostEntity extends AuditEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
+    @Enumerated(EnumType.STRING)
+    private ContentActivity contentActivity = ContentActivity.GENERAL;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
     private List<CommentEntity> comments = new ArrayList<>();
@@ -74,5 +79,9 @@ public class PostEntity extends AuditEntity {
             postStorage.clear();
         }
         postStorageEntities.forEach(postStorageEntity -> postStorageEntity.setPost(this));
+    }
+
+    public void changeActivity(ContentActivity contentActivity) {
+        this.contentActivity = contentActivity;
     }
 }
