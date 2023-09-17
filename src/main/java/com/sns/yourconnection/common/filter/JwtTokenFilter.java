@@ -1,9 +1,11 @@
 package com.sns.yourconnection.common.filter;
 
 
+import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.MissingBearerTokenException;
 import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.entity.users.common.UserActivity;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import com.sns.yourconnection.service.UserService;
 import java.io.IOException;
@@ -38,11 +40,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             String accessToken = parseBearerToken(request);
             User user = parseUserSpecification(accessToken);
+            checkUserBan(user);
             configureAuthenticatedUser(request, user);
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
         filterChain.doFilter(request, response);
+    }
+
+    private void checkUserBan(User user) {
+        if (user.getActivity() == UserActivity.BAN) {
+            throw new AppException(ErrorCode.USER_BANNED);
+        }
     }
 
     private boolean checkPublicApi(HttpServletRequest request, HttpServletResponse response,
@@ -62,7 +71,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private User parseUserSpecification(String accessToken) {
         String username = jwtTokenGenerator.getUsername(accessToken);
-        log.info("[JwtTokenFilter] parsed username from token: {} ", username);
         return userService.loadUserByUsername(username);
     }
 
