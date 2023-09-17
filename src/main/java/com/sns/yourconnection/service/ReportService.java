@@ -50,7 +50,7 @@ public class ReportService {
         userReportRepository.save(UserReportEntity.of(reporterEntity, reportedUserEntity, text));
 
         if (userReportRepository.countByReportedUser(reportedUserEntity) > REPORT_LIMIT) {
-            reportedUserEntity.changeActivity(UserActivity.ACTION_REQUIRED);
+            reportedUserEntity.changeActivity(UserActivity.FLAGGED);
         }
     }
 
@@ -78,7 +78,7 @@ public class ReportService {
         postReportRepository.save(PostReportEntity.of(reporterEntity, reportedPostEntity, text));
 
         if (postReportRepository.countByReportedPost(reportedPostEntity) > REPORT_LIMIT) {
-            reportedPostEntity.changeActivity(ContentActivity.ACTION_REQUIRED);
+            reportedPostEntity.changeActivity(ContentActivity.FLAGGED);
         }
     }
 
