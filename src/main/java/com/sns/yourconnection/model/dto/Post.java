@@ -1,6 +1,7 @@
 package com.sns.yourconnection.model.dto;
 
 import com.sns.yourconnection.model.entity.post.PostEntity;
+import com.sns.yourconnection.model.entity.report.ContentActivity;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class Post {
     private LocalDateTime updatedAt;
     private String createdBy;
     private String updatedBy;
+    private ContentActivity contentActivity;
     private User user;
     private List<PostStorage> postStorage;
 
@@ -30,6 +32,7 @@ public class Post {
             postEntity.getUpdatedAt(),
             postEntity.getCreatedBy(),
             postEntity.getUpdatedBy(),
+            postEntity.getContentActivity(),
             User.fromEntity(postEntity.getUser()),
             PostStorageEntityToDTO(postEntity)
         );
