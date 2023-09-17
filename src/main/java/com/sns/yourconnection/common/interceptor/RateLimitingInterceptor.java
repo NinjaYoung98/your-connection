@@ -87,7 +87,6 @@ public class RateLimitingInterceptor implements HandlerInterceptor {
      * @apiNote 'X-RateLimit-RetryAfter', 'X-RateLimit-Limit', 'X-RateLimit-Remaining' 참고:
      * https://sendbird.com/docs/chat/v3/platform-api/application/understanding-rate-limits/rate-limits
      */
-    //TODO: response message ( custom response 객체 생성 후 구현 예정)
     private void successResponse(HttpServletResponse response, ConsumptionProbe consumptionProbe) {
         response.setHeader("X-RateLimit-Remaining",
             Long.toString(consumptionProbe.getRemainingTokens()));

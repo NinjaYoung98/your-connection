@@ -1,5 +1,6 @@
 package com.sns.yourconnection.model.dto;
 
+import com.sns.yourconnection.model.entity.users.common.UserActivity;
 import com.sns.yourconnection.model.entity.users.common.UserRole;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import java.util.Collection;
@@ -29,6 +30,8 @@ public class User implements UserDetails {
 
     private UserRole role;
 
+    private UserActivity activity;
+
     private LocalDateTime createdAt;
 
     private Map<String, Object> oAuth2Attributes;
@@ -42,6 +45,7 @@ public class User implements UserDetails {
             userEntity.getNickname(),
             userEntity.getEmail(),
             userEntity.getRole(),
+            userEntity.getUserActivity(),
             userEntity.getCreatedAt(),
             Map.of()
         );

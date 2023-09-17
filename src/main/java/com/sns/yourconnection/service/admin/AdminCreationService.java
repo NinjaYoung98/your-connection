@@ -24,12 +24,12 @@ public class AdminCreationService {
     private final JavaMailSender javaMailSender;
 
 
-//    @PostConstruct
-//    public void initAdmin() {
-//        if (userRepository.findByEmail(projectDefaultMail).isEmpty()) {
-//            createAccount(projectDefaultMail);
-//        }
-//    }
+    @PostConstruct
+    public void initAdmin() {
+        if (userRepository.findByEmail(projectDefaultMail).isEmpty()) {
+            createAccount(projectDefaultMail);
+        }
+    }
 
     @Transactional
     public void createAccount(String email) {
