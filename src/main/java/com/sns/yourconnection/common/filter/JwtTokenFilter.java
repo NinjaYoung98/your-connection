@@ -6,6 +6,7 @@ import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.MissingBearerTokenException;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.users.UserActivity;
+import com.sns.yourconnection.security.principal.PrincipalDetailsService;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;
 import com.sns.yourconnection.service.users.UserService;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,7 +31,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final String BEARER = "Bearer ";
     private static final String PUBLIC_API_PREFIX = "/public-api/";
-    private final UserService userService;
+    private final PrincipalDetailsService principalDetailsService;
     private final JwtTokenGenerator jwtTokenGenerator;
 
     @Override
@@ -40,9 +42,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         try {
             String accessToken = parseBearerToken(request);
-            User user = parseUserSpecification(accessToken);
-            checkUserBan(user);
-            configureAuthenticatedUser(request, user);
+            UserDetails userDetails = parseUserSpecification(accessToken);
+            checkUserBan(userDetails);
+            configureAuthenticatedUser(request, userDetails);
         } catch (Exception e) {
             //JwtAuthenticationEntryPoint 에서 jwt 에 대한 상세 예외 핸들링
             request.setAttribute("exception", e);
@@ -50,8 +52,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void checkUserBan(User user) {
-        if (user.getActivity() == UserActivity.BAN) {
+    private void checkUserBan(UserDetails userDetails) {
+
+        if (!userDetails.isEnabled()) {
             throw new AppException(ErrorCode.USER_BANNED);
         }
     }
@@ -71,15 +74,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return authorization.split(" ")[1];
     }
 
-    private User parseUserSpecification(String accessToken) {
+    private UserDetails parseUserSpecification(String accessToken) {
         String username = jwtTokenGenerator.getUsername(accessToken);
-        return userService.loadUserByUsername(username);
+        return principalDetailsService.loadUserByUsername(username);
     }
 
-    private void configureAuthenticatedUser(HttpServletRequest request, User user) {
+    private void configureAuthenticatedUser(HttpServletRequest request, UserDetails userDetails) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-            user,
-            null, user.getAuthorities());
+            userDetails,
+            null, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }

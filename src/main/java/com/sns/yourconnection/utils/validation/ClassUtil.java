@@ -11,7 +11,7 @@ public class ClassUtil {
         return clazz != null && clazz.isInstance(o) ? clazz.cast(o) : null;
     }
 
-    public static User getUserFromAuthentication(Authentication authentication) {
-        return castingInstance(authentication.getPrincipal(), User.class);
-    }
+//    public static User getUserFromAuthentication(Authentication authentication) {
+//        return castingInstance(authentication.getPrincipal(), User.class);
+//    }
 }
