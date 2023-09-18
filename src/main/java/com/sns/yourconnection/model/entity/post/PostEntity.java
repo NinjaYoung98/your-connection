@@ -2,7 +2,7 @@ package com.sns.yourconnection.model.entity.post;
 
 import com.sns.yourconnection.model.entity.common.audit.AuditEntity;
 import com.sns.yourconnection.model.entity.comment.CommentEntity;
-import com.sns.yourconnection.model.entity.like.LikeCountEntity;
+import com.sns.yourconnection.model.entity.like.PostLikeEntity;
 import com.sns.yourconnection.model.entity.report.ContentActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import java.util.ArrayList;
@@ -46,7 +46,7 @@ public class PostEntity extends AuditEntity {
     private List<PostStorageEntity> postStorage = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
-    private List<LikeCountEntity> likes = new ArrayList<>();
+    private List<PostLikeEntity> likes = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostCountEntity> postCounts = new ArrayList<>();

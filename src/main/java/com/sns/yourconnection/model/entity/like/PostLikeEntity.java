@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@SQLDelete(sql = "UPDATE like_count SET deleted_at = NOW() WHERE id=?")
+@SQLDelete(sql = "UPDATE post_like SET deleted_at = NOW() WHERE id=?")
 @Where(clause = "deleted_at is NULL")
-@Table(name = "\"like_count\"")
-public class LikeCountEntity {
+@Table(name = "\"post_like\"")
+public class PostLikeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +34,12 @@ public class LikeCountEntity {
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    private LikeCountEntity(UserEntity user, PostEntity post) {
+    private PostLikeEntity(UserEntity user, PostEntity post) {
         this.user = user;
         this.post = post;
     }
 
-    public static LikeCountEntity of(UserEntity user, PostEntity post) {
-        return new LikeCountEntity(user, post);
+    public static PostLikeEntity of(UserEntity user, PostEntity post) {
+        return new PostLikeEntity(user, post);
     }
 }

@@ -1,12 +1,12 @@
 package com.sns.yourconnection.service.post;
 
-import com.sns.yourconnection.model.entity.like.LikeCountEntity;
+import com.sns.yourconnection.model.entity.like.PostLikeEntity;
 import com.sns.yourconnection.model.entity.post.PostEntity;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.repository.LikeCountRepository;
+import com.sns.yourconnection.repository.PostLikeRepository;
 import com.sns.yourconnection.repository.PostRepository;
 import com.sns.yourconnection.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class LikeCountService {
+public class PostLikeService {
 
-    private final LikeCountRepository likeCountRepository;
+    private final PostLikeRepository postLikeRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
@@ -32,22 +32,22 @@ public class LikeCountService {
     @Transactional(readOnly = true)
     public Integer getLikeCount(Long postId) {
         PostEntity postEntity = getPostEntity(postId);
-        return likeCountRepository.countByPost(postEntity);
+        return postLikeRepository.countByPost(postEntity);
     }
 
     @Transactional
     public void setLikeCount(Long postId, User user) {
         UserEntity userEntity = getUserEntity(user);
         PostEntity postEntity = getPostEntity(postId);
-        Optional<LikeCountEntity> likeCountEntityOptional = getLikeCountEntityOptional(userEntity,
-            postEntity);
+        Optional<PostLikeEntity> likeCountEntityOptional = postLikeRepository.findByUserAndPost(
+            userEntity, postEntity);
         if (!isLiked(likeCountEntityOptional)) {
             increaseLikeCount(userEntity, postEntity);
         }
 
     }
 
-    private boolean isLiked(Optional<LikeCountEntity> likeCountEntityOptional) {
+    private boolean isLiked(Optional<PostLikeEntity> likeCountEntityOptional) {
         if (likeCountEntityOptional.isPresent()) {
             removeLike(likeCountEntityOptional);
             return true;
@@ -55,26 +55,21 @@ public class LikeCountService {
         return false;
     }
 
-    private void removeLike(Optional<LikeCountEntity> likeCountEntityOptional) {
-        LikeCountEntity likeCountEntity = likeCountEntityOptional.get();
+    private void removeLike(Optional<PostLikeEntity> likeCountEntityOptional) {
+        PostLikeEntity postLikeEntity = likeCountEntityOptional.get();
 
         log.info("Decrease like count for post: {} by user; {}",
-            likeCountEntity.getPost().getId(), likeCountEntity.getUser().getId());
+            postLikeEntity.getPost().getId(), postLikeEntity.getUser().getId());
 
-        likeCountRepository.delete(likeCountEntity);
+        postLikeRepository.delete(postLikeEntity);
 
     }
 
     private void increaseLikeCount(UserEntity userEntity, PostEntity postEntity) {
-        LikeCountEntity likeCountEntity = LikeCountEntity.of(userEntity, postEntity);
-        likeCountRepository.save(likeCountEntity);
+        PostLikeEntity postLikeEntity = PostLikeEntity.of(userEntity, postEntity);
+        postLikeRepository.save(postLikeEntity);
         log.info("Increase like count for post: {} by user; {}", postEntity.getId(),
             userEntity.getId());
-    }
-
-    public Optional<LikeCountEntity> getLikeCountEntityOptional(UserEntity userEntity,
-        PostEntity postEntity) {
-        return likeCountRepository.findByUserAndPost(userEntity, postEntity);
     }
 
     public PostEntity getPostEntity(Long postId) {
