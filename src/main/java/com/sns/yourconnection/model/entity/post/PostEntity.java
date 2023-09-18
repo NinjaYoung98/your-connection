@@ -2,7 +2,6 @@ package com.sns.yourconnection.model.entity.post;
 
 import com.sns.yourconnection.model.entity.common.audit.AuditEntity;
 import com.sns.yourconnection.model.entity.comment.CommentEntity;
-import com.sns.yourconnection.model.entity.like.PostLikeEntity;
 import com.sns.yourconnection.model.entity.report.ContentActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import java.util.ArrayList;
