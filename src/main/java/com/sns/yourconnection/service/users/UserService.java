@@ -23,7 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UserService implements UserDetailsService {
+public class UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder encoder;
@@ -57,18 +57,13 @@ public class UserService implements UserDetailsService {
             - username 이 password 와 일치하지 않는다면 에러 반환
             TODO: - access token 발급 이후 refresh token redis에 저장
          */
-        User user = loadUserByUsername(userLoginRequest.getUsername());
+        User user = userRepository.findByUsername(userLoginRequest.getUsername())
+            .map(User::fromEntity)
+            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         validatePassword(userLoginRequest, user);
         return jwtTokenGenerator.generateAccessToken(user.getUsername());
     }
 
-
-    @Override
-    public User loadUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-            .map(User::fromEntity)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-    }
 
     @Transactional
     public FileInfo uploadProfile(User user, MultipartFile userProfileImage) {

@@ -67,11 +67,6 @@ public class PostEntity extends AuditEntity {
         this.content = content;
     }
 
-    public void updateAndLog(PostLogEntity postLog) {
-        this.title = postLog.getAfterTitle();
-        this.content = postLog.getAfterContent();
-    }
-
     public void updateStorage(List<PostStorageEntity> postStorageEntities) {
         if (!this.postStorage.isEmpty()) {
             postStorage.clear();

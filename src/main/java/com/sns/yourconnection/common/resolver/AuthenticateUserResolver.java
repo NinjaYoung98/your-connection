@@ -1,6 +1,8 @@
 package com.sns.yourconnection.common.resolver;
 
 import com.sns.yourconnection.common.annotation.AuthUser;
+import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.security.principal.UserPrincipal;
 import com.sns.yourconnection.utils.validation.ClassUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
@@ -19,8 +21,10 @@ public class AuthenticateUserResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ClassUtil.getUserFromAuthentication(authentication);
+        UserPrincipal userPrincipal = ClassUtil.castingInstance(authentication.getPrincipal(),
+            UserPrincipal.class);
+        return User.fromPrincipal(userPrincipal);
     }
 }
