@@ -1,6 +1,6 @@
 package com.sns.yourconnection.model.dto;
 
-import com.sns.yourconnection.model.entity.common.StorageType;
+import com.sns.yourconnection.model.entity.common.storage.StorageType;
 import com.sns.yourconnection.model.entity.post.PostStorageEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

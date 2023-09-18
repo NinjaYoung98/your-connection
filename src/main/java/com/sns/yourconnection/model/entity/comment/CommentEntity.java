@@ -1,6 +1,6 @@
 package com.sns.yourconnection.model.entity.comment;
 
-import com.sns.yourconnection.model.entity.audit.AuditEntity;
+import com.sns.yourconnection.model.entity.common.audit.AuditEntity;
 import com.sns.yourconnection.model.entity.post.PostEntity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import lombok.AccessLevel;

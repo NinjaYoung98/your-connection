@@ -2,7 +2,7 @@ package com.sns.yourconnection.common.converter;
 
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.model.entity.users.common.UserActivity;
+import com.sns.yourconnection.model.entity.users.UserActivity;
 import java.util.Locale;
 import org.springframework.core.convert.converter.Converter;
 

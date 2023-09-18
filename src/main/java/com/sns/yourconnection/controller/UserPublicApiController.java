@@ -2,7 +2,7 @@ package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.param.email.SmtpVerifyRequest;
+import com.sns.yourconnection.model.param.certification.EmailVerifyRequest;
 import com.sns.yourconnection.model.param.users.UserJoinRequest;
 import com.sns.yourconnection.model.param.users.UserLoginRequest;
 import com.sns.yourconnection.model.result.users.UserJoinResponse;
@@ -10,12 +10,11 @@ import com.sns.yourconnection.model.result.users.UserLoginResponse;
 import com.sns.yourconnection.security.oauth2.params.KakaoLoginParams;
 import com.sns.yourconnection.security.oauth2.params.NaverLoginParams;
 import com.sns.yourconnection.security.token.AccessToken;
-import com.sns.yourconnection.service.UserService;
+import com.sns.yourconnection.service.users.UserService;
 import com.sns.yourconnection.service.certification.EmailCertificationService;
 import com.sns.yourconnection.service.certification.OAuth2LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,8 +54,8 @@ public class UserPublicApiController {
 
     @PostMapping("/emails/verifications")
     public ResponseSuccess<Void> verificationEmail(@RequestParam String email,
-        @RequestBody SmtpVerifyRequest smtpVerifyRequest) {
-        mailService.verifiedCode(email, smtpVerifyRequest.getSecurityCode());
+        @RequestBody EmailVerifyRequest emailVerifyRequest) {
+        mailService.verifiedCode(email, emailVerifyRequest.getSecurityCode());
         return response();
     }
 

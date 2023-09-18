@@ -2,9 +2,9 @@ package com.sns.yourconnection.service.storage.strategy;
 
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.model.entity.common.StorageType;
-import com.sns.yourconnection.utils.FilenameGenerator;
-import com.sns.yourconnection.utils.ImageResizer;
+import com.sns.yourconnection.model.entity.common.storage.StorageType;
+import com.sns.yourconnection.utils.files.FilenameGenerator;
+import com.sns.yourconnection.utils.files.ImageResizer;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
