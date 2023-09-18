@@ -2,6 +2,7 @@ package com.sns.yourconnection.common.configuration.auditor;
 
 
 import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.security.principal.UserPrincipal;
 import com.sns.yourconnection.utils.validation.ClassUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
@@ -10,6 +11,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Slf4j
 public class AuditorAwareImpl implements AuditorAware<String> {
@@ -23,7 +25,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
             .map(SecurityContext::getAuthentication)
             .filter(Authentication::isAuthenticated)
             .map(Authentication::getPrincipal)
-            .map(principal -> ClassUtil.castingInstance(principal, User.class))
-            .map(User::getUsername);
+            .map(principal -> ClassUtil.castingInstance(principal, UserPrincipal.class))
+            .map(UserPrincipal::getUsername);
     }
 }
