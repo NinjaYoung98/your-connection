@@ -1,6 +1,6 @@
 package com.sns.yourconnection.model.param.users.admin;
 
-import com.sns.yourconnection.model.entity.users.common.UserActivity;
+import com.sns.yourconnection.model.entity.users.UserActivity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

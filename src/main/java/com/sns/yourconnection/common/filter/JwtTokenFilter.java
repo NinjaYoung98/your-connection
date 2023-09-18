@@ -5,9 +5,9 @@ import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.MissingBearerTokenException;
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.entity.users.common.UserActivity;
+import com.sns.yourconnection.model.entity.users.UserActivity;
 import com.sns.yourconnection.security.token.JwtTokenGenerator;
-import com.sns.yourconnection.service.UserService;
+import com.sns.yourconnection.service.users.UserService;
 import java.io.IOException;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,6 +28,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private static final String BEARER = "Bearer ";
+    private static final String PUBLIC_API_PREFIX = "/public-api/";
     private final UserService userService;
     private final JwtTokenGenerator jwtTokenGenerator;
 
@@ -43,6 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             checkUserBan(user);
             configureAuthenticatedUser(request, user);
         } catch (Exception e) {
+            //JwtAuthenticationEntryPoint 에서 jwt 에 대한 상세 예외 핸들링
             request.setAttribute("exception", e);
         }
         filterChain.doFilter(request, response);
@@ -56,7 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private boolean checkPublicApi(HttpServletRequest request, HttpServletResponse response,
         FilterChain filterChain) throws IOException, ServletException {
-        if (request.getRequestURI().startsWith("/public-api/")) {
+        if (request.getRequestURI().startsWith(PUBLIC_API_PREFIX)) {
             filterChain.doFilter(request, response);
             return true;
         }

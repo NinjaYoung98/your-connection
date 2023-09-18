@@ -1,6 +1,6 @@
 package com.sns.yourconnection.model.result.users;
 
-import com.sns.yourconnection.utils.FileInfo;
+import com.sns.yourconnection.utils.files.FileInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

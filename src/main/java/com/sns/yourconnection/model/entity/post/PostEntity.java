@@ -1,11 +1,10 @@
 package com.sns.yourconnection.model.entity.post;
 
-import com.sns.yourconnection.model.entity.audit.AuditEntity;
+import com.sns.yourconnection.model.entity.common.audit.AuditEntity;
 import com.sns.yourconnection.model.entity.comment.CommentEntity;
 import com.sns.yourconnection.model.entity.like.LikeCountEntity;
 import com.sns.yourconnection.model.entity.report.ContentActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
-import com.sns.yourconnection.model.entity.users.common.UserActivity;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;

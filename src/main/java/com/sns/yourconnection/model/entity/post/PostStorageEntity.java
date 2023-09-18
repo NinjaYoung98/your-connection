@@ -1,6 +1,6 @@
 package com.sns.yourconnection.model.entity.post;
 
-import com.sns.yourconnection.model.entity.common.StorageType;
+import com.sns.yourconnection.model.entity.common.storage.StorageType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

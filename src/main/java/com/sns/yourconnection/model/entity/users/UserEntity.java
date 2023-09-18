@@ -2,8 +2,6 @@ package com.sns.yourconnection.model.entity.users;
 
 import com.sns.yourconnection.model.entity.follow.FollowEntity;
 import com.sns.yourconnection.model.entity.post.PostEntity;
-import com.sns.yourconnection.model.entity.users.common.UserActivity;
-import com.sns.yourconnection.model.entity.users.common.UserRole;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;

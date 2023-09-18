@@ -1,8 +1,8 @@
 package com.sns.yourconnection.model.result.users.admin;
 
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.entity.users.common.UserActivity;
-import com.sns.yourconnection.model.entity.users.common.UserRole;
+import com.sns.yourconnection.model.entity.users.UserActivity;
+import com.sns.yourconnection.model.entity.users.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

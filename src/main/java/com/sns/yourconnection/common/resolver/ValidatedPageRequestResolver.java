@@ -1,7 +1,7 @@
 package com.sns.yourconnection.common.resolver;
 
 import com.sns.yourconnection.common.annotation.ValidatedPageRequest;
-import com.sns.yourconnection.utils.PageUtil;
+import com.sns.yourconnection.utils.validation.PageUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.support.WebDataBinderFactory;
