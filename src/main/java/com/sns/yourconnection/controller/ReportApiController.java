@@ -7,7 +7,7 @@ import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.param.report.PostReportRequest;
 import com.sns.yourconnection.model.param.report.UserReportRequest;
-import com.sns.yourconnection.service.ReportService;
+import com.sns.yourconnection.service.report.ReportService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PathVariable;

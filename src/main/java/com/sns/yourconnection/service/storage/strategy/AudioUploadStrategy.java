@@ -1,6 +1,6 @@
 package com.sns.yourconnection.service.storage.strategy;
 
-import com.sns.yourconnection.model.entity.common.StorageType;
+import com.sns.yourconnection.model.entity.common.storage.StorageType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 

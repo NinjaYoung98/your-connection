@@ -1,8 +1,8 @@
 package com.sns.yourconnection.common.interceptor;
 
 import com.sns.yourconnection.exception.ErrorCode;
-import com.sns.yourconnection.service.RateLimitService;
-import com.sns.yourconnection.utils.HttpReqRespUtil;
+import com.sns.yourconnection.service.protection.RateLimitService;
+import com.sns.yourconnection.utils.validation.HttpReqRespUtil;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;

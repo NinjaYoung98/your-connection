@@ -7,10 +7,10 @@ import com.sns.yourconnection.model.result.follow.FollowingResponse;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
 import com.sns.yourconnection.controller.response.ResponseSuccess;
 import com.sns.yourconnection.model.dto.User;
-import com.sns.yourconnection.model.result.follow.UserRelatedFollowingResponse;
+import com.sns.yourconnection.model.result.follow.FromFollowingResponse;
 import com.sns.yourconnection.model.result.users.UserProfileImageResponse;
-import com.sns.yourconnection.service.FollowService;
-import com.sns.yourconnection.service.UserService;
+import com.sns.yourconnection.service.users.FollowService;
+import com.sns.yourconnection.service.users.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -71,13 +71,13 @@ public class UserApiController {
     }
 
     @GetMapping("/follow/{targetId}")
-    public ResponseSuccess<UserRelatedFollowingResponse> getUserRelatedToFollowingList(
+    public ResponseSuccess<FromFollowingResponse> getUserRelatedToFollowingList(
         @AuthUser User user,
         @PathVariable Long targetId, Pageable pageable) {
         log.info("user: {} Getting following list related to targetId : {}", user, targetId);
-        UserRelatedFollowingResponse userRelatedFollowingResponse = followService.getUserRelatedToFriend(
+        FromFollowingResponse fromFollowingResponse = followService.getUserRelatedToFriend(
             user, targetId, pageable);
-        return response(userRelatedFollowingResponse);
+        return response(fromFollowingResponse);
     }
 
     @PostMapping("/image")
