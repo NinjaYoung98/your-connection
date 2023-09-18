@@ -14,7 +14,7 @@ import com.sns.yourconnection.model.param.post.PostRequest;
 import com.sns.yourconnection.model.result.post.PostResponse;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.service.post.CommentService;
-import com.sns.yourconnection.service.post.LikeCountService;
+import com.sns.yourconnection.service.post.PostLikeService;
 import com.sns.yourconnection.service.post.PostService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class PostApiController {
 
     private final PostService postService;
     private final CommentService commentService;
-    private final LikeCountService likeCountService;
+    private final PostLikeService postLikeService;
 
     @PostMapping("")
     public ResponseSuccess<PostResponse> createPost(
@@ -156,7 +156,7 @@ public class PostApiController {
     public ResponseSuccess<Void> setLikeCount(@PathVariable Long postId, @AuthUser User user) {
         log.info("Setting like count for post with ID: {} and user: {}", postId, user.getId());
 
-        likeCountService.setLikeCount(postId, user);
+        postLikeService.setLikeCount(postId, user);
         log.info("Like count set successfully for post with ID: {} and user: {}", postId, user);
 
         return response();
