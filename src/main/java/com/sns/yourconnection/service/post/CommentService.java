@@ -38,6 +38,7 @@ public class CommentService {
         log.info("CommentEntity for Post: {}  has created with ID: {} comment: {} by user: {}"
             , postEntity.getId(), commentEntity.getId(), commentEntity.getComment(),
             userEntity.getId());
+
         commentRepository.save(commentEntity);
         return Comment.fromEntity(commentEntity);
     }
@@ -66,9 +67,12 @@ public class CommentService {
             - comment 수정 내역을 comment log에 기록한다.
          */
         CommentEntity commentEntity = getCommentEntity(commentId);
+
         validateMatchesPost(postId, commentEntity);
         validateAuthorization(user, commentEntity);
+
         commentEntity.update(commentRequest.getComment());
+
         return Comment.fromEntity(commentEntity);
     }
 
@@ -81,25 +85,30 @@ public class CommentService {
             - comment 삭제한다.
          */
         CommentEntity commentEntity = getCommentEntity(commentId);
+
         validateMatchesPost(postId, commentEntity);
         validateAuthorization(user, commentEntity);
+
         commentRepository.delete(commentEntity);
     }
 
 
     public UserEntity getUserEntity(User user) {
-        return userRepository.findById(user.getId()).orElseThrow(() ->
-            new AppException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findById(user.getId())
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
     public PostEntity getPostEntity(Long postId) {
-        return postRepository.findById(postId).orElseThrow(() ->
-            new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+        return postRepository.findById(postId)
+            .orElseThrow(
+                () -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
     public CommentEntity getCommentEntity(Long commentId) {
-        return commentRepository.findById(commentId).orElseThrow(() ->
-            new AppException(ErrorCode.COMMENT_DOES_NOT_EXIST));
+        return commentRepository.findById(commentId)
+            .orElseThrow(
+                () -> new AppException(ErrorCode.COMMENT_DOES_NOT_EXIST));
     }
 
     public void validateAuthorization(User user, CommentEntity commentEntity) {

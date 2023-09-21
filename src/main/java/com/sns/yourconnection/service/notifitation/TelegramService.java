@@ -21,17 +21,20 @@ import org.springframework.web.util.UriComponentsBuilder;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class TelegramService implements NotificationService{
+public class TelegramService implements NotificationService {
 
     private final TelegramProperties properties;
     private final Environment environment;
     private final RestTemplate restTemplate;
+
     @Override
     public void sendMessage(String message) {
         message = environment.getProperty("spring.config.activate.on-profile") + message;
+
         try {
             sendTelegram(properties, message);
             log.info(message);
+
         } catch (Exception e) {
             throw new TelegramException(ErrorCode.TELEGRAM_SEND_ERROR);
         }
@@ -56,8 +59,11 @@ public class TelegramService implements NotificationService{
                 .queryParam("text", message);
             final HttpEntity<?> entity = new HttpEntity<>(headers);
 
-            restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET, entity,
-                String.class);
+            restTemplate.exchange(
+                builder.build()
+                    .encode()
+                    .toUri(), HttpMethod.GET, entity, String.class);
+
         } catch (Exception e) {
             throw new TelegramException(ErrorCode.TELEGRAM_SEND_ERROR);
         }
@@ -65,7 +71,8 @@ public class TelegramService implements NotificationService{
 
     private CloseableHttpClient getHttpClient() {
         CloseableHttpClient httpClient = HttpClients.custom()
-            .setSSLHostnameVerifier(new NoopHostnameVerifier())
+            .setSSLHostnameVerifier(
+                new NoopHostnameVerifier())
             .build();
         return httpClient;
     }

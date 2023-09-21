@@ -28,21 +28,19 @@ public class PostPublicApiController {
     @GetMapping("")
     public ResponseSuccess<List<PostResponse>> getPostPage(
         @ValidatedPageRequest Pageable pageable) {
+
         log.info("Getting post page. Pageable details: {}", pageable);
 
         Page<PostResponse> postPage = postService.getPostPage(pageable).map(PostResponse::fromPost);
-        log.info("Retrieved post page successfully. page size: {}", postPage.getSize());
-
         return response(postPage.getContent(), PageResponseWrapper.fromPage(postPage));
     }
 
     @GetMapping("{postId}/count")
     public ResponseSuccess<Integer> getPostCount(@PathVariable Long postId) {
+
         log.info("getting post count for post: {}", postId);
 
         Integer postCount = postService.getPostCount(postId);
-        log.info(" post: {} count is {}", postId, postCount);
-
         return response(postCount);
     }
 
@@ -51,8 +49,6 @@ public class PostPublicApiController {
         log.info("Getting like count for post: {}", postId);
 
         Integer likeCount = postLikeService.getLikeCount(postId);
-        log.info("Like count get successfully and count: {}", likeCount);
-
         return response(likeCount);
     }
 }

@@ -27,11 +27,11 @@ public class ImageUploadStrategy implements FileUploadStrategy {
     public MultipartFile uploadFile(MultipartFile file, String filename) {
 
         log.info(" create file name from origin : {}", filename);
+
         String fileFormatName = FilenameGenerator.extractFormat(file);
         try (InputStream inputStream = file.getInputStream()) {
-
-            return ImageResizer.resizeImage(filename, fileFormatName, file,
-                convertToBufferImage(inputStream));
+            return ImageResizer.resizeImage(
+                filename, fileFormatName, file, convertToBufferImage(inputStream));
 
         } catch (IOException e) {
             throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);

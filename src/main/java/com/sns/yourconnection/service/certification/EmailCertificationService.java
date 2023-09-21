@@ -28,14 +28,15 @@ public class EmailCertificationService {
     @Transactional
     public void sendCodeToEmail(String toEmail) {
         userRepository.findByEmail(toEmail)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         EmailForms.validateEmailForm(toEmail);
         String securityCode = RandomCodeGenerator.createRandomCodeNumber();
 
-        log.info(
-            "[EmailCertificationService] security code for Email:"
-                + " {} has successfully created.", toEmail);
+        log.info("[EmailCertificationService] security code for "
+            + "Email: {} has successfully created.", toEmail);
+
         emailCertificationRepository.setValue(toEmail, securityCode);
         sendEmail(toEmail, securityCode);
     }
@@ -45,13 +46,15 @@ public class EmailCertificationService {
         String securityCode = emailCertificationRepository.getValues(email).orElseThrow(() ->
             new AppException(ErrorCode.EXPIRED_VERIFICATION)
         );
+
         validateSecurityCode(userCode, securityCode);
+
         UserEntity userEntity = getUserEntityByEmail(email);
         userEntity.toVerified();
 
         if (userEntity.getUserActivity() == UserActivity.LOCKED) {
-            userEntity.changeActivity(
-                UserActivity.NORMAL); //TODO: User의 최신 변경 사항을 추적하여 변경하기 ref : https://kimji0139.tistory.com/94
+            userEntity.changeActivity(UserActivity.NORMAL);
+            //TODO: User의 최신 변경 사항을 추적하여 변경하기 ref : https://kimji0139.tistory.com/94
         }
     }
 
@@ -63,14 +66,14 @@ public class EmailCertificationService {
 
     private UserEntity getUserEntityByEmail(String email) {
         UserEntity userEntity = userRepository.findByEmail(email)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
         return userEntity;
     }
 
     private void sendEmail(String toEmail, String securityCode) {
         SimpleMailMessage emailForm = EmailForms.createEmailForm(toEmail, TITLE_TO_SEND,
             securityCode);
-        log.info("[SmtpMailService] Create email form successfully.");
         javaMailSender.send(emailForm);
     }
 }
