@@ -1,5 +1,7 @@
 package com.sns.yourconnection.service.certification;
 
+import com.sns.yourconnection.exception.AppException;
+import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.exception.OAuth2RestClientException;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.users.UserEntity;
@@ -61,6 +63,11 @@ public class OAuth2LoginService {
         String dummyPassword = encoder.encode("{bcrypt}" + UUID.randomUUID());
         String nickname = oAuth2UserInfo.getNickname();
         String email = oAuth2UserInfo.getEmail();
+        // 이미 가입된 이메일 계정이 있다면 계정을 생성할 수 없습니다.
+        userRepository.findByEmail(email).ifPresent(userEntity -> {
+            throw new AppException(ErrorCode.DUPLICATED_EMAIL, "이미 가입된 계정이 있습니다.");
+        });
+
         return userRepository.save(
                 UserEntity.of(username, dummyPassword, nickname, email))
             .getUsername();

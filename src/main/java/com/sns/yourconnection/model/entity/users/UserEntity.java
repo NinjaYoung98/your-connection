@@ -30,6 +30,18 @@ public class UserEntity {
 
     private String email;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "email_verified")
+    private EmailVerified emailVerified = EmailVerified.UNVERIFIED;
+
+    @Enumerated(EnumType.STRING)
+    private UserRole role = UserRole.USER;
+
+    @Enumerated(EnumType.STRING)
+    private UserActivity userActivity = UserActivity.NORMAL;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
     @OneToMany(mappedBy = "followingUser", fetch = FetchType.LAZY)
     private List<FollowEntity> followingList = new ArrayList<>();
 
@@ -42,15 +54,6 @@ public class UserEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_image_id")
     private UserProfileImageEntity profileImage;
-
-    @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
-
-    @Enumerated(EnumType.STRING)
-    private UserActivity userActivity = UserActivity.NORMAL;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
 
     @PostPersist
     private void setCreatedAt() {
@@ -82,5 +85,13 @@ public class UserEntity {
 
     public void changeActivity(UserActivity userActivity) {
         this.userActivity = userActivity;
+    }
+
+    public void toUnVerified() {
+        this.emailVerified = EmailVerified.UNVERIFIED;
+    }
+
+    public void toVerified() {
+        this.emailVerified = EmailVerified.VERIFIED;
     }
 }

@@ -1,5 +1,6 @@
 package com.sns.yourconnection.model.dto;
 
+import com.sns.yourconnection.model.entity.users.EmailVerified;
 import com.sns.yourconnection.model.entity.users.UserActivity;
 import com.sns.yourconnection.model.entity.users.UserRole;
 import com.sns.yourconnection.model.entity.users.UserEntity;
@@ -24,6 +25,8 @@ public class User {
 
     private String email;
 
+    private EmailVerified emailVerified;
+
     private UserRole role;
 
     private UserActivity activity;
@@ -39,6 +42,7 @@ public class User {
             userEntity.getPassword(),
             userEntity.getNickname(),
             userEntity.getEmail(),
+            userEntity.getEmailVerified(),
             userEntity.getRole(),
             userEntity.getUserActivity(),
             userEntity.getCreatedAt(),
@@ -53,6 +57,7 @@ public class User {
             userPrincipal.getPassword(),
             userPrincipal.getNickname(),
             userPrincipal.getEmail(),
+            userPrincipal.getEmailVerified(),
             userPrincipal.getRole(),
             userPrincipal.getActivity(),
             userPrincipal.getCreatedAt(),
