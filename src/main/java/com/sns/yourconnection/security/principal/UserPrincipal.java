@@ -1,6 +1,7 @@
 package com.sns.yourconnection.security.principal;
 
 import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.entity.users.EmailVerified;
 import com.sns.yourconnection.model.entity.users.UserActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.model.entity.users.UserRole;
@@ -31,6 +32,8 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 
     private String email;
 
+    private EmailVerified emailVerified;
+
     private UserRole role;
 
     private UserActivity activity;
@@ -47,6 +50,7 @@ public class UserPrincipal implements UserDetails, OAuth2User {
             user.getPassword(),
             user.getNickname(),
             user.getEmail(),
+            user.getEmailVerified(),
             user.getRole(),
             user.getActivity(),
             user.getCreatedAt(),

@@ -17,18 +17,18 @@ import java.util.Optional;
  * ttl : 5 minutes;
  */
 public class EmailCertificationRepository {
-    private final RedisTemplate<String, String> SmtpMailRedisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
     private final SmtpMailProperties properties;
     private static final String PREFIX_FOR_KEY = "SMTP: ";
 
     public void setValue(String toEmail, String securityCode) {
         String key = getKey(toEmail);
-        SmtpMailRedisTemplate.opsForValue().set(key, securityCode, Duration.ofMillis(properties.getSecurityCodeExpirationMillis()));
+        redisTemplate.opsForValue().set(key, securityCode, Duration.ofMillis(properties.getSecurityCodeExpirationMillis()));
         log.info("[SmtpMailRepository]Set security code for email to Redis: {}", toEmail);
     }
 
     public Optional<String> getValues(String email) {
-        String value = SmtpMailRedisTemplate.opsForValue().get(getKey(email));
+        String value = redisTemplate.opsForValue().get(getKey(email));
         return Optional.ofNullable(value);
     }
 
