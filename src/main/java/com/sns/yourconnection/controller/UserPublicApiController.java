@@ -37,17 +37,19 @@ public class UserPublicApiController {
 
     @PostMapping("/join")
     public ResponseSuccess<UserJoinResponse> join(@RequestBody UserJoinRequest userJoinRequest) {
+
         log.info("create a new User Request Details: username: {}, nickname: {}",
             userJoinRequest.getUsername(), userJoinRequest.getNickname());
 
         User user = userService.join(userJoinRequest);
-        log.info("Successfully join for user: {}", user.getId());
-
         return response(UserJoinResponse.fromUser(user));
     }
 
     @PostMapping("/emails/verification-requests")
     public ResponseSuccess<Void> sendMessage(@RequestParam String email) {
+
+        log.info("send a message to email : {} ", email);
+
         mailService.sendCodeToEmail(email);
         return response();
     }
@@ -55,38 +57,40 @@ public class UserPublicApiController {
     @PostMapping("/emails/verifications")
     public ResponseSuccess<Void> verificationEmail(@RequestParam String email,
         @RequestBody EmailVerifyRequest emailVerifyRequest) {
+
+        log.info("verify email : {}  by security code ", email);
+
         mailService.verifiedCode(email, emailVerifyRequest.getSecurityCode());
+        log.info("verify for email has been successfully completed ");
+
         return response();
     }
 
     @PostMapping("/login")
     public ResponseSuccess<UserLoginResponse> login(
         @RequestBody UserLoginRequest userLoginRequest) {
+
         log.info("User is attempting to login with username: {}", userLoginRequest.getUsername());
 
         AccessToken accessToken = userService.login(userLoginRequest);
-        log.info("your connection login is success and issued access token");
-
         return response(UserLoginResponse.of(accessToken));
     }
 
     @PostMapping("/login/kakao")
     public ResponseSuccess<UserLoginResponse> loginKakao(@RequestBody KakaoLoginParams params) {
+
         log.info("[UserPublicApiController] KakaoLoginParams : {} ", params.getAuthorizationCode());
 
         AccessToken accessToken = oAuth2LoginService.login(params);
-        log.info("kakao login is success and issued access token");
-
         return response(UserLoginResponse.of(accessToken));
     }
 
     @PostMapping("/login/naver")
     public ResponseSuccess<UserLoginResponse> loginNaver(@RequestBody NaverLoginParams params) {
+
         log.info("[UserPublicApiController] NaverLoginParams : {} ", params.getAuthorizationCode());
 
         AccessToken accessToken = oAuth2LoginService.login(params);
-        log.info("naver login is success and issued access token");
-
         return response(UserLoginResponse.of(accessToken));
     }
 }

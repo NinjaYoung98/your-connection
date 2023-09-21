@@ -23,14 +23,23 @@ public class TranslateService {
     private final ObjectMapper objectMapper;
     private final TranslateProperties properties;
 
+    /**
+     * @param text   번역 text
+     * @param source 현재 언어
+     * @param target 번역할 언어
+     * @apiNote DeepL api 참고 : https://rapidapi.com/gatzuma/api/deep-translate1
+     */
+
     public String supportTranslate(String text, String source, String target) {
         OkHttpClient client = new OkHttpClient();
 
         MediaType mediaType = MediaType.parse("application/json");
 
+        //DeepL api에서 요구하는 request body 형식
         RequestBody body = RequestBody.create(mediaType,
             "{\r\n    \"text\": \"" + text + "\",\r\n    \"source\": \"" + source
                 + "\",\r\n    \"target\": \"" + target + "\"\r\n}");
+
         Response response = requestBuild(client, body);
         return extractText(response);
     }
@@ -48,6 +57,7 @@ public class TranslateService {
 
             log.info("deepl api response has been successfully build");
             return response;
+
         } catch (Exception e) {
             throw new TranslateException(ErrorCode.TRANSLATION_BUILD_PROCESSING_ERROR);
         }
@@ -55,10 +65,12 @@ public class TranslateService {
 
     private String extractText(Response response) {
         try {
-            Map<String, Object> result = objectMapper.readValue(response.body().string(),
-                Map.class);
+            Map<String, Object> result = objectMapper.readValue(
+                response.body().string(), Map.class);
+
             validateResultValue(result);
             return result.get("text").toString();
+
         } catch (IOException e) {
             throw new TranslateException(ErrorCode.TRANSLATION_PARSE_PROCESSING_ERROR);
         }

@@ -28,11 +28,10 @@ public class ReportApiController {
     public ResponseSuccess<Void> repostUser(@RequestBody UserReportRequest userReportRequest,
         @AuthUser User user, @PathVariable Long reportedUserId) {
 
-        log.info("[ReportApiController -> called : reportUser] user : {} reportedUser : {}  ",
-            user.getId(), reportedUserId);
-        reportService.reportUser(user.getId(), reportedUserId, userReportRequest.getText());
+        log.info("[ReportApiController -> called : reportUser] "
+            + "user : {} reportedUser : {}  ", user.getId(), reportedUserId);
 
-        log.info("[ReportApiController -> completed : reportUser]");
+        reportService.reportUser(user.getId(), reportedUserId, userReportRequest.getText());
         return response();
     }
 
@@ -40,11 +39,10 @@ public class ReportApiController {
     public ResponseSuccess<Void> reportPost(@RequestBody PostReportRequest postReportRequest,
         @AuthUser User user, @PathVariable Long reportedPostId) {
 
-        log.info("[ReportApiController -> called : reportPost] user : {} reportedPost : {}  ",
-            user.getId(), reportedPostId);
-        reportService.reportPost(user.getId(), reportedPostId, postReportRequest.getText());
+        log.info("[ReportApiController -> called : reportPost] "
+            + "user : {} reportedPost : {}  ", user.getId(), reportedPostId);
 
-        log.info("[ReportApiController -> completed : reportPost]");
+        reportService.reportPost(user.getId(), reportedPostId, postReportRequest.getText());
         return response();
     }
 }

@@ -39,7 +39,9 @@ public class FollowService {
          */
         UserEntity followingUser = getUserEntity(user.getId());
         UserEntity followedUser = getUserEntity(followingId);
+
         validateSelfFollow(followingUser, followedUser);
+
         Optional<FollowEntity> follow = followRepository.findByFollowingUserAndFollowedUser(
             followingUser, followedUser);
 
@@ -80,6 +82,22 @@ public class FollowService {
     }
 
 
+    private List<Follow> getUserRelatedToFollowingList(User user, Long targetId,
+        Pageable pageable) {
+
+        return followRepository.findAllByFollowingUserId(user.getId(), pageable)
+            .stream()
+            .flatMap(
+                relationAsFollowingUser -> relationAsFollowingUser.getFollowedUser()
+                    .getFollowingList()
+                    .stream())
+            .filter(
+                relationFromUserFollowing -> relationFromUserFollowing.getFollowedUser()
+                    .getId() == targetId)
+            .map(Follow::fromEntity)
+            .collect(Collectors.toList());
+    }
+
     private boolean isFollowRelation(Optional<FollowEntity> follow) {
         if (follow.isPresent()) {
             deleteFollow(follow);
@@ -90,21 +108,11 @@ public class FollowService {
 
     private void deleteFollow(Optional<FollowEntity> follow) {
         FollowEntity followEntity = follow.get();
+
         log.info("user: {} unfollow user: {}", followEntity.getFollowingUser(),
             followEntity.getFollowingUser());
+
         followRepository.delete(followEntity);
-    }
-
-    private List<Follow> getUserRelatedToFollowingList(User user, Long targetId,
-        Pageable pageable) {
-
-        return followRepository.findAllByFollowingUserId(user.getId(), pageable)
-            .stream()
-            .flatMap(relationAsFollowingUser -> relationAsFollowingUser.getFollowedUser()
-                .getFollowingList().stream())
-            .filter(relationFromUserFollowing -> relationFromUserFollowing.getFollowedUser().getId()
-                == targetId).map(Follow::fromEntity)
-            .collect(Collectors.toList());
     }
 
     private void validateSelfFollow(UserEntity followingUser, UserEntity followedUser) {
@@ -114,7 +122,8 @@ public class FollowService {
     }
 
     public UserEntity getUserEntity(Long userId) {
-        return userRepository.findById(userId).orElseThrow(
+        return userRepository.findById(userId)
+            .orElseThrow(
             () -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 }

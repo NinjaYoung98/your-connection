@@ -33,11 +33,15 @@ public class AwsS3Service implements StorageService {
 
     @PostConstruct
     public void amazonS3Client() {
-        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(awsProperties.getAccessKey(),
+        BasicAWSCredentials awsCredentials = new BasicAWSCredentials(
+            awsProperties.getAccessKey(),
             awsProperties.getSecretKey());
+
         amazonS3Client = AmazonS3ClientBuilder.standard()
-            .withRegion(awsProperties.getRegionStatic())
-            .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
+            .withRegion(
+                awsProperties.getRegionStatic())
+            .withCredentials(
+                new AWSStaticCredentialsProvider(awsCredentials))
             .build();
     }
 
@@ -50,10 +54,13 @@ public class AwsS3Service implements StorageService {
     public List<FileInfo> uploadFiles(List<MultipartFile> multipartFile) {
         List<FileInfo> fileInfoList = new ArrayList<>();
 
-        multipartFile.forEach(file -> {
-            fileInfoList.add(uploadFile(awsProperties.getStorageBucket(), file));
-        });
+        multipartFile.forEach(
+            file -> {
+                fileInfoList.add(uploadFile(awsProperties.getStorageBucket(), file));
+            });
+
         log.info("ready set {} images to upload", fileInfoList.size());
+
         return fileInfoList;
     }
 
@@ -63,12 +70,13 @@ public class AwsS3Service implements StorageService {
         String filename = FilenameGenerator.createFilename(originalFilename);
 
         FileUploadStrategy fileUploadStrategy = strategies.stream()
-            .filter(strategy -> strategy.supports(file.getContentType()))
+            .filter(
+                strategy -> strategy.supports(file.getContentType()))
             .findFirst()
-            .orElseThrow(() -> new AppException(ErrorCode.INVALID_FILE_TYPE));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.INVALID_FILE_TYPE));
 
         MultipartFile multiFile = fileUploadStrategy.uploadFile(file, filename);
-
         ObjectMetadata objectMetadata = putObjectMetadata(multiFile);
 
         try {
@@ -78,8 +86,9 @@ public class AwsS3Service implements StorageService {
 
             String s3ClientUrl = amazonS3Client.getUrl(bucket, filename).toString();
 
-            return FileInfo.of(originalFilename, filename, s3ClientUrl,
-                fileUploadStrategy.getStorageType());
+            return FileInfo.of(
+                originalFilename, filename, s3ClientUrl, fileUploadStrategy.getStorageType());
+
         } catch (IOException e) {
             throw new AppException(ErrorCode.FILE_UPLOAD_FAILED);
         }

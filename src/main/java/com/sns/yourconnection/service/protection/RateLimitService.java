@@ -34,7 +34,9 @@ public class RateLimitService {
     private boolean isApplyHandling(String clientIp, RequestInfo requestInfo) {
         if (requestInfo.isWithinTimeWindow()) {
             int count = requestInfo.incrementAndGetCount();
+
             log.info("[Rate limit count] client IP : {}  limit count  : {} ", clientIp, count);
+
             checkAndResetIfLimitExceeded(clientIp, requestInfo, count);
             return true;
         }

@@ -28,13 +28,17 @@ public class TranslateApiController {
     public ResponseSuccess<TranslateResponse> supportTranslate(@AuthUser User user,
         @RequestBody TranslateRequest translateRequest, @RequestParam String source,
         @RequestParam String target) {
-        log.info("[Translate] translate text with User: {}, source {}, target: {} ", user.getId(),
-            source, target);
+
+        log.info("[Translate] translate text with User: "
+            + "{}, source {}, target: {} ", user.getId(), source, target);
+
         TranslateResponse translateResponse = TranslateResponse.of(
-            translateService.supportTranslate(translateRequest.getText(), source, target));
+            translateService.supportTranslate(
+                translateRequest.getText(), source, target));
 
         log.info("[Translate] translated text safety [detail : before: {} after: {}  ",
             translateRequest.getText(), translateResponse.getText());
+
         return response(translateResponse);
     }
 }

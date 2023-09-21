@@ -70,8 +70,9 @@ public class PostService {
             -  조회 기록이 없다면 조회수 1 증가
          */
 
-        PostEntity postEntity = postRepository.findById(postId).orElseThrow(() ->
-            new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+        PostEntity postEntity = postRepository.findById(postId)
+            .orElseThrow(
+                () -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
         UserEntity userEntity = getUserEntity(user);
         setPostCount(postEntity, userEntity);
         return Post.fromEntity(postEntity);
@@ -113,13 +114,14 @@ public class PostService {
         PostEntity postEntity) {
 
         List<FileInfo> fileInfoList = storageService.uploadFiles(multipartFiles);
-
         List<PostStorageEntity> postStorageEntities = fileInfoList.stream()
-            .map(fileInfo -> createPostStorageEntity(postEntity, fileInfo))
+            .map(
+                fileInfo -> createPostStorageEntity(postEntity, fileInfo))
             .collect(Collectors.toList());
 
         List<PostStorageEntity> newPostStorageEntities = postStorageRepository.saveAll(
             postStorageEntities);
+
         postEntity.updateStorage(newPostStorageEntities);
     }
 
@@ -130,10 +132,11 @@ public class PostService {
 
         saveFilesToS3(multipartFiles, postEntity);
 
-        oldPostStorageEntities.stream().forEach(
-            oldPostStorage -> {
-                storageService.deleteFiles(oldPostStorage.getStoreFilename());
-            });
+        oldPostStorageEntities.stream()
+            .forEach(
+                oldPostStorage -> {
+                    storageService.deleteFiles(oldPostStorage.getStoreFilename());
+                });
     }
 
 
@@ -147,9 +150,12 @@ public class PostService {
          */
         PostEntity postEntity = getPostEntity(postId);
         validateMatches(user, postEntity);
-        postStorageRepository.findByPost(postEntity).stream().forEach(postStorageEntity -> {
-            storageService.deleteFiles(postStorageEntity.getStoreFilename());
-        });
+
+        postStorageRepository.findByPost(postEntity).stream()
+            .forEach(
+                postStorageEntity -> {
+                    storageService.deleteFiles(postStorageEntity.getStoreFilename());
+                });
 
         postRepository.delete(postEntity);
     }
@@ -158,6 +164,7 @@ public class PostService {
     public void setPostCount(PostEntity postEntity, UserEntity userEntity) {
         if (postCountRepository.findByPostAndUser(postEntity, userEntity).isEmpty()) {
             postCountRepository.save(PostCountEntity.of(userEntity, postEntity));
+
             log.info("Increase post count for post: {} by user: {}", postEntity.getId(),
                 userEntity.getId());
         }
@@ -168,13 +175,13 @@ public class PostService {
         return postRepository.fetchJoinIdWithPostCount(postId)
             .map(PostEntity::getPostCounts)
             .map(postCount -> postCount.size())
-            .orElseThrow(() ->
-                new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+            .orElseThrow(() -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
     public PostEntity getPostEntity(Long postId) {
-        return postRepository.findById(postId).orElseThrow(() ->
-            new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+        return postRepository.findById(postId)
+            .orElseThrow(
+                () -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
     private PostStorageEntity createPostStorageEntity(PostEntity postEntity, FileInfo fileInfo) {
@@ -188,7 +195,8 @@ public class PostService {
 
     public UserEntity getUserEntity(User user) {
         return userRepository.findById(user.getId())
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 
     public void validateMatches(User user, PostEntity postEntity) {

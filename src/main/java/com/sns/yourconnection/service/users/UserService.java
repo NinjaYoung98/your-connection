@@ -43,6 +43,7 @@ public class UserService {
          */
         DuplicateUsername(userJoinRequest.getUsername());
         DuplicateUserEmail(userJoinRequest.getEmail());
+
         UserEntity userEntity = UserEntity.of(
             userJoinRequest.getUsername(), encoder.encode(userJoinRequest.getPassword()),
             userJoinRequest.getNickname(), userJoinRequest.getEmail());
@@ -71,13 +72,13 @@ public class UserService {
         User user = User.fromEntity(userEntity);
 
         ValidatePassword(userLoginRequest, user);
-
         return jwtTokenGenerator.generateAccessToken(user.getUsername());
     }
 
     private void ValidatePassword(UserLoginRequest userLoginRequest, User user) {
         if (!encoder.matches(userLoginRequest.getPassword(), user.getPassword())) {
             countLoginFailed(user);
+
             throw new AppException(ErrorCode.HAS_NOT_AUTHENTICATION,
                 "Your account requires email verification.");
         }
@@ -85,6 +86,7 @@ public class UserService {
 
     public void countLoginFailed(User user) {
         Long attemptCount = incrementFailedCount(user);
+
         log.info("attemptCount : {}", attemptCount);
 
         if (attemptCount >= MAX_ATTEMPT_COUNT) {
@@ -119,7 +121,8 @@ public class UserService {
 
         userEntity.uploadProfileImage(
             UserProfileImageEntity.of(
-                fileInfo.getOriginalFilename(), fileInfo.getStoreFilename(),
+                fileInfo.getOriginalFilename(),
+                fileInfo.getStoreFilename(),
                 fileInfo.getPathUrl(), userEntity));
         return fileInfo;
     }
@@ -128,7 +131,8 @@ public class UserService {
     public void deleteProfile(User user) {
 
         UserEntity userEntity = userRepository.findById(user.getId())
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         if (userEntity.getProfileImage() != null) {
             userEntity.removeProfileImage();
@@ -137,15 +141,17 @@ public class UserService {
     }
 
     private void DuplicateUsername(String username) {
-        userRepository.findByUsername(username).ifPresent(userEntity -> {
-            throw new AppException(ErrorCode.DUPLICATED_USERNAME);
-        });
+        userRepository.findByUsername(username).ifPresent(
+            userEntity -> {
+                throw new AppException(ErrorCode.DUPLICATED_USERNAME);
+            });
     }
 
     private void DuplicateUserEmail(String email) {
-        userRepository.findByEmail(email).ifPresent(userEntity -> {
-            throw new AppException(ErrorCode.DUPLICATED_EMAIL);
-        });
+        userRepository.findByEmail(email).ifPresent(
+            userEntity -> {
+                throw new AppException(ErrorCode.DUPLICATED_EMAIL);
+            });
     }
 }
 

@@ -39,12 +39,13 @@ public class PostLikeService {
     public void setLikeCount(Long postId, User user) {
         UserEntity userEntity = getUserEntity(user);
         PostEntity postEntity = getPostEntity(postId);
+
         Optional<PostLikeEntity> likeCountEntityOptional = postLikeRepository.findByUserAndPost(
             userEntity, postEntity);
+
         if (!isLiked(likeCountEntityOptional)) {
             increaseLikeCount(userEntity, postEntity);
         }
-
     }
 
     private boolean isLiked(Optional<PostLikeEntity> likeCountEntityOptional) {
@@ -73,12 +74,14 @@ public class PostLikeService {
     }
 
     public PostEntity getPostEntity(Long postId) {
-        return postRepository.findById(postId).orElseThrow(() ->
-            new AppException(ErrorCode.POST_DOES_NOT_EXIST));
+        return postRepository.findById(postId)
+            .orElseThrow(
+                () -> new AppException(ErrorCode.POST_DOES_NOT_EXIST));
     }
 
     public UserEntity getUserEntity(User user) {
-        return userRepository.findById(user.getId()).orElseThrow(() ->
-            new AppException(ErrorCode.USER_NOT_FOUND));
+        return userRepository.findById(user.getId())
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
     }
 }
