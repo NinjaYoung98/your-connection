@@ -41,11 +41,14 @@ public class OAuth2LoginService {
 
     private String findUser(OAuth2UserInfo oAuth2UserInfo) {
         String username = getUsernameByUserInfo(oAuth2UserInfo);
+
         log.info("[OAuth2LoginService] Find user by username : {}", username);
+
         return userRepository.findByUsername(username)
             .map(User::fromEntity)
             .map(User::getUsername)
-            .orElseGet(() -> createUserInfo(oAuth2UserInfo, username)
+            .orElseGet(
+                () -> createUserInfo(oAuth2UserInfo, username)
             );
     }
 
@@ -54,6 +57,7 @@ public class OAuth2LoginService {
         try {
             String accessToken = oAuth2ApiClient.requestAccessToken(params);
             return oAuth2ApiClient.requestUserInfo(accessToken);
+
         } catch (Exception e) {
             throw new OAuth2RestClientException("Failed to retrieve access token.");
         }
@@ -69,7 +73,8 @@ public class OAuth2LoginService {
         });
 
         return userRepository.save(
-                UserEntity.of(username, dummyPassword, nickname, email))
+                UserEntity.of(
+                    username, dummyPassword, nickname, email))
             .getUsername();
     }
 

@@ -24,15 +24,19 @@ public class SecurityConfig {
             .httpBasic().disable()
             .csrf().disable()
             .cors().and()
-            .authorizeRequests(request ->
-                request.antMatchers("/public-api/**").permitAll()
+
+            .authorizeRequests(
+                request -> request.antMatchers("/public-api/**").permitAll()
                     .antMatchers("/api/admin/**").hasRole("ADMIN")
                     .antMatchers("/api/**").authenticated())
-            .sessionManagement(sessionManagement ->
-                sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+            .sessionManagement(
+                sessionManagement -> sessionManagement.sessionCreationPolicy(
+                    SessionCreationPolicy.STATELESS))
+
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling(handler ->
-                handler.authenticationEntryPoint(entryPoint))
+            .exceptionHandling
+                (handler -> handler.authenticationEntryPoint(entryPoint))
             .build();
     }
 }

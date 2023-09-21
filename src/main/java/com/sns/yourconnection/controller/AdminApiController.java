@@ -41,17 +41,21 @@ public class AdminApiController {
 
     @PostMapping("create")
     public ResponseSuccess<Void> createAdmin(@RequestBody AdminCreateRequest adminCreateRequest) {
+
         log.info("[AdminApiController -> Called : createAdmin] "
             + "Create admin account api has called ");
-        adminCreationService.createAccount(adminCreateRequest.getEmail());
 
+        adminCreationService.createAccount(adminCreateRequest.getEmail());
         return response();
     }
 
     @GetMapping("/report/users")
     public ResponseSuccess<List<UserActivityResponse>> getUserByActivity(
-        @RequestParam UserActivity activity, @ValidatedPageRequest Pageable pageable) {
+        @RequestParam UserActivity activity,
+        @ValidatedPageRequest Pageable pageable) {
+
         log.info("[AdminApiController -> Called : getUserByActivity] get user by activity ");
+
         Page<UserActivityResponse> userActivityPage = reportActionService.getUserByActivity(
                 activity, pageable)
             .map(UserActivityResponse::fromUser);
@@ -63,11 +67,13 @@ public class AdminApiController {
     @GetMapping("/report/users/{userId}")
     public ResponseSuccess<List<UserReportResponse>> getUserReportRecord(
         @PathVariable Long userId, @ValidatedPageRequest Pageable pageable) {
+
         log.info(
             "[AdminApiController -> Called : getUserReportRecord] "
                 + "get report record for user : {}", userId);
-        Page<UserReportResponse> userReportPage = reportActionService.getUserReportRecord(userId,
-                pageable)
+
+        Page<UserReportResponse> userReportPage = reportActionService.getUserReportRecord(
+                userId, pageable)
             .map(UserReportResponse::fromUserReport);
 
         return response(userReportPage.getContent(),
@@ -77,7 +83,9 @@ public class AdminApiController {
     @GetMapping("/report/posts")
     public ResponseSuccess<List<PostActivityResponse>> getPostByActivity(
         @RequestParam ContentActivity activity, @ValidatedPageRequest Pageable pageable) {
+
         log.info("[AdminApiController -> Called : getPostByActivity] get post by activity ");
+
         Page<PostActivityResponse> postActivityPage = reportActionService.getPostByActivity(
                 activity, pageable)
             .map(PostActivityResponse::fromPost);
@@ -89,11 +97,12 @@ public class AdminApiController {
     @GetMapping("/report/posts/{postId}")
     public ResponseSuccess<List<PostReportResponse>> getPostReportRecord(
         @PathVariable Long postId, @ValidatedPageRequest Pageable pageable) {
-        log.info(
-            "[AdminApiController -> Called : getPostReportRecord] "
-                + "get report record for post : {}", postId);
-        Page<PostReportResponse> postReportPage = reportActionService.getPostReportRecord(postId,
-                pageable)
+
+        log.info("[AdminApiController -> Called : getPostReportRecord] "
+            + "get report record for post : {}", postId);
+
+        Page<PostReportResponse> postReportPage = reportActionService.getPostReportRecord(
+                postId, pageable)
             .map(PostReportResponse::fromPostReport);
 
         return response(postReportPage.getContent(),
@@ -103,11 +112,14 @@ public class AdminApiController {
     @PutMapping("/report/users/{userId}")
     public ResponseSuccess<UserActivityResponse> changeUserActivity(
         @PathVariable Long userId, @RequestBody UserActivityRequest userActivityRequest) {
-        log.info(
-            "[AdminApiController -> Called : changeUserActivity] change user activity  "
-                + "user: {} activity : {}", userId, userActivityRequest.getUserActivity().name());
-        UserActivityResponse userActivityResponse = UserActivityResponse.fromUser(
-            reportActionService.changeUserActivity(userActivityRequest.getUserActivity(), userId));
+
+        log.info("[AdminApiController -> Called : changeUserActivity] change user activity  "
+            + "user: {} activity : {}", userId, userActivityRequest.getUserActivity().name());
+
+        UserActivityResponse userActivityResponse = UserActivityResponse
+            .fromUser(
+                reportActionService.changeUserActivity(
+                    userActivityRequest.getUserActivity(), userId));
 
         return response(userActivityResponse);
     }
@@ -115,11 +127,14 @@ public class AdminApiController {
     @PutMapping("/report/posts/{postId}")
     public ResponseSuccess<PostActivityResponse> changePostActivity(
         @PathVariable Long postId, @RequestBody PostActivityRequest postActivityRequest) {
-        log.info(
-            "[AdminApiController -> Called : changePostActivity] change post activity  "
-                + "post: {} activity : {}", postId, postActivityRequest.getContentActivity().name());
-        PostActivityResponse postActivityResponse = PostActivityResponse.fromPost(
-            reportActionService.changePostActivity(postActivityRequest.getContentActivity(), postId));
+
+        log.info("[AdminApiController -> Called : changePostActivity] change post activity  "
+            + "post: {} activity : {}", postId, postActivityRequest.getContentActivity().name());
+
+        PostActivityResponse postActivityResponse = PostActivityResponse
+            .fromPost(
+                reportActionService.changePostActivity(
+                    postActivityRequest.getContentActivity(), postId));
 
         return response(postActivityResponse);
     }

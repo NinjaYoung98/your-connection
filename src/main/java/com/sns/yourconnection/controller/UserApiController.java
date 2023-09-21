@@ -34,24 +34,22 @@ public class UserApiController {
 
     @PostMapping("/follow/{followingId}")
     public ResponseSuccess follow(@PathVariable Long followingId, @AuthUser User user) {
+
         log.info("User: {} is attempting to follow user: {}", user, followingId);
 
         followService.follow(followingId, user);
-        log.info("User: {} has successfully followed user: {}", user, followingId);
-
         return response();
     }
 
     @GetMapping("/follow/following")
     public ResponseSuccess<List<FollowingResponse>> getFollowingPage(@AuthUser User user,
         @ValidatedPageRequest Pageable pageable) {
+
         log.info("Getting following list for user: {} and Pageable Details: {}", user.getId(),
             pageable);
 
         Page<FollowingResponse> followingPage = followService.getFollowingPage(user, pageable)
             .map(FollowingResponse::fromFollow);
-        log.info("Retrieved following list successfully. Current page size: {}",
-            followingPage.getSize());
 
         return response(followingPage.getContent(), PageResponseWrapper.fromPage(followingPage));
     }
@@ -59,24 +57,25 @@ public class UserApiController {
     @GetMapping("/follow/followers")
     public ResponseSuccess<List<FollowerResponse>> getFollowerPage(@AuthUser User user,
         @ValidatedPageRequest Pageable pageable) {
+
         log.info("Getting follower list for user: {} and Pageable Details: {}", user.getId(),
             pageable);
 
         Page<FollowerResponse> followerPage = followService.getFollowerPage(user, pageable)
             .map(FollowerResponse::fromFollow);
-        log.info("Retrieved follower list successfully. Current page size: {}",
-            followerPage.getSize());
 
         return response(followerPage.getContent(), PageResponseWrapper.fromPage(followerPage));
     }
 
     @GetMapping("/follow/{targetId}")
-    public ResponseSuccess<FromFollowingResponse> getUserRelatedToFollowingList(
-        @AuthUser User user,
+    public ResponseSuccess<FromFollowingResponse> getUserRelatedToFollowingList(@AuthUser User user,
         @PathVariable Long targetId, Pageable pageable) {
+
         log.info("user: {} Getting following list related to targetId : {}", user, targetId);
+
         FromFollowingResponse fromFollowingResponse = followService.getUserRelatedToFriend(
             user, targetId, pageable);
+
         return response(fromFollowingResponse);
     }
 
@@ -85,13 +84,17 @@ public class UserApiController {
         @RequestParam("images") MultipartFile multipartFile) {
 
         log.info("[uploadImage] upload image ");
-        return response(
-            UserProfileImageResponse.fromFileInfo(userService.uploadProfile(user, multipartFile)));
+
+        return response(UserProfileImageResponse.
+            fromFileInfo(
+                userService.uploadProfile(user, multipartFile)));
     }
 
     @DeleteMapping("/image")
     public ResponseSuccess<Void> deleteUserProfile(@AuthUser User user) {
+
         log.info("[deleteImage] delete image");
+
         userService.deleteProfile(user);
         return response();
     }
