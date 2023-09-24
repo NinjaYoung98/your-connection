@@ -1,4 +1,4 @@
-package com.sns.yourconnection.utils.files;
+package com.sns.yourconnection.utils.generator;
 
 import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
