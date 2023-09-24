@@ -5,7 +5,6 @@ import static com.sns.yourconnection.utils.generator.AdminAccountUtil.*;
 
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.repository.UserRepository;
-import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,12 +23,12 @@ public class AdminCreationService {
     private final JavaMailSender javaMailSender;
 
 
-    @PostConstruct
-    public void initAdmin() {
-        if (userRepository.findByEmail(projectDefaultMail).isEmpty()) {
-            createAccount(projectDefaultMail);
-        }
-    }
+//    @PostConstruct
+//    public void initAdmin() {
+//        if (userRepository.findByEmail(projectDefaultMail).isEmpty()) {
+//            createAccount(projectDefaultMail);
+//        }
+//    }
 
     @Transactional
     public void createAccount(String email) {

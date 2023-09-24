@@ -1,6 +1,7 @@
 package com.sns.yourconnection.service.users;
 
 import com.sns.yourconnection.model.dto.User;
+import com.sns.yourconnection.model.entity.users.EmailVerified;
 import com.sns.yourconnection.model.entity.users.UserProfileImageEntity;
 import com.sns.yourconnection.repository.redis.LoginFailedRepository;
 import com.sns.yourconnection.utils.files.FileInfo;
@@ -31,8 +32,6 @@ public class UserService {
     private final StorageService storageService;
     private final AccountLockService accountLockService;
     private final JwtTokenGenerator jwtTokenGenerator;
-    private static final Integer INIT_LOGIN_TRIAL_COUNT = 0;
-    private static final Integer MAX_ATTEMPT_COUNT = 10;
 
     @Transactional
     public User join(UserJoinRequest userJoinRequest) {
@@ -68,38 +67,36 @@ public class UserService {
          */
 
         UserEntity userEntity = userRepository.findByUsername(userLoginRequest.getUsername())
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
         User user = User.fromEntity(userEntity);
 
-        ValidatePassword(userLoginRequest, user);
+        validateEmailVerify(userEntity);
+        validatePassword(userLoginRequest, user);
         return jwtTokenGenerator.generateAccessToken(user.getUsername());
     }
 
-    private void ValidatePassword(UserLoginRequest userLoginRequest, User user) {
+    private static void validateEmailVerify(UserEntity userEntity) {
+        if (userEntity.getEmailVerified() == EmailVerified.UNVERIFIED) {
+            throw new AppException(ErrorCode.HAS_NOT_AUTHENTICATION, "이메일 인증을 부탁드립니다.");
+        }
+    }
+
+    private void validatePassword(UserLoginRequest userLoginRequest, User user) {
         if (!encoder.matches(userLoginRequest.getPassword(), user.getPassword())) {
+
             countLoginFailed(user);
 
-            throw new AppException(ErrorCode.HAS_NOT_AUTHENTICATION,
-                "Your account requires email verification.");
+            throw new AppException(ErrorCode.INVALID_PASSWORD);
         }
     }
 
-    public void countLoginFailed(User user) {
-        Long attemptCount = incrementFailedCount(user);
+    private void countLoginFailed(User user) {
+        boolean shouldLockAccount = loginFailedRepository.checkLockAccountByKey(user.getUsername());
 
-        log.info("attemptCount : {}", attemptCount);
-
-        if (attemptCount >= MAX_ATTEMPT_COUNT) {
+        if (shouldLockAccount) {
             accountLockService.lockUserAccount(user);
-            loginFailedRepository.delete(user.getUsername()); // 계정 잠금 후 실패 횟수 초기화
         }
-    }
-
-    private Long incrementFailedCount(User user) {
-        if (loginFailedRepository.getValues(user.getUsername()) == null) {
-            loginFailedRepository.setValue(user.getUsername(), INIT_LOGIN_TRIAL_COUNT);
-        }
-        return loginFailedRepository.increment(user.getUsername());
     }
 
 
@@ -111,7 +108,8 @@ public class UserService {
         }
 
         UserEntity userEntity = userRepository.findById(user.getId())
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         if (userEntity.getProfileImage() != null) {
             storageService.delete(userEntity.getProfileImage().getStoreFilename());
