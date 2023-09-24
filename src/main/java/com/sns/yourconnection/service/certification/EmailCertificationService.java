@@ -43,7 +43,8 @@ public class EmailCertificationService {
 
     @Transactional
     public void verifiedCode(String email, String userCode) {
-        String securityCode = emailCertificationRepository.getValues(email).orElseThrow(() ->
+        String securityCode = emailCertificationRepository.getValues(email)
+            .orElseThrow(() ->
             new AppException(ErrorCode.EXPIRED_VERIFICATION)
         );
 

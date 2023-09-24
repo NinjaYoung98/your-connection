@@ -12,7 +12,7 @@ import com.sns.yourconnection.exception.AppException;
 import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.utils.files.FileInfo;
 import com.sns.yourconnection.service.storage.strategy.FileUploadStrategy;
-import com.sns.yourconnection.utils.files.FilenameGenerator;
+import com.sns.yourconnection.utils.generator.FilenameGenerator;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,10 +1,14 @@
 package com.sns.yourconnection.repository.redis;
 
-import com.sns.yourconnection.utils.validation.ClassUtil;
+import com.sns.yourconnection.utils.loader.ClassUtil;
+import com.sns.yourconnection.utils.loader.LuaScriptLoader;
 import java.time.Duration;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -13,30 +17,26 @@ import org.springframework.stereotype.Repository;
 public class LoginFailedRepository {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final Long TIME_TO_LIVE = 86400000L;
+
     private static final String PREFIX_FOR_KEY = "ULF: ";
+    private static final Integer INIT_LOGIN_TRIAL_COUNT = 1;
+    private static final Integer MAX_ATTEMPT_COUNT = 5;
 
-    public void setValue(String username, Integer failedCount) {
-        String key = getKey(username);
-        redisTemplate.opsForValue().set(key, failedCount, Duration.ofMillis(TIME_TO_LIVE));
-        log.info("[LoginFailedRepository]count login failed for user : {}", username);
-    }
-
-    public Integer getValues(String username) {
-        Integer failedCount = ClassUtil.castingInstance(
-            redisTemplate.opsForValue().get(getKey(username)), Integer.class);
-        return failedCount;
-    }
+    @Value("${lua.login-failed}")
+    private String luaPath;
 
     private String getKey(String username) {
         return PREFIX_FOR_KEY + username;
     }
 
-    public Long increment(String username) {
-        return redisTemplate.opsForValue().increment(getKey(username));
-    }
 
-    public void delete(String username) {
-        redisTemplate.delete(getKey(username));
+    public boolean checkLockAccountByKey(String username) {
+        String luaScript = LuaScriptLoader.load(luaPath);
+        Boolean shouldLockAccount = redisTemplate.execute(
+            new DefaultRedisScript<>(luaScript, Boolean.class),
+            Collections.singletonList(getKey(username)),
+            MAX_ATTEMPT_COUNT.toString(), INIT_LOGIN_TRIAL_COUNT.toString());
+
+        return shouldLockAccount;
     }
 }
