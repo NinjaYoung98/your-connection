@@ -6,6 +6,7 @@ import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.users.UserActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.repository.UserRepository;
+import com.sns.yourconnection.repository.redis.EmailCertificationRepository;
 import com.sns.yourconnection.utils.files.EmailForms;
 import com.sns.yourconnection.utils.generator.RandomCodeGenerator;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class AccountLockService {
 
     private final UserRepository userRepository;
-    private final JavaMailSender javaMailSender;
-    private static final String USER_AUTHENTICATION_MESSAGE = "Enter the following verification code";
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void lockUserAccount(User user) {
@@ -36,7 +35,6 @@ public class AccountLockService {
 
         userEntity.changeActivity(UserActivity.LOCKED);
         userEntity.toUnVerified();
-        javaMailSender.send(EmailForms.createEmailForm(user.getEmail(), USER_AUTHENTICATION_MESSAGE,
-            RandomCodeGenerator.createRandomCodeNumber()));
+
     }
 }

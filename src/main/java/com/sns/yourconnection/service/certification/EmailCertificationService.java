@@ -5,6 +5,7 @@ import com.sns.yourconnection.exception.ErrorCode;
 import com.sns.yourconnection.model.entity.users.UserActivity;
 import com.sns.yourconnection.model.entity.users.UserEntity;
 import com.sns.yourconnection.repository.UserRepository;
+import com.sns.yourconnection.repository.UserRevisionRepository;
 import com.sns.yourconnection.repository.redis.EmailCertificationRepository;
 import com.sns.yourconnection.utils.files.EmailForms;
 import com.sns.yourconnection.utils.generator.RandomCodeGenerator;
@@ -23,6 +24,7 @@ public class EmailCertificationService {
     private final JavaMailSender javaMailSender;
     private final EmailCertificationRepository emailCertificationRepository;
     private final UserRepository userRepository;
+    private final UserRevisionRepository userRevisionRepository;
     private static final String TITLE_TO_SEND = "Your Connection 이메일 인증 번호";
 
     @Transactional
@@ -45,8 +47,8 @@ public class EmailCertificationService {
     public void verifiedCode(String email, String userCode) {
         String securityCode = emailCertificationRepository.getValues(email)
             .orElseThrow(() ->
-            new AppException(ErrorCode.EXPIRED_VERIFICATION)
-        );
+                new AppException(ErrorCode.EXPIRED_VERIFICATION)
+            );
 
         validateSecurityCode(userCode, securityCode);
 
@@ -54,8 +56,9 @@ public class EmailCertificationService {
         userEntity.toVerified();
 
         if (userEntity.getUserActivity() == UserActivity.LOCKED) {
-            userEntity.changeActivity(UserActivity.NORMAL);
-            //TODO: User의 최신 변경 사항을 추적하여 변경하기 ref : https://kimji0139.tistory.com/94
+            UserActivity previousActivity = userRevisionRepository.findPreviousActivityByUserId(
+                userEntity.getId());
+            userEntity.changeActivity(previousActivity);
         }
     }
 
@@ -73,8 +76,8 @@ public class EmailCertificationService {
     }
 
     private void sendEmail(String toEmail, String securityCode) {
-        SimpleMailMessage emailForm = EmailForms.createEmailForm(toEmail, TITLE_TO_SEND,
-            securityCode);
+        SimpleMailMessage emailForm = EmailForms.createEmailForm(
+            toEmail, TITLE_TO_SEND, securityCode);
         javaMailSender.send(emailForm);
     }
 }

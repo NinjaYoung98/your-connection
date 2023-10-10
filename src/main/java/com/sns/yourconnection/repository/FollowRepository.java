@@ -18,17 +18,17 @@ public interface FollowRepository extends JpaRepository<FollowEntity, Long> {
         UserEntity followedUser);
 
 
-    @Query("SELECT f FROM FollowEntity f WHERE f.followedUser.Id = :followedId")
+    @Query("SELECT f FROM FollowEntity f WHERE f.followedUser.id = :followedId")
     Page<FollowEntity> findAllByFollowedUserId(@Param("followedId") Long followedId, Pageable pageable);
 
-    @Query("SELECT f FROM FollowEntity f WHERE f.followingUser.Id = :followingUserId")
+    @Query("SELECT f FROM FollowEntity f WHERE f.followingUser.id = :followingUserId")
     Page<FollowEntity> findAllByFollowingUserId(@Param("followingUserId") Long followingUserId,
         Pageable pageable);
 
-    @Query("SELECT COUNT(f) FROM FollowEntity f WHERE f.followingUser.Id = :userId "
-        + "AND f.followedUser.Id "
-        + "IN (SELECT ff.followingUser.Id FROM FollowEntity ff "
-        + "WHERE ff.followedUser.Id = :targetUserId)")
+    @Query("SELECT COUNT(f) FROM FollowEntity f WHERE f.followingUser.id = :userId "
+        + "AND f.followedUser.id "
+        + "IN (SELECT ff.followingUser.id FROM FollowEntity ff "
+        + "WHERE ff.followedUser.id = :targetUserId)")
     Integer countMutualFollows(@Param("userId") Long userId,
         @Param("targetUserId") Long targetUserId);
 

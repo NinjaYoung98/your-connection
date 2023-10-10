@@ -13,6 +13,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 @Entity
 @Getter
@@ -46,7 +48,7 @@ public class PostEntity extends AuditEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostLikeEntity> likes = new ArrayList<>();
-
+    
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostCountEntity> postCounts = new ArrayList<>();
 

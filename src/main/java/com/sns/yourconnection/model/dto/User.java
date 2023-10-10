@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.Map;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Getter
 @AllArgsConstructor
