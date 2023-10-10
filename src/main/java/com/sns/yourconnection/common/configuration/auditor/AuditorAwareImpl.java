@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Optional;
 
-@Slf4j
 public class AuditorAwareImpl implements AuditorAware<String> {
 
     /*
