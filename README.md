@@ -3,8 +3,7 @@
 ## 💡 프로젝트 목적
 
 - 언어교환 SNS 서비스 프로젝트 입니다.<br>
-- 영어 공부를 하면서 첫 언어교환 모임을 참여했을 때 느꼈던 아쉬움과 어려움을 프로젝트의 주제로 녹여나간다면  몰입의 즐거움을 느낄 수 있을 것 같습니다.<br>
-- 꾸준히 업데이트해 나가며 해당 프로젝트의 규모를 점진적으로 늘려나갈 예정이고 여러 가지의 것들을 많이 시도해 보고 싶습니다.
+
 ## 🎯 프로젝트 기간
  2023.08.23 ~ ing
  <br></br>
@@ -16,9 +15,7 @@
 - Redis
 <br></br>
 ## 📍 프로젝트 컨벤션
-첫 팀 프로젝트를 진행 당시 팀에 코드 컨벤션과 커밋 메시지 규격에 대한 명확한 기준이 없었습니다.<br>
-이로 인해 프로젝트는 여러 차질을 겪게 되었고, 이는 개발 과정에 상당한 혼란을 초래했습니다.<br>
-그 경험을 통해 코드와 커밋 메시지의 일관성의 중요성을 깨닫고 이를 습관화하려 합니다.
+
 ### docs (template)
 - [[Commit template]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/git_convention.txt)
 - [[DB_convention]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/db_convention)
