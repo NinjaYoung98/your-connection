@@ -3,6 +3,8 @@ package com.sns.yourconnection.service.users;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.model.entity.users.EmailVerified;
 import com.sns.yourconnection.model.entity.users.UserProfileImageEntity;
+import com.sns.yourconnection.model.param.users.UserModifyPasswordRequest;
+import com.sns.yourconnection.model.param.users.UserModifyUsernameRequest;
 import com.sns.yourconnection.repository.redis.LoginFailedRepository;
 import com.sns.yourconnection.utils.files.FileInfo;
 import com.sns.yourconnection.model.param.users.UserJoinRequest;
@@ -40,8 +42,8 @@ public class UserService {
             -  username이 이미 존재할 경우 에러 반환
             -  중복 이메일 허용 x
          */
-        DuplicateUsername(userJoinRequest.getUsername());
-        DuplicateUserEmail(userJoinRequest.getEmail());
+        duplicateUsername(userJoinRequest.getUsername());
+        duplicateUserEmail(userJoinRequest.getEmail());
 
         UserEntity userEntity = UserEntity.of(
             userJoinRequest.getUsername(), encoder.encode(userJoinRequest.getPassword()),
@@ -76,9 +78,48 @@ public class UserService {
         return jwtTokenGenerator.generateAccessToken(user.getUsername());
     }
 
+    @Transactional
+    public void modifyPassword(UserModifyPasswordRequest modifyPasswordRequest, User user) {
+        /*
+        패스워드 변경 기능
+            - 기존의 패스워드와 동일하게 변경 x
+         */
+
+        validateSamePassword(modifyPasswordRequest, user);
+
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        userEntity.modifyPassword(
+            encoder.encode(modifyPasswordRequest.getSavePassword()));
+    }
+
+    @Transactional
+    public void modifyUsername(UserModifyUsernameRequest userModifyUsernameRequest, User user) {
+        /*
+        username 변경 기능
+            - 중복된 username 허용 x
+         */
+
+        duplicateUsername(userModifyUsernameRequest.getSaveUsername());
+
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername())
+            .orElseThrow(
+                () -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+        userEntity.modifyUsername(userModifyUsernameRequest.getSaveUsername());
+    }
+
     private static void validateEmailVerify(UserEntity userEntity) {
         if (userEntity.getEmailVerified() == EmailVerified.UNVERIFIED) {
             throw new AppException(ErrorCode.HAS_NOT_AUTHENTICATION, "이메일 인증을 부탁드립니다.");
+        }
+    }
+
+    private void validateSamePassword(UserModifyPasswordRequest modifyPasswordRequest, User user) {
+        if (encoder.matches(modifyPasswordRequest.getSavePassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "기존 패스워드와 동일합니다.");
         }
     }
 
@@ -138,14 +179,14 @@ public class UserService {
         }
     }
 
-    private void DuplicateUsername(String username) {
+    private void duplicateUsername(String username) {
         userRepository.findByUsername(username).ifPresent(
             userEntity -> {
                 throw new AppException(ErrorCode.DUPLICATED_USERNAME);
             });
     }
 
-    private void DuplicateUserEmail(String email) {
+    private void duplicateUserEmail(String email) {
         userRepository.findByEmail(email).ifPresent(
             userEntity -> {
                 throw new AppException(ErrorCode.DUPLICATED_EMAIL);

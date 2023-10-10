@@ -27,6 +27,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     //jpa
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    // jpa update manage
+    implementation 'org.springframework.data:spring-data-envers:2.7.2'
     //security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     testImplementation 'org.springframework.security:spring-security-test'

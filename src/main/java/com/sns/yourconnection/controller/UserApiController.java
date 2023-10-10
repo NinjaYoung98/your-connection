@@ -2,6 +2,8 @@ package com.sns.yourconnection.controller;
 
 import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.common.annotation.ValidatedPageRequest;
+import com.sns.yourconnection.model.param.users.UserModifyPasswordRequest;
+import com.sns.yourconnection.model.param.users.UserModifyUsernameRequest;
 import com.sns.yourconnection.model.result.follow.FollowerResponse;
 import com.sns.yourconnection.model.result.follow.FollowingResponse;
 import com.sns.yourconnection.controller.response.PageResponseWrapper;
@@ -31,6 +33,28 @@ public class UserApiController {
 
     private final FollowService followService;
     private final UserService userService;
+
+
+    @PutMapping("/password")
+    public ResponseSuccess<Void> modifyPassword(
+        @RequestBody UserModifyPasswordRequest modifyPasswordRequest, @AuthUser User user) {
+
+        log.info("User : {} modify password", user.getId());
+
+        userService.modifyPassword(modifyPasswordRequest, user);
+        return response();
+    }
+
+    @PutMapping("/username")
+    public ResponseSuccess<Void> modifyUsername(
+        @RequestBody UserModifyUsernameRequest userModifyUsernameRequest, @AuthUser User user) {
+
+        log.info("User : {} try to modify username details : [ request : {} ]",
+            user.getId(), userModifyUsernameRequest.getSaveUsername());
+
+        userService.modifyUsername(userModifyUsernameRequest, user);
+        return response();
+    }
 
     @PostMapping("/follow/{followingId}")
     public ResponseSuccess follow(@PathVariable Long followingId, @AuthUser User user) {
