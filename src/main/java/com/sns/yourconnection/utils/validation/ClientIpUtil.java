@@ -3,13 +3,9 @@ package com.sns.yourconnection.utils.validation;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Arrays;
 
-@Slf4j
-public class HttpReqRespUtil {
+public class ClientIpUtil {
     private static final String[] IP_HEADER_CANDIDATES = {
             "X-Forwarded-For",
             "Proxy-Client-IP",
@@ -31,9 +27,11 @@ public class HttpReqRespUtil {
     public static String getClientIp(HttpServletRequest request) {
         return Arrays.stream(IP_HEADER_CANDIDATES)
                 .map(request::getHeader)
+
                 .filter(ipAddress -> ipAddress != null && !ipAddress.isEmpty() && !"unknown".equalsIgnoreCase(ipAddress))
                 .map(ipAddress -> ipAddress.split(",")[0])
                 .findFirst()
+
                 .orElseGet(request::getRemoteAddr);
     }
 }

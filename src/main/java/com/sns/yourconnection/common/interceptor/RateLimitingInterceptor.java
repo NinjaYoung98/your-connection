@@ -1,8 +1,11 @@
 package com.sns.yourconnection.common.interceptor;
 
-import com.sns.yourconnection.exception.ErrorCode;
+import static com.sns.yourconnection.utils.constants.RateLimitBucketConstants.*;
+
+import com.sns.yourconnection.controller.response.ratelimit.RateLimitResponse;
 import com.sns.yourconnection.service.protection.RateLimitService;
-import com.sns.yourconnection.utils.validation.HttpReqRespUtil;
+import com.sns.yourconnection.utils.checker.RateLimitRefillChecker;
+import com.sns.yourconnection.utils.validation.ClientIpUtil;
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
 import io.github.bucket4j.ConsumptionProbe;
@@ -14,38 +17,26 @@ import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class RateLimitingInterceptor implements HandlerInterceptor {
 
-    private final Long BUCKET_CAPACITY = 100L;
-    private final Long BUCKET_TOKENS = 50L;
-    private final Duration CALLS_IN_SECONDS = Duration.ofSeconds(1);
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
     private final RateLimitService rateLimitService;
-
-    /**
-     * @param request  current HTTP request
-     * @param response current HTTP response
-     * @param handler  chosen handler to execute, for type and/or instance evaluation
-     * @return
-     * @throws Exception
-     * @apiNote `Retry-After` 설명:
-     * https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
-     */
-
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response,
-        Object handler) {
-        String clientIp = HttpReqRespUtil.getClientIp(request);
+    public boolean preHandle(HttpServletRequest request,
+        HttpServletResponse response, Object handler) {
+        String clientIp = ClientIpUtil.getClientIp(request);
+
         Bucket bucket = cache.computeIfAbsent(clientIp, key -> newBucket());
-        ConsumptionProbe consumptionProbe = bucket.tryConsumeAndReturnRemaining(1);
+        ConsumptionProbe consumptionProbe = bucket.tryConsumeAndReturnRemaining(
+            REQUEST_COST_IN_TOKENS);
+
         if (isRateLimitExceeded(request, response, clientIp, consumptionProbe)) {
             return false;
         }
@@ -54,58 +45,40 @@ public class RateLimitingInterceptor implements HandlerInterceptor {
 
     /**
      * @apiNote rate limit 발생여부에 따른 각각의 success, error response 를 생성 및 반환 합니다. *
-     * 'RateLimitCounter.checkLimitReachedThreshold()' 1시간에 10 번 이상의 rate limit 발생하는지 check 합니다.*
+     * 'rateLimitService.isLimitReachedThreshold(...)' 특정 IP에 대한 rate limit 허용치 초과 여부를 check 합니다.*
      */
     private boolean isRateLimitExceeded(HttpServletRequest request, HttpServletResponse response,
         String clientIp, ConsumptionProbe consumptionProbe) {
-        if (!consumptionProbe.isConsumed()) {
-            errorResponse(response, consumptionProbe);
-            log.warn(
-                "rate limit exceeded for client IP :{}  Refill in {} seconds  Request details: method = {} URI = {}"
-                , clientIp, getRoundedSecondsToWaitForRefill(consumptionProbe), request.getMethod(),
-                request.getRequestURI());
 
-            // 만약에 1시간에 10번 이상의 Rate Limit 에러를 발생시키는 유저가 있다면 텔레그램 알림.
+        if (!consumptionProbe.isConsumed()) {
+            float waitForRefill =
+                RateLimitRefillChecker.getRoundedSecondsToWaitForRefill(consumptionProbe);
+
+            RateLimitResponse.errorResponse(
+                response, BUCKET_CAPACITY, CALLS_IN_SECONDS, waitForRefill);
+
+            log.warn(
+                "rate limit exceeded for client IP :{}  Refill in {} seconds  Request "
+                    + "details: method = {} URI = {}",
+                clientIp, waitForRefill, request.getMethod(), request.getRequestURI());
+
+            // 만약에 1시간에 10번 이상의 Rate Limit 에러를 발생시키는 유저가 있다면 알림 메시지.
             rateLimitService.isLimitReachedThreshold(clientIp);
             return true;
         }
-        successResponse(response, consumptionProbe);
+
+        RateLimitResponse.successResponse(
+            response, consumptionProbe.getRemainingTokens(), BUCKET_CAPACITY, CALLS_IN_SECONDS);
+
         log.info("remaining token: {}", consumptionProbe.getRemainingTokens());
         return false;
     }
 
     private Bucket newBucket() {
-        // 버킷의 총 크기 = 100 , 한 번에 충전되는 토큰 = 50 , 버킷 충전 시간 = 1초
         return Bucket.builder()
             .addLimit(Bandwidth.classic(
                 BUCKET_CAPACITY, Refill.intervally(
                     BUCKET_TOKENS, CALLS_IN_SECONDS)))
             .build();
-    }
-
-    /**
-     * @apiNote 'X-RateLimit-RetryAfter', 'X-RateLimit-Limit', 'X-RateLimit-Remaining' 참고:
-     * https://sendbird.com/docs/chat/v3/platform-api/application/understanding-rate-limits/rate-limits
-     */
-    private void successResponse(HttpServletResponse response, ConsumptionProbe consumptionProbe) {
-        response.setHeader("X-RateLimit-Remaining",
-            Long.toString(consumptionProbe.getRemainingTokens()));
-        response.setHeader("X-RateLimit-Limit",
-            BUCKET_CAPACITY + ";w=" + CALLS_IN_SECONDS.getSeconds());
-    }
-
-    private void errorResponse(HttpServletResponse response, ConsumptionProbe consumptionProbe) {
-        response.setHeader("X-RateLimit-RetryAfter",
-            Float.toString(getRoundedSecondsToWaitForRefill(consumptionProbe)));
-        response.setHeader("X-RateLimit-Limit",
-            BUCKET_CAPACITY + ";w=" + CALLS_IN_SECONDS.getSeconds());
-        response.setStatus(ErrorCode.TOO_MANY_REQUESTS.getHttpStatus().value());
-    }
-
-    private float getRoundedSecondsToWaitForRefill(ConsumptionProbe consumptionProbe) {
-        float secondsToWaitForRefill =
-            (float) TimeUnit.NANOSECONDS.toMillis(consumptionProbe.getNanosToWaitForRefill())
-                / 1000;
-        return (float) Math.round(secondsToWaitForRefill * 10) / 10;
     }
 }

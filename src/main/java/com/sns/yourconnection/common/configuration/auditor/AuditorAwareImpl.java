@@ -2,8 +2,7 @@ package com.sns.yourconnection.common.configuration.auditor;
 
 
 import com.sns.yourconnection.security.principal.UserPrincipal;
-import com.sns.yourconnection.utils.loader.ClassUtil;
-import lombok.extern.slf4j.Slf4j;
+import com.sns.yourconnection.utils.validation.ClassUtil;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;

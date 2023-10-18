@@ -15,5 +15,4 @@ public class YourConnectionApplication {
     public static void main(String[] args) {
         SpringApplication.run(YourConnectionApplication.class, args);
     }
-
 }

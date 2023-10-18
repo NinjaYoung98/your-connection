@@ -1,8 +1,6 @@
 package com.sns.yourconnection.repository.redis;
 
-import com.sns.yourconnection.utils.loader.ClassUtil;
 import com.sns.yourconnection.utils.loader.LuaScriptLoader;
-import java.time.Duration;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

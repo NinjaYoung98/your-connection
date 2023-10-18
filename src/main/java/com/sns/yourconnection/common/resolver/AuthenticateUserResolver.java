@@ -3,7 +3,7 @@ package com.sns.yourconnection.common.resolver;
 import com.sns.yourconnection.common.annotation.AuthUser;
 import com.sns.yourconnection.model.dto.User;
 import com.sns.yourconnection.security.principal.UserPrincipal;
-import com.sns.yourconnection.utils.loader.ClassUtil;
+import com.sns.yourconnection.utils.validation.ClassUtil;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
