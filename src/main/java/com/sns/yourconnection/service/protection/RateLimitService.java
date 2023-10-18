@@ -46,6 +46,7 @@ public class RateLimitService {
     private void checkAndResetIfLimitExceeded(String clientIp, RequestInfo requestInfo, int count) {
         if (count >= 10) {
             requestInfo.resetCount();
+
             notificationService.sendMessage(
                 String.format(" Rate limit is occurred 10 or more times for this client IP: %s",
                     clientIp));
