@@ -89,8 +89,7 @@
 
 - <a href= "https://github.com/NinjaYoung98/your-connection/wiki/Project-ERD" target= "blank"> [Project ERD 바로가기]</a>
 
-
-<BR> </BR>
+</br>
 
 ## 🚀 API Endpoint
 
