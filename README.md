@@ -4,7 +4,7 @@
 
 #### Java, Spring으로 개발하는 SNS 프로젝트 
 
-이 프로젝트는 RESTful 원칙에 기반하여 설계되었고, </br>
+`Your Connection` 프로젝트는 RESTful 원칙에 기반하여 설계되었고, </br>
 사용자 간의 상호작용을 최적화하기 위한 다양한 SNS 기능을 구현하고 있습니다.
 </br>
 
@@ -44,25 +44,21 @@
 - 팔로우 서비스를 응용한 함께 아는 친구 기능 제공
 - 관리자를 통한 신고 조치 서비스를 이용하여 컨텐츠 및 서비스 품질 높이기
   
-**5. [기본 SNS 기능]**
+**5. [SNS 기능]**
 - 이외에 SNS 서비스 기능 구현(게시물, 댓글, 좋아요, 컨텐츠 번역...)
 
 </br>
 
-### 📃 Project Posting 
-- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/Projecting-Posting" target= "blank"> [프로젝트 관련 포스팅 바로가기]</a>
+###  📌 Project Posting
+- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/Projecting-Posting" target= "blank"> **[프로젝트 관련 포스팅 바로가기]**</a>
 
-### 📃 프로젝트 기능 명세 
-- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B8%B0%EB%8A%A5-%EB%AA%85%EC%84%B8" target= "blank"> [프로젝트 기능 명세 바로가기]</a>
+### **📌 프로젝트 기능 명세**
+- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B8%B0%EB%8A%A5-%EB%AA%85%EC%84%B8" target= "blank"> **[프로젝트 기능 명세 바로가기]**</a>
 
 </br>
-<details>
-   <summary> <ins> 프로젝트 상세 기능 명세  (클릭하여 펼치기)</ins></summary><br>
- 
 
 
-
-## 📌 프로젝트 공통 사항
+## 🚀 프로젝트 공통 사항
 
 ### docs (template)
 - [[Commit template]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/git_convention.txt)
@@ -80,12 +76,20 @@
 - [[Github-flow Reference2]](https://blog.hwahae.co.kr/all/tech/9507)<br>
 
    <strong>[Git Kraken]</strong><br>
-  <img width="685" alt="스크린샷 2023-08-30 045044" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/8a20c18d-0ce6-4253-8426-91429842b77b"> <br>
+  <img width="615" alt="스크린샷 2023-08-30 045044" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/8a20c18d-0ce6-4253-8426-91429842b77b"> <br>
+  </br>
    <strong>[project board]</strong><br>
   <br>
-  <img width="865" alt="스크린샷 2023-08-30 045225" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10d6e02f-e3bd-481f-b5a2-1d84b6564869">
+  <img width="715" alt="스크린샷 2023-08-30 045225" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10d6e02f-e3bd-481f-b5a2-1d84b6564869">
+
+<Br>
+</br>
+
+## 프로젝트 ERD 
+
+<img width="670" alt="스크린샷 2023-11-14 145601" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/bc08445a-c027-48e5-8a05-3dcd7b4e6520">
 
 
-
+aa
      
     
