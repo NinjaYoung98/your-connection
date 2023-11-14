@@ -1,5 +1,11 @@
 # 🙋‍♂your-connection
+
+<img width="324" alt="스크린샷 2023-11-14 130405" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/c0878108-b63b-415a-89ed-6f2b66f0d414">
+
 #### Java, Spring으로 개발하는 SNS 프로젝트 
+
+이 프로젝트는 RESTful 원칙에 기반하여 설계되었고, </br>
+사용자 간의 상호작용을 최적화하기 위한 다양한 SNS 기능을 구현하고 있습니다.
 </br>
 
 
@@ -17,52 +23,38 @@
 - AWS S3
 <br></br>
 
-## 📌 프로젝트 공통 사항
-
-<details>
-   <summary> <ins> 프로젝트 공통 사항 (클릭하여 펼치기)</ins></summary><br>
- 
-### docs (template)
-- [[Commit template]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/git_convention.txt)
-- [[DB_convention]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/db_convention)
-- [[PR_template]](https://github.com/NinjaYoung98/your-connection/blob/main/.github/pull_request_template.md)
-### Code Style
-- [Google code Style 적용](https://google.github.io/styleguide/javaguide.html)
-<br></br>
-## 📑 깃 브랜치 전략
-<img width="505" alt="스크린샷 2023-08-30 054216" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10a04678-aeff-454e-a322-6be2d2486556"> <br>
-- 현재 프로젝트 규모를 고려하여 상대적으로 가벼운 GitHub-flow 정책을 도입하였습니다.<br>
-- 요구사항에 대한 깃 이슈 번호를 할당받고 그에 맞는 feature 브랜치를 생성합니다.<br>
-- GitHub에서 제공하는 칸반보드와 UI 도구인 Git Kraken으로 깃 이슈번호와 브랜치를 관리해 주었습니다.<br>
- - [[Github-flow Reference1]](https://build5nines.com/introduction-to-git-version-control-workflow/)
-- [[Github-flow Reference2]](https://blog.hwahae.co.kr/all/tech/9507)<br>
-
-   <strong>[Git Kraken]</strong><br>
-  <img width="685" alt="스크린샷 2023-08-30 045044" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/8a20c18d-0ce6-4253-8426-91429842b77b"> <br>
-   <strong>[project board]</strong><br>
-  <br>
-  <img width="865" alt="스크린샷 2023-08-30 045225" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10d6e02f-e3bd-481f-b5a2-1d84b6564869">
-</details>
 
 ## 🚀 프로젝트 중점사항 요약
 
-- 계정 보호를 위한 사용자 로그인 실패 횟수 트래킹 및 일정 횟수 초과시 추가 인증 요구
+**1. [보안 및 인증]**
+- 로그인 실패 횟수 트래킹 및 일정 횟수 초과시 추가 인증 요구
+- 이메일 인증 및 OAuth2를 활용한 로그인 인증 서비스 구현
+  
+**2. [성능 향상 및 서비스 안정성]**
 - Redis, Lua script 를 활용하여 트래킹시 발생되는 조건부 카운트에 대한 동시성 제어
 - Rate limit 핸들링을 통한 무분별한 API 호출 방지하여 서비스 안정성 높이기
 - 1시간 안에 10번 이상의 rate limit 발생시 지정된 메신저로 알림 발송하는 대응 시스템 구축
+- 다량 조회, 페이지네이션 조회 시 발생하는 N+1 문제를 적절한 방식으로 해결(fetch join, Batch size)
   
+**3. [데이터 관리]**
+- User 변경 사항 관리 및 추적을 통한 유저 정보 데이터 관리
+
+**4. [사용자 경험 향상]**
 - 전략 패턴을 이용하여 최소의 비용으로 효율적인 다중 파일 업로드 구현
-- User 변경 사항 관리 및 추적을 통한 유저 정보 데이터 관리 
-- 관리자를 통한 신고 조치 서비스를 이용하여 컨텐츠 및 서비스 품질 높이기 
 - 팔로우 서비스를 응용한 함께 아는 친구 기능 제공
-- 이메일 인증 및 OAuth2를 활용한 로그인 인증 서비스 구현 
-- 이외에 SNS 서비스 기능 구현(게시물, 댓글, 좋아요,번역...)  
+- 관리자를 통한 신고 조치 서비스를 이용하여 컨텐츠 및 서비스 품질 높이기
   
-<a href= "https://velog.io/@whcksdud8" target= "blank"> [프로젝트 정리 블로그 링크]</a>
+**5. [기본 SNS 기능]**
+- 이외에 SNS 서비스 기능 구현(게시물, 댓글, 좋아요, 컨텐츠 번역...)
+
+</br>
+
+### 📃 프로젝트 관련 Posting 
+- <a href= "https://velog.io/@whcksdud8" target= "blank"> [프로젝트 정리 블로그 링크]</a>
 
 </br>
 <details>
-   <summary> <ins> 프로젝트 기능 명세  (클릭하여 펼치기)</ins></summary><br>
+   <summary> <ins> 프로젝트 상세 기능 명세  (클릭하여 펼치기)</ins></summary><br>
  
 ## ✅ User
 
@@ -177,6 +169,29 @@
 
 </details>
 
+
+## 📌 프로젝트 공통 사항
+
+### docs (template)
+- [[Commit template]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/git_convention.txt)
+- [[DB_convention]](https://github.com/NinjaYoung98/your-connection/blob/main/docs/db_convention)
+- [[PR_template]](https://github.com/NinjaYoung98/your-connection/blob/main/.github/pull_request_template.md)
+### Code Style
+- [Google code Style 적용](https://google.github.io/styleguide/javaguide.html)
+<br></br>
+## 📑 깃 브랜치 전략
+<img width="505" alt="스크린샷 2023-08-30 054216" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10a04678-aeff-454e-a322-6be2d2486556"> <br>
+- 현재 프로젝트 규모를 고려하여 상대적으로 가벼운 GitHub-flow 정책을 도입하였습니다.<br>
+- 요구사항에 대한 깃 이슈 번호를 할당받고 그에 맞는 feature 브랜치를 생성합니다.<br>
+- GitHub에서 제공하는 칸반보드와 UI 도구인 Git Kraken으로 깃 이슈번호와 브랜치를 관리해 주었습니다.<br>
+ - [[Github-flow Reference1]](https://build5nines.com/introduction-to-git-version-control-workflow/)
+- [[Github-flow Reference2]](https://blog.hwahae.co.kr/all/tech/9507)<br>
+
+   <strong>[Git Kraken]</strong><br>
+  <img width="685" alt="스크린샷 2023-08-30 045044" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/8a20c18d-0ce6-4253-8426-91429842b77b"> <br>
+   <strong>[project board]</strong><br>
+  <br>
+  <img width="865" alt="스크린샷 2023-08-30 045225" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/10d6e02f-e3bd-481f-b5a2-1d84b6564869">
 
 
 
