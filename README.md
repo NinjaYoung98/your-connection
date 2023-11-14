@@ -19,6 +19,7 @@
 - Spring boot 2.7
 - MySQL 8
 - Spring Data JPA
+- Spring Security
 - Redis
 - AWS S3
 <br></br>
