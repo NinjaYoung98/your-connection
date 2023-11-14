@@ -50,7 +50,10 @@
 </br>
 
 ### 📃 Project Posting 
-- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/Projecting-Posting" target= "blank"> [프로젝트 관련 포스팅]</a>
+- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/Projecting-Posting" target= "blank"> [프로젝트 관련 포스팅 바로가기]</a>
+
+### 📃 프로젝트 기능 명세 
+- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B8%B0%EB%8A%A5-%EB%AA%85%EC%84%B8" target= "blank"> [프로젝트 기능 명세 바로가기]</a>
 
 </br>
 <details>
