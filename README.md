@@ -1,6 +1,6 @@
 # 🙋‍♂your-connection
 
-<img width="324" alt="스크린샷 2023-11-14 130405" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/c0878108-b63b-415a-89ed-6f2b66f0d414">
+<p align="center"><img  src="https://github.com/NinjaYoung98/your-connection/assets/124491136/cb53c3eb-5c3a-4832-9450-668d35f78b0b" height="300px" width="400px"></p>
 
 #### Java, Spring으로 개발하는 SNS 프로젝트 
 
