@@ -33,7 +33,7 @@
 **2. [성능 향상 및 서비스 안정성]**
 - Redis, Lua script 를 활용하여 트래킹시 발생되는 조건부 카운트에 대한 동시성 제어
 - Rate limit 핸들링을 통한 무분별한 API 호출 방지하여 서비스 안정성 높이기
-- 1시간 안에 10번 이상의 rate limit 발생시 지정된 메신저로 알림 발송하는 대응 시스템 구축
+- 1시간 안에 10번 이상의 rate limit 발생 시 지정된 메신저로 알림 발송하는 대응 시스템 구축
 - 다량 조회, 페이지네이션 조회 시 발생하는 N+1 문제를 적절한 방식으로 해결(fetch join, Batch size)
   
 **3. [데이터 관리]**
@@ -85,11 +85,16 @@
 <Br>
 </br>
 
-## 프로젝트 ERD 
+## 🚀 Project ERD 
 
-<img width="670" alt="스크린샷 2023-11-14 145601" src="https://github.com/NinjaYoung98/your-connection/assets/124491136/bc08445a-c027-48e5-8a05-3dcd7b4e6520">
+- <a href= "https://github.com/NinjaYoung98/your-connection/wiki/Project-ERD" target= "blank"> [Project ERD 바로가기]</a>
 
 
-aa
-     
+<BR> </BR>
+
+## 🚀 API Endpoint
+
+
+- <a href= "https://docs.google.com/spreadsheets/d/1jz_DEeR26WXDwrCQ6Ko0PzThTtQmLhCU9YCYCwg5mhc/edit?usp=sharing" target= "blank"> [API Endpoint 구글 시트 바로가기]</a>
+
     
